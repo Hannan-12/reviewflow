@@ -19,14 +19,14 @@ interface ReplyRequest {
 // POST /api/reviews/[id]/reply
 export async function POST(
   request: NextRequest,
-  { params }: { params: { id: string } }
+  { params }: { params: Promise<{ id: string }> }
 ) {
   try {
     const supabase = await createClient()
     const { data: { user } } = await supabase.auth.getUser()
     if (!user) return NextResponse.json({ error: 'Unauthorized' }, { status: 401 })
 
-    const { id: reviewId } = params;
+    const { id: reviewId } = await params;
     const { replyText, aiAccepted } = (await request.json()) as ReplyRequest;
 
     if (!replyText || replyText.trim().length === 0) {
@@ -108,14 +108,14 @@ export async function POST(
 // GET /api/reviews/[id]/reply
 export async function GET(
   _request: NextRequest,
-  { params }: { params: { id: string } }
+  { params }: { params: Promise<{ id: string }> }
 ) {
   try {
     const supabase = await createClient()
     const { data: { user } } = await supabase.auth.getUser()
     if (!user) return NextResponse.json({ error: 'Unauthorized' }, { status: 401 })
 
-    const { id: reviewId } = params;
+    const { id: reviewId } = await params;
     const admin = getAdmin()
 
     const { data: review, error } = await admin
