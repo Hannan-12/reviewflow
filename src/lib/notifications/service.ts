@@ -3,10 +3,12 @@ import { sendNewReviewEmail } from '@/lib/resend/client';
 import { sendSlackNotification } from '@/lib/slack/client';
 import { generateReplyFromAI } from '@/lib/openai/client';
 
-const supabase = createClient(
-  process.env.NEXT_PUBLIC_SUPABASE_URL!,
-  process.env.SUPABASE_SERVICE_ROLE_KEY!
-);
+function getAdmin() {
+  return createClient(
+    process.env.NEXT_PUBLIC_SUPABASE_URL!,
+    process.env.SUPABASE_SERVICE_ROLE_KEY!
+  );
+}
 
 export async function notifyNewReview(
   reviewId: string,
@@ -21,6 +23,7 @@ export async function notifyNewReview(
   }
 ) {
   try {
+    const supabase = getAdmin()
     // Get user and profile info
     const [userRes, profileRes, prefsRes] = await Promise.all([
       supabase.from('users').select('email, full_name').eq('id', userId).single(),

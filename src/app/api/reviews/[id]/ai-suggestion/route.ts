@@ -2,10 +2,12 @@ import { NextRequest, NextResponse } from 'next/server';
 import { createClient } from '@supabase/supabase-js';
 import { generateReplyFromAI } from '@/lib/openai/client';
 
-const supabase = createClient(
-  process.env.NEXT_PUBLIC_SUPABASE_URL!,
-  process.env.SUPABASE_SERVICE_ROLE_KEY!
-);
+function getAdmin() {
+  return createClient(
+    process.env.NEXT_PUBLIC_SUPABASE_URL!,
+    process.env.SUPABASE_SERVICE_ROLE_KEY!
+  );
+}
 
 // GET /api/reviews/[id]/ai-suggestion
 export async function GET(
@@ -23,6 +25,8 @@ export async function GET(
         { status: 400 }
       );
     }
+
+    const supabase = getAdmin()
 
     // Get review details
     const { data: review, error: reviewError } = await supabase
