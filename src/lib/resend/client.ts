@@ -1,6 +1,8 @@
 import { Resend } from 'resend';
 
-const resend = new Resend(process.env.RESEND_API_KEY);
+function getResend() {
+  return new Resend(process.env.RESEND_API_KEY);
+}
 
 export interface EmailNotificationData {
   userEmail: string;
@@ -16,7 +18,7 @@ export interface EmailNotificationData {
 
 export async function sendNewReviewEmail(data: EmailNotificationData) {
   try {
-    const result = await resend.emails.send({
+    const result = await getResend().emails.send({
       from: process.env.RESEND_FROM_EMAIL || 'noreply@reviewflow.app',
       to: data.userEmail,
       subject: `New ${data.rating}★ Review on "${data.profileName}"`,
@@ -25,26 +27,26 @@ export async function sendNewReviewEmail(data: EmailNotificationData) {
           <div style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); padding: 20px; color: white; border-radius: 8px 8px 0 0;">
             <h2>New Review Received!</h2>
           </div>
-          
+
           <div style="padding: 20px; background: #f5f5f5;">
             <p>Hi ${data.userName},</p>
-            
+
             <p>You have a new <strong>${data.rating}★ review</strong> on <strong>${data.profileName}</strong></p>
-            
+
             <div style="background: white; padding: 20px; border-left: 4px solid #667eea; margin: 20px 0; border-radius: 4px;">
               <p style="margin: 0; font-weight: bold; color: #333;">${data.reviewerName}</p>
               <p style="margin: 5px 0; color: #666;">★ Rating: ${data.rating}/5</p>
               <p style="margin: 10px 0; color: #444;">"${data.comment}"</p>
               <p style="margin: 10px 0; font-size: 12px; color: #999;">${data.reviewDate}</p>
             </div>
-            
+
             <div style="text-align: center; margin: 20px 0;">
-              <a href="${process.env.NEXT_PUBLIC_APP_URL}/dashboard/reviews?profileId=${data.profileId}&reviewId=${data.reviewId}" 
+              <a href="${process.env.NEXT_PUBLIC_APP_URL}/dashboard/reviews?profileId=${data.profileId}&reviewId=${data.reviewId}"
                  style="background: #667eea; color: white; padding: 12px 30px; text-decoration: none; border-radius: 4px; display: inline-block;">
                 View & Reply
               </a>
             </div>
-            
+
             <p style="color: #666; font-size: 12px; margin-top: 30px; border-top: 1px solid #ddd; padding-top: 10px;">
               You can manage notification settings in your profile preferences.
             </p>
@@ -90,7 +92,7 @@ export async function sendDigestEmail(data: {
     </div>
   `).join('')
 
-  await resend.emails.send({
+  await getResend().emails.send({
     from: process.env.RESEND_FROM_EMAIL || 'noreply@reviewflow.app',
     to: data.userEmail,
     subject: `${count} new review${count !== 1 ? 's' : ''} on "${data.profileName}" ${period}`,
@@ -127,21 +129,21 @@ export async function sendReplyConfirmationEmail(
   reviewerName: string
 ) {
   try {
-    const result = await resend.emails.send({
+    const result = await getResend().emails.send({
       from: process.env.RESEND_FROM_EMAIL || 'noreply@reviewflow.app',
       to: userEmail,
       subject: `Your reply to ${reviewerName}'s review posted on "${profileName}"`,
       html: `
         <div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto;">
           <div style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); padding: 20px; color: white; border-radius: 8px 8px 0 0;">
-            <h2>✓ Reply Posted</h2>
+            <h2>&#10003; Reply Posted</h2>
           </div>
-          
+
           <div style="padding: 20px; background: #f5f5f5;">
             <p>Hi ${userName},</p>
-            
+
             <p>Your reply to <strong>${reviewerName}</strong>'s review on <strong>${profileName}</strong> has been successfully posted to Google Business Profile.</p>
-            
+
             <p style="color: #666; font-size: 12px; margin-top: 30px; border-top: 1px solid #ddd; padding-top: 10px;">
               Thank you for engaging with your customers!
             </p>

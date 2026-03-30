@@ -1,8 +1,8 @@
 import Anthropic from '@anthropic-ai/sdk';
 
-const anthropic = new Anthropic({
-  apiKey: process.env.ANTHROPIC_API_KEY,
-});
+function getAnthropic() {
+  return new Anthropic({ apiKey: process.env.ANTHROPIC_API_KEY });
+}
 
 export interface ReplyContext {
   reviewerName: string;
@@ -30,7 +30,7 @@ Generate a professional, warm, and helpful reply to this review.
 
 Just provide the reply text, nothing else.`;
 
-    const message = await anthropic.messages.create({
+    const message = await getAnthropic().messages.create({
       model: 'claude-3-5-sonnet-20241022',
       max_tokens: 200,
       messages: [{ role: 'user', content: prompt }],
@@ -86,7 +86,7 @@ export async function analyzeSentiment(
   }
 
   try {
-    const message = await anthropic.messages.create({
+    const message = await getAnthropic().messages.create({
       model: 'claude-haiku-4-5-20251001',
       max_tokens: 60,
       messages: [
@@ -134,7 +134,7 @@ export async function suggestTagsForReview(
 
   try {
     const tagList = availableTags.join(', ');
-    const message = await anthropic.messages.create({
+    const message = await getAnthropic().messages.create({
       model: 'claude-haiku-4-5-20251001',
       max_tokens: 80,
       messages: [
