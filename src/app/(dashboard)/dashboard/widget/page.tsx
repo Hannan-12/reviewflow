@@ -1,3 +1,4 @@
+export const dynamic = 'force-dynamic'
 import { Header } from '@/components/dashboard/header'
 import { createClient } from '@/lib/supabase/server'
 import { WidgetConfigurator } from '@/components/dashboard/widget-configurator'
