@@ -27,9 +27,17 @@ export async function POST(request: NextRequest) {
     // Get or create Stripe customer
     const { data: userData } = await supabase
       .from('users')
-      .select('stripe_customer_id, email, full_name, trial_ends_at')
+      .select('stripe_customer_id, stripe_subscription_id, subscription_status, email, full_name, trial_ends_at')
       .eq('id', user.id)
       .single()
+
+    // Block if user already has an active/trialing subscription
+    if (userData?.stripe_subscription_id && (userData.subscription_status === 'active' || userData.subscription_status === 'trialing')) {
+      return NextResponse.json(
+        { error: 'You already have an active subscription. Use "Manage subscription" to change plans.' },
+        { status: 400 }
+      )
+    }
 
     let customerId = userData?.stripe_customer_id
 
@@ -45,6 +53,23 @@ export async function POST(request: NextRequest) {
         .from('users')
         .update({ stripe_customer_id: customerId })
         .eq('id', user.id)
+    } else {
+      // Cancel any existing active subscriptions before creating a new one
+      const existingSubs = await getStripe().subscriptions.list({
+        customer: customerId,
+        status: 'active',
+      })
+      for (const sub of existingSubs.data) {
+        await getStripe().subscriptions.cancel(sub.id)
+      }
+      // Also cancel trialing subscriptions
+      const trialSubs = await getStripe().subscriptions.list({
+        customer: customerId,
+        status: 'trialing',
+      })
+      for (const sub of trialSubs.data) {
+        await getStripe().subscriptions.cancel(sub.id)
+      }
     }
 
     const appUrl = process.env.NEXT_PUBLIC_APP_URL ?? 'http://localhost:3000'
