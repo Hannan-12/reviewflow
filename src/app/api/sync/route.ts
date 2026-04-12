@@ -95,7 +95,7 @@ async function syncUser(userId: string, admin: ReturnType<typeof getAdmin>) {
 
   const { data: profiles } = await admin
     .from('profiles')
-    .select('id, location_name, business_name')
+    .select('id, location_name, account_id, business_name')
     .eq('user_id', userId)
     .eq('is_active', true)
 
@@ -103,8 +103,8 @@ async function syncUser(userId: string, admin: ReturnType<typeof getAdmin>) {
   let synced = 0
 
   for (const profile of profiles) {
-    if (!profile.location_name) continue
-    const reviews = await listAllReviews(profile.location_name, token)
+    if (!profile.location_name || !profile.account_id) continue
+    const reviews = await listAllReviews(profile.account_id, profile.location_name, token)
 
     if (!reviews.length) {
       await admin.from('profiles').update({ last_synced_at: new Date().toISOString() }).eq('id', profile.id)
@@ -219,7 +219,7 @@ export async function POST(request: NextRequest) {
   // Fetch the relevant profiles
   const profileQuery = supabase
     .from('profiles')
-    .select('id, location_name, business_name')
+    .select('id, location_name, account_id, business_name')
     .eq('user_id', user.id)
     .eq('is_active', true)
 
@@ -237,9 +237,9 @@ export async function POST(request: NextRequest) {
     let totalSynced = 0
 
     for (const profile of profiles) {
-      if (!profile.location_name) continue
+      if (!profile.location_name || !profile.account_id) continue
 
-      const reviews = await listAllReviews(profile.location_name, token)
+      const reviews = await listAllReviews(profile.account_id, profile.location_name, token)
 
       if (reviews.length === 0) {
         // Still update last_synced_at

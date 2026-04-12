@@ -116,13 +116,14 @@ export async function listLocations(accountName: string, token: string): Promise
 }
 
 /** List reviews for a location (up to 50 most recent) */
-export async function listReviews(locationName: string, token: string, pageToken?: string): Promise<{
+export async function listReviews(accountName: string, locationName: string, token: string, pageToken?: string): Promise<{
   reviews: GBPReview[]
   nextPageToken?: string
   totalReviewCount?: number
   averageRating?: number
 }> {
-  let url = `${REVIEWS_URL}/${locationName}/reviews?pageSize=50`
+  // Build full path: accounts/{id}/locations/{id}/reviews
+  let url = `${REVIEWS_URL}/${accountName}/${locationName}/reviews?pageSize=50`
   if (pageToken) url += `&pageToken=${encodeURIComponent(pageToken)}`
   const data = await gbpFetch(url, token)
   return {
@@ -151,12 +152,12 @@ export async function replyToReview(reviewName: string, comment: string, token: 
 }
 
 /** Fetch ALL reviews for a location (paginating automatically) */
-export async function listAllReviews(locationName: string, token: string): Promise<GBPReview[]> {
+export async function listAllReviews(accountName: string, locationName: string, token: string): Promise<GBPReview[]> {
   const all: GBPReview[] = []
   let pageToken: string | undefined
 
   do {
-    const page = await listReviews(locationName, token, pageToken)
+    const page = await listReviews(accountName, locationName, token, pageToken)
     all.push(...page.reviews)
     pageToken = page.nextPageToken
   } while (pageToken)
