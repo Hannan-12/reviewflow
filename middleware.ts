@@ -61,31 +61,8 @@ export async function middleware(request: NextRequest) {
     return NextResponse.redirect(url)
   }
 
-  // Gate dashboard access: trial expired + no active subscription → billing only
-  if (user && pathname.startsWith('/dashboard')) {
-    const { data: userData } = await supabase
-      .from('users')
-      .select('subscription_status, trial_ends_at')
-      .eq('id', user.id)
-      .single()
-
-    const isActive =
-      userData?.subscription_status === 'active' ||
-      userData?.subscription_status === 'trialing'
-
-    const trialExpired =
-      userData?.subscription_status === 'trialing' &&
-      userData?.trial_ends_at &&
-      new Date(userData.trial_ends_at) < new Date()
-
-    if (!isActive || trialExpired) {
-      const url = request.nextUrl.clone()
-      url.pathname = '/billing'
-      url.searchParams.set('expired', 'true')
-      return NextResponse.redirect(url)
-    }
-  }
-
+  // Billing gate lives in src/app/(dashboard)/layout.tsx — it runs in the
+  // Node runtime and can reconcile with Stripe when the DB row is stale.
   return supabaseResponse
 }
 
