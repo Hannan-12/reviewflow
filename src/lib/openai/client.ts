@@ -31,7 +31,7 @@ Generate a professional, warm, and helpful reply to this review.
 Just provide the reply text, nothing else.`;
 
     const message = await getAnthropic().messages.create({
-      model: 'claude-3-5-sonnet-20241022',
+      model: 'claude-haiku-4-5-20251001',
       max_tokens: 200,
       messages: [{ role: 'user', content: prompt }],
     });
