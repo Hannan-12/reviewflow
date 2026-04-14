@@ -4,6 +4,7 @@ import './globals.css'
 import { Toaster } from '@/components/ui/sonner'
 import { ThemeProvider } from '@/components/theme-provider'
 import { CommandPalette } from '@/components/command-palette'
+import { SpeedInsights } from '@vercel/speed-insights/next'
 
 const geistSans = Geist({
   variable: '--font-geist-sans',
@@ -29,6 +30,7 @@ export default function RootLayout({
           <CommandPalette />
           <Toaster richColors closeButton />
         </ThemeProvider>
+        <SpeedInsights />
       </body>
     </html>
   )
