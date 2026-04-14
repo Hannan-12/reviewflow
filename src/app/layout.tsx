@@ -3,7 +3,7 @@ import { Geist } from 'next/font/google'
 import './globals.css'
 import { Toaster } from '@/components/ui/sonner'
 import { ThemeProvider } from '@/components/theme-provider'
-import { CommandPalette } from '@/components/command-palette'
+import { CommandPaletteLoader } from '@/components/command-palette-loader'
 import { SpeedInsights } from '@vercel/speed-insights/next'
 
 const geistSans = Geist({
@@ -27,7 +27,7 @@ export default function RootLayout({
       <body className={`${geistSans.variable} antialiased font-sans`} suppressHydrationWarning>
         <ThemeProvider>
           {children}
-          <CommandPalette />
+          <CommandPaletteLoader />
           <Toaster richColors closeButton />
         </ThemeProvider>
         <SpeedInsights />
