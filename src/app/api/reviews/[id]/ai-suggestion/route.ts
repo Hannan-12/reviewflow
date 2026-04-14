@@ -32,7 +32,7 @@ export async function GET(
     // Get review details
     const { data: review, error: reviewError } = await supabase
       .from('reviews')
-      .select('*, profile:profiles(business_name, business_type)')
+      .select('*, profile:profiles(business_name)')
       .eq('id', reviewId)
       .single();
 
@@ -45,7 +45,7 @@ export async function GET(
 
     // Get the business type from the profile
     const businessName = review.profile?.business_name || 'our business';
-    const businessType = (review.profile as any)?.business_type || 'service';
+    const businessType = 'service';
 
     // Generate AI suggestion
     const suggestion = await generateReplyFromAI({
