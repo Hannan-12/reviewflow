@@ -31,10 +31,13 @@ export default async function ProfilesPage({
 
   const { connected, error } = await searchParams
   const isGoogleConnected = !!(userData?.google_refresh_token)
-  // Give trialing users Lite-tier limit (3 profiles) so they can test during trial
+  // Give trialing users Lite-tier limit (3 profiles) so they can test during trial.
+  // Active subscribers with a missing/zero profile_limit (e.g. webhook lag) default
+  // to the Lite minimum (3) so they are never silently blocked.
   const isTrialing = userData?.subscription_status === 'trialing'
+  const isActive = userData?.subscription_status === 'active'
   const rawLimit = userData?.profile_limit ?? 0
-  const limit = rawLimit === 0 && isTrialing ? 3 : rawLimit
+  const limit = rawLimit === 0 && (isTrialing || isActive) ? 3 : rawLimit
 
   return (
     <SidebarProvider>
