@@ -6,7 +6,7 @@ import { ManageSubscriptionButton } from '@/components/billing/manage-subscripti
 import { BillingSuccessBanner } from '@/components/billing/billing-success-banner'
 import { Header } from '@/components/dashboard/header'
 import { Sidebar } from '@/components/dashboard/sidebar'
-import { BillingPlansSection } from '@/components/billing/billing-plans-section'
+import { BillingPlansSection } from '@/components/billing/billing-plans-loader'
 import { SidebarProvider } from '@/components/dashboard/sidebar-context'
 import {
   AlertCircle, CreditCard, Calendar,
