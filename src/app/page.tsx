@@ -2,7 +2,7 @@
 
 import Link from 'next/link'
 import Image from 'next/image'
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import {
   Star, Bell, BarChart3, MessageSquare, Zap, Shield,
   ArrowRight, CheckCircle2, ChevronDown, Play, Globe,
