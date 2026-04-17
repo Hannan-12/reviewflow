@@ -58,21 +58,24 @@ export async function generateReplyFromAI(context: ReplyContext): Promise<string
   const prompt = `You are a professional customer service representative for "${context.businessName}".
 A customer left a ${context.rating}-star review:
 
-**${context.reviewerName}:**
-"${context.comment}"
+Reviewer: ${context.reviewerName}
+Review: "${context.comment}"
 
-Generate a professional, warm, and helpful reply to this review.
-- Keep it concise (2-3 sentences max)
-- Address their specific feedback
-- If negative, offer a solution or invite them to discuss further
-- If positive, thank them warmly
-- Sound genuine, not robotic
+Write a genuine, helpful reply on behalf of the business. Follow these rules:
+- 3 to 5 sentences — enough to feel personal and complete, not a one-liner
+- Open by thanking the reviewer by name
+- Acknowledge the specific points they raised (mention details from their review)
+- If the review is positive (4-5 stars): express genuine gratitude, highlight what they praised, invite them back
+- If the review is neutral (3 stars): thank them, acknowledge what could be better, mention you are working on it
+- If the review is negative (1-2 stars): apologise sincerely, take responsibility, offer a concrete next step (contact email, invitation to return, promise to fix the issue)
+- Tone: warm, professional, human — never robotic or generic
 - Do NOT use emojis
+- Do NOT include any intro like "Here is a reply:" — output the reply text only
 
-Just provide the reply text, nothing else.`
+Reply:`
 
   try {
-    return await generateText(prompt, 200)
+    return await generateText(prompt, 450)
   } catch (error) {
     console.error('Error generating reply from AI:', error)
     throw error

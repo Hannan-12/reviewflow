@@ -1,6 +1,6 @@
 import { useState, useRef } from 'react';
 import { Button } from '@/components/ui/button';
-import { Loader } from 'lucide-react';
+import { Loader, Sparkles, RotateCcw } from 'lucide-react';
 import { TemplatePicker } from './template-picker';
 
 interface ReplyPanelProps {
@@ -29,20 +29,14 @@ export function ReplyPanel({
   const [success, setSuccess] = useState(false);
   const textAreaRef = useRef<HTMLTextAreaElement>(null);
 
-  // Fetch AI suggestion
   const handleGetAiSuggestion = async () => {
     setLoading(true);
     setError(null);
-
     try {
       const response = await fetch(
         `/api/reviews/${reviewId}/ai-suggestion?profileId=${profileId}`
       );
-
-      if (!response.ok) {
-        throw new Error('Failed to generate suggestion');
-      }
-
+      if (!response.ok) throw new Error('Failed to generate suggestion');
       const data = await response.json();
       setAiSuggestion(data.suggestion);
       setShowSuggestion(true);
@@ -53,7 +47,6 @@ export function ReplyPanel({
     }
   };
 
-  // Accept AI suggestion
   const handleAcceptSuggestion = () => {
     if (aiSuggestion) {
       setReplyText(aiSuggestion);
@@ -61,16 +54,13 @@ export function ReplyPanel({
     }
   };
 
-  // Submit reply
   const handleSubmitReply = async () => {
     if (!replyText.trim()) {
       setError('Reply cannot be empty');
       return;
     }
-
     setSubmitting(true);
     setError(null);
-
     try {
       const response = await fetch(`/api/reviews/${reviewId}/reply`, {
         method: 'POST',
@@ -80,11 +70,7 @@ export function ReplyPanel({
           aiAccepted: aiSuggestion === replyText,
         }),
       });
-
-      if (!response.ok) {
-        throw new Error('Failed to submit reply');
-      }
-
+      if (!response.ok) throw new Error('Failed to submit reply');
       setSuccess(true);
       setReplyText('');
       setAiSuggestion(null);
@@ -98,59 +84,61 @@ export function ReplyPanel({
   };
 
   return (
-    <div className="border rounded-lg p-4 bg-white space-y-4">
+    <div className="rounded-xl border border-border bg-card p-4 space-y-3">
+      {/* Header */}
       <div>
-        <h3 className="font-semibold text-sm">Reply to {reviewerName}</h3>
-        <p className="text-xs text-gray-500 mt-1">
-          {rating}★ Review: "{comment}"
+        <p className="text-xs font-semibold text-muted-foreground uppercase tracking-wide mb-1">
+          Reply to {reviewerName}
+        </p>
+        <p className="text-xs text-muted-foreground leading-relaxed line-clamp-2">
+          {rating}★ &ldquo;{comment}&rdquo;
         </p>
       </div>
 
-      {/* AI Suggestion Section */}
+      {/* AI Suggestion */}
       <div className="space-y-2">
         {!showSuggestion ? (
           <Button
             onClick={handleGetAiSuggestion}
-            disabled={loading || showSuggestion}
+            disabled={loading}
             variant="outline"
             size="sm"
-            className="w-full"
+            className="w-full border-primary/30 text-primary hover:bg-primary/10 hover:border-primary/50"
           >
             {loading ? (
               <>
-                <Loader className="w-4 h-4 mr-2 animate-spin" />
-                Generating suggestion...
+                <Loader className="w-3.5 h-3.5 mr-2 animate-spin" />
+                Generating…
               </>
             ) : (
-              '✨ Get AI Suggestion'
+              <>
+                <Sparkles className="w-3.5 h-3.5 mr-2" />
+                Get AI Suggestion
+              </>
             )}
           </Button>
         ) : aiSuggestion && (
-          <div className="bg-blue-50 border border-blue-200 rounded p-3 space-y-2">
-            <p className="text-sm text-gray-700">{aiSuggestion}</p>
+          <div className="rounded-lg border border-primary/20 bg-primary/8 p-3 space-y-2.5">
+            <p className="text-sm text-foreground leading-relaxed">{aiSuggestion}</p>
             <div className="flex gap-2">
-              <Button
-                onClick={handleAcceptSuggestion}
-                size="sm"
-                variant="default"
-                className="flex-1"
-              >
-                Accept
+              <Button onClick={handleAcceptSuggestion} size="sm" className="flex-1 h-7 text-xs">
+                Use this
               </Button>
               <Button
                 onClick={() => setShowSuggestion(false)}
                 size="sm"
                 variant="outline"
-                className="flex-1"
+                className="flex-1 h-7 text-xs"
               >
-                Rewrite Manually
+                <RotateCcw className="w-3 h-3 mr-1" />
+                Rewrite
               </Button>
             </div>
           </div>
         )}
       </div>
 
-      {/* Template picker + Reply Text Area */}
+      {/* Template picker + Textarea */}
       <div className="space-y-1.5">
         <div className="flex justify-end">
           <TemplatePicker onSelect={(content) => setReplyText(content)} />
@@ -159,42 +147,40 @@ export function ReplyPanel({
           ref={textAreaRef}
           value={replyText}
           onChange={(e) => setReplyText(e.target.value)}
-          placeholder="Write your reply here..."
-          className="w-full p-3 border rounded text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 resize-none"
+          placeholder="Write your reply here…"
           rows={4}
+          className="w-full rounded-lg border border-border bg-background text-foreground placeholder:text-muted-foreground text-sm p-3 resize-none focus:outline-none focus:ring-2 focus:ring-primary/40 focus:border-primary/50 transition-colors"
         />
       </div>
 
       {/* Character count */}
-      <div className="text-xs text-gray-500">
-        {replyText.length} / 1000 characters
-      </div>
+      <p className="text-xs text-muted-foreground text-right -mt-1">
+        {replyText.length} / 1000
+      </p>
 
-      {/* Error/Success messages */}
-      {error && <div className="text-sm text-red-600">{error}</div>}
-      {success && (
-        <div className="text-sm text-green-600">Reply posted successfully!</div>
-      )}
+      {/* Error / Success */}
+      {error && <p className="text-xs text-destructive">{error}</p>}
+      {success && <p className="text-xs text-emerald-500">Reply posted successfully!</p>}
 
-      {/* Action buttons */}
+      {/* Actions */}
       <div className="flex gap-2">
         <Button
           onClick={handleSubmitReply}
           disabled={submitting || !replyText.trim()}
           className="flex-1"
+          size="sm"
         >
           {submitting ? (
             <>
-              <Loader className="w-4 h-4 mr-2 animate-spin" />
-              Posting...
+              <Loader className="w-3.5 h-3.5 mr-2 animate-spin" />
+              Posting…
             </>
-          ) : (
-            'Post Reply'
-          )}
+          ) : 'Post Reply'}
         </Button>
         <Button
           onClick={() => setReplyText('')}
           variant="outline"
+          size="sm"
           className="flex-1"
         >
           Clear
