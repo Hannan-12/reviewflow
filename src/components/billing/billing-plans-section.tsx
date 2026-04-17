@@ -52,6 +52,7 @@ export function BillingPlansSection({ plans, currentPlanKey, isSubscribed }: Bil
             priceId={annual ? plan.priceIdAnnual : plan.priceId}
             isCurrentPlan={currentPlanKey === plan.key && isSubscribed}
             isPopular={plan.key === 'pro'}
+            isAgency={plan.key === 'agency'}
           />
         ))}
       </div>

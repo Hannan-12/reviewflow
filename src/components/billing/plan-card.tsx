@@ -16,9 +16,10 @@ interface PlanCardProps {
   priceId: string
   isCurrentPlan: boolean
   isPopular?: boolean
+  isAgency?: boolean
 }
 
-export function PlanCard({ name, price, annual, description, features, priceId, isCurrentPlan, isPopular }: PlanCardProps) {
+export function PlanCard({ name, price, annual, description, features, priceId, isCurrentPlan, isPopular, isAgency }: PlanCardProps) {
   const router = useRouter()
   const [loading, setLoading] = useState(false)
 
@@ -76,16 +77,16 @@ export function PlanCard({ name, price, annual, description, features, priceId, 
         <p className={cn('font-bold text-base mb-3', isPopular ? 'text-white' : '')}>{name}</p>
         <div className="flex items-end gap-1 mb-1.5">
           <span className={cn('text-4xl font-bold tracking-tight', isPopular ? 'text-white' : '')}>
-            ${price}
+            €{price}
           </span>
           <span className={cn('text-sm mb-1.5', isPopular ? 'text-white/60' : 'text-muted-foreground')}>
-            {annual ? '/mo*' : '/mo'}
+            {isAgency ? '/profile/mo' : annual ? '/mo*' : '/mo'}
           </span>
         </div>
         <p className={cn('text-sm', isPopular ? 'text-white/65' : 'text-muted-foreground')}>{description}</p>
-        {annual && (
+        {annual && !isAgency && (
           <p className={cn('text-xs mt-1', isPopular ? 'text-white/50' : 'text-muted-foreground/70')}>
-            * billed as ${price * 12}/yr
+            * billed as €{price * 12}/yr
           </p>
         )}
       </div>

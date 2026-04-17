@@ -1,12 +1,12 @@
-export type PlanKey = 'lite' | 'pro' | 'premium'
+export type PlanKey = 'lite' | 'pro' | 'agency'
 
 export interface PlanConfig {
   name: string
   priceId: string
   priceIdAnnual: string
-  price: number
-  priceAnnual: number
-  profileLimit: number
+  price: number        // monthly EUR
+  priceAnnual: number  // monthly EUR when billed annually
+  profileLimit: number // -1 = unlimited
   description: string
   features: string[]
 }
@@ -17,71 +17,68 @@ function buildPlans(): Record<PlanKey, PlanConfig> {
       name: 'Lite',
       priceId: process.env.STRIPE_PRICE_LITE_MONTHLY ?? '',
       priceIdAnnual: process.env.STRIPE_PRICE_LITE_YEARLY ?? '',
-      price: 20,
-      priceAnnual: 16,
+      price: 29,
+      priceAnnual: 23,
       profileLimit: 3,
-      description: 'Perfect for small businesses',
+      description: 'For solo businesses',
       features: [
         '3 Google Business Profiles',
-        'Review notifications (email)',
-        'Review dashboard with filters',
-        'CSV export',
+        'Email alerts',
+        'AI reply suggestions',
         'Basic reports',
+        'CSV export',
       ],
     },
     pro: {
       name: 'Pro',
       priceId: process.env.STRIPE_PRICE_PRO_MONTHLY ?? '',
       priceIdAnnual: process.env.STRIPE_PRICE_PRO_YEARLY ?? '',
-      price: 35,
-      priceAnnual: 28,
-      profileLimit: 10,
-      description: 'For growing businesses',
+      price: 59,
+      priceAnnual: 47,
+      profileLimit: 15,
+      description: 'For teams & small chains',
       features: [
-        '10 Google Business Profiles',
-        'Everything in Lite',
-        'Slack notifications',
-        'AI reply suggestions',
-        'Advanced reports + scheduling',
+        '15 Google Business Profiles',
+        'Email + Slack alerts',
+        'AI auto-reply agents',
+        'Advanced reports',
+        'Review widgets',
         'Review auto-tagging',
       ],
     },
-    premium: {
-      name: 'Premium',
-      priceId: process.env.STRIPE_PRICE_PREMIUM_MONTHLY ?? '',
-      priceIdAnnual: process.env.STRIPE_PRICE_PREMIUM_YEARLY ?? '',
-      price: 40,
-      priceAnnual: 32,
+    agency: {
+      name: 'Agency',
+      priceId: process.env.STRIPE_PRICE_AGENCY_MONTHLY ?? '',
+      priceIdAnnual: process.env.STRIPE_PRICE_AGENCY_YEARLY ?? '',
+      price: 5,        // per profile/mo
+      priceAnnual: 4,  // per profile/mo billed annually
       profileLimit: -1,
-      description: 'For agencies & enterprises',
+      description: 'For agencies & franchises',
       features: [
-        'Unlimited Google Business Profiles',
+        'Unlimited profiles (€5/profile/mo)',
         'Everything in Pro',
-        'AI auto-reply agents',
-        'Embeddable review widgets',
-        'Magic review collection links',
+        'Custom AI prompts',
         'Sentiment analysis',
-        'White-label ready',
+        'Magic review links',
+        'Priority support',
       ],
     },
   }
 }
 
-// Lazy getter — reads env vars at runtime, not build time
 export function getPlans(): Record<PlanKey, PlanConfig> {
   return buildPlans()
 }
 
-// Backward-compatible export for components that import PLANS
 export const PLANS = new Proxy({} as Record<PlanKey, PlanConfig>, {
   get(_, prop: string) {
     return buildPlans()[prop as PlanKey]
   },
   ownKeys() {
-    return ['lite', 'pro', 'premium']
+    return ['lite', 'pro', 'agency']
   },
   getOwnPropertyDescriptor(_, prop) {
-    if (['lite', 'pro', 'premium'].includes(prop as string)) {
+    if (['lite', 'pro', 'agency'].includes(prop as string)) {
       return { configurable: true, enumerable: true, value: buildPlans()[prop as PlanKey] }
     }
   },
@@ -97,8 +94,6 @@ export function getPlanByPriceId(priceId: string): PlanKey | null {
 
 export function getPlanProfileLimit(planKey: PlanKey | string): number {
   const plans = buildPlans()
-  if (planKey in plans) {
-    return plans[planKey as PlanKey].profileLimit
-  }
+  if (planKey in plans) return plans[planKey as PlanKey].profileLimit
   return 0
 }

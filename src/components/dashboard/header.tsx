@@ -1,6 +1,7 @@
 import { createClient } from '@/lib/supabase/server'
 import Link from 'next/link'
-import { Bell, ChevronRight } from 'lucide-react'
+import { ChevronRight } from 'lucide-react'
+import { NotificationBell } from './notification-bell'
 
 interface HeaderProps {
   title: string
@@ -68,11 +69,7 @@ export async function Header({ title, breadcrumbs }: HeaderProps) {
           </Link>
         )}
 
-        {/* Bell with notification dot */}
-        <button className="relative w-8 h-8 rounded-lg flex items-center justify-center text-muted-foreground hover:text-foreground hover:bg-muted transition-all">
-          <Bell className="w-4 h-4" />
-          <span className="absolute top-1.5 right-1.5 w-2 h-2 rounded-full bg-primary border-2 border-background" />
-        </button>
+        <NotificationBell />
 
         {/* Avatar */}
         <div className="flex items-center gap-2 pl-2 border-l border-border ml-1">

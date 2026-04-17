@@ -23,21 +23,21 @@ const faqItems = [
 ]
 
 const comparisonFeatures = [
-  { label: 'Google Business Profiles', lite: '3', pro: '10', premium: 'Unlimited' },
-  { label: 'Review dashboard', lite: true, pro: true, premium: true },
-  { label: 'Email alerts', lite: true, pro: true, premium: true },
-  { label: 'CSV export', lite: true, pro: true, premium: true },
-  { label: 'Basic reports', lite: true, pro: true, premium: true },
-  { label: 'Slack notifications', lite: false, pro: true, premium: true },
-  { label: 'AI reply suggestions', lite: false, pro: true, premium: true },
-  { label: 'Advanced reports', lite: false, pro: true, premium: true },
-  { label: 'Review auto-tagging', lite: false, pro: true, premium: true },
-  { label: 'Review widget', lite: false, pro: true, premium: true },
-  { label: 'AI auto-reply agents', lite: false, pro: false, premium: true },
-  { label: 'Magic review links', lite: false, pro: false, premium: true },
-  { label: 'Sentiment analysis', lite: false, pro: false, premium: true },
-  { label: 'Custom AI prompts', lite: false, pro: false, premium: true },
-  { label: 'Priority support', lite: false, pro: false, premium: true },
+  { label: 'Google Business Profiles', lite: '3', pro: '15', agency: 'Unlimited' },
+  { label: 'Review dashboard', lite: true, pro: true, agency: true },
+  { label: 'Email alerts', lite: true, pro: true, agency: true },
+  { label: 'CSV export', lite: true, pro: true, agency: true },
+  { label: 'Basic reports', lite: true, pro: true, agency: true },
+  { label: 'Slack notifications', lite: false, pro: true, agency: true },
+  { label: 'AI reply suggestions', lite: false, pro: true, agency: true },
+  { label: 'Advanced reports', lite: false, pro: true, agency: true },
+  { label: 'Review auto-tagging', lite: false, pro: true, agency: true },
+  { label: 'Review widget', lite: false, pro: true, agency: true },
+  { label: 'AI auto-reply agents', lite: false, pro: false, agency: true },
+  { label: 'Magic review links', lite: false, pro: false, agency: true },
+  { label: 'Sentiment analysis', lite: false, pro: false, agency: true },
+  { label: 'Custom AI prompts', lite: false, pro: false, agency: true },
+  { label: 'Priority support', lite: false, pro: false, agency: true },
 ]
 
 function FeatureValue({ val }: { val: boolean | string }) {
@@ -141,7 +141,7 @@ export default async function BillingPage({
                     <div className="flex items-center gap-3 flex-wrap">
                       {currentPlan && (
                         <p className="text-2xl font-bold hidden sm:block">
-                          ${displayPrice}<span className="text-sm font-normal text-muted-foreground">/mo</span>
+                          €{displayPrice}<span className="text-sm font-normal text-muted-foreground">{currentPlanKey === 'agency' ? '/profile/mo' : '/mo'}</span>
                         </p>
                       )}
                       {hasStripeAccount && <ManageSubscriptionButton />}
@@ -228,10 +228,10 @@ export default async function BillingPage({
                 {/* Header */}
                 <div className="grid grid-cols-4 border-b border-border">
                   <div className="p-4 text-sm font-semibold text-muted-foreground">Feature</div>
-                  {['Lite', 'Pro', 'Premium'].map((p) => (
+                  {['Lite', 'Pro', 'Agency'].map((p) => (
                     <div key={p} className={`p-4 text-center text-sm font-bold ${p === 'Pro' ? 'bg-primary/5 text-primary' : ''}`}>
                       {p}
-                      {p === 'Pro' && <span className="ml-1 text-[9px] bg-primary text-white rounded-full px-1.5 py-0.5 font-bold">Popular</span>}
+                      {p === 'Pro' && <span className="ml-1 text-[9px] bg-primary text-primary-foreground rounded-full px-1.5 py-0.5 font-bold">Popular</span>}
                     </div>
                   ))}
                 </div>
@@ -243,7 +243,7 @@ export default async function BillingPage({
                     <div className="p-3.5 text-sm text-muted-foreground">{row.label}</div>
                     <div className="p-3.5 text-center"><FeatureValue val={row.lite} /></div>
                     <div className="p-3.5 text-center bg-primary/3"><FeatureValue val={row.pro} /></div>
-                    <div className="p-3.5 text-center"><FeatureValue val={row.premium} /></div>
+                    <div className="p-3.5 text-center"><FeatureValue val={row.agency} /></div>
                   </div>
                 ))}
               </div>

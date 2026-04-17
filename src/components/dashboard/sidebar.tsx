@@ -31,9 +31,9 @@ const accountItems = [
 ]
 
 const PLAN_COLORS: Record<string, string> = {
-  lite: 'bg-sky-500/10 text-sky-600 dark:text-sky-400',
-  pro: 'bg-primary/10 text-primary',
-  premium: 'bg-violet-500/10 text-violet-600 dark:text-violet-400',
+  lite: 'bg-primary/10 text-primary',
+  pro: 'bg-primary/15 text-primary',
+  agency: 'bg-primary/20 text-primary',
   free: 'bg-muted text-muted-foreground',
 }
 
