@@ -59,31 +59,47 @@ export interface ReplyContext {
 }
 
 export async function generateReplyFromAI(context: ReplyContext): Promise<string> {
-  const isPositive = context.rating >= 4
-  const isNeutral  = context.rating === 3
+  const hasComment = context.comment?.trim().length > 0
 
-  const toneGuide = isPositive
-    ? 'Express genuine gratitude, specifically mention what they praised, and warmly invite them to visit again.'
-    : isNeutral
-    ? 'Thank them for the honest feedback, acknowledge what fell short, and reassure them you are actively working on it.'
-    : /* negative */ 'Acknowledge their experience with empathy, take their concern seriously without admitting fault for things you cannot verify, and invite them to contact you directly to resolve the matter.'
+  const prompt = `You are an expert at writing public Google Business review replies on behalf of "${context.businessName}".
 
-  const prompt = `You are writing a public Google review reply on behalf of "${context.businessName}".
+REVIEW DATA:
+- Reviewer: ${context.reviewerName}
+- Rating: ${context.rating} out of 5 stars
+- Comment: ${hasComment ? `"${context.comment}"` : '(no written comment, rating only)'}
 
-Customer: ${context.reviewerName}
-Rating: ${context.rating}/5
-Review: "${context.comment}"
+YOUR TASK:
+Write a complete, genuine reply that the business owner will post publicly on Google. The reply must feel human and personal — never generic or templated.
 
-Instructions:
-- Write 4 to 6 complete sentences. Never cut off mid-sentence.
-- Do NOT use a letter or email format. Do NOT start with "Dear" or any salutation.
-- Begin naturally, for example: "Thank you [Name] for..." or "[Name], we appreciate..." or "[Name], we take concerns like yours very seriously..."
-- Reference specific details from their review so it feels personal, not templated.
-- ${toneGuide}
-- If the review contains accusations (fake reviews, fraud, identity issues), stay calm and professional: do not admit fault, express that you take such matters seriously, and invite them to contact you directly to investigate.
-- End with a forward-looking or resolution-oriented closing line.
-- Professional, warm, human tone. No emojis. No bullet points.
-- Output ONLY the reply text — no labels, no intro, no explanation.`
+FORMATTING RULES:
+- Output ONLY the reply text. No labels, no "Here is the reply:", nothing else.
+- Do NOT use letter/email format. Do NOT start with "Dear".
+- Begin naturally: address the reviewer by name in the opening line.
+- Write in flowing prose — no bullet points, no numbered lists.
+- Always write complete sentences. Never end mid-sentence.
+
+LENGTH:
+- No comment (rating only): 2–3 sentences.
+- Short or vague comment: 3–4 sentences.
+- Detailed or specific comment: 4–6 sentences that address each point raised.
+
+TONE BY RATING:
+★★★★★ (5 stars): Enthusiastic, warm gratitude. Call out specific things they loved. Invite them back.
+★★★★ (4 stars): Genuine thanks. Acknowledge what they highlighted. Gently note you are working on anything they mentioned could be better.
+★★★ (3 stars): Balanced and appreciative. Thank them for honest feedback. Acknowledge the gap between their expectation and experience. Commit to improvement.
+★★ (2 stars): Empathetic, not defensive. Apologise for the experience. Acknowledge the specific issue. Offer a path forward (invite them to contact you directly).
+★ (1 star): Calm, professional, empathetic. Do not argue. Apologise sincerely. Acknowledge the issue by name. Give a clear resolution step and direct contact invitation.
+
+SPECIAL CASES — handle these exactly as described:
+- No written comment: Thank them warmly for the rating and invite them to share more next time.
+- Translated review (starts with "Translated by Google"): Reply in the same language as the ORIGINAL text at the bottom, not the English translation.
+- Fake review / identity dispute: Stay calm. State firmly but professionally that you take such claims seriously. Do NOT admit fault. Invite them to contact you directly to investigate. Do not argue or accuse.
+- Complaint about a specific staff member: Acknowledge the concern without naming or blaming the employee publicly. Apologise for the experience and invite direct contact to follow up.
+- Complaint about a specific product or service: Name the product or service in your reply to show you read it. Acknowledge what went wrong and what you will do about it.
+- Aggressive or inappropriate tone from reviewer: Remain calm and professional. Do not mirror their tone. Acknowledge their frustration and offer a resolution.
+- Review praising a specific staff member: Mention that person by name and pass on the kind words.
+
+Always end with a forward-looking line (e.g. hope to see them again, commitment to improvement, or invitation to reach out).`
 
   try {
     return await generateText(prompt, 700)
