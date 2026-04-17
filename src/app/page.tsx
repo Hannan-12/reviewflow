@@ -559,19 +559,29 @@ export default function HomePage() {
 
       {/* Hero */}
       <section className="relative overflow-hidden">
-        <div className="absolute inset-0 pointer-events-none" style={{ background: `radial-gradient(ellipse 80% 50% at 50% 0%, ${Y}18 0%, transparent 70%)` }} />
-        <div className="relative max-w-6xl mx-auto px-6 pt-20 pb-16 text-center">
-          <div className="inline-flex items-center gap-2 rounded-full px-4 py-1.5 text-xs font-semibold mb-8 border" style={{ background: `${Y}15`, color: Y, borderColor: `${Y}30` }}>
+        {/* Background glow */}
+        <div className="absolute inset-0 pointer-events-none" style={{ background: `radial-gradient(ellipse 70% 40% at 50% 0%, ${Y}22 0%, transparent 65%)` }} />
+        <div className="absolute top-0 left-1/2 -translate-x-1/2 w-px h-48 pointer-events-none" style={{ background: `linear-gradient(to bottom, ${Y}60, transparent)` }} />
+
+        <div className="relative max-w-6xl mx-auto px-6 pt-20 pb-0 text-center">
+          {/* Badge */}
+          <div className="inline-flex items-center gap-2 rounded-full px-4 py-1.5 text-xs font-semibold mb-8 border" style={{ background: `${Y}12`, color: Y, borderColor: `${Y}35` }}>
             <Zap className="w-3 h-3" />
             {t.hero_badge}
             <ArrowRight className="w-3 h-3" />
           </div>
+
+          {/* Headline */}
           <h1 className="text-5xl md:text-6xl lg:text-7xl font-bold tracking-tight leading-[1.05] mb-6 text-white">
             {t.hero_h1a}<br />
             <span style={{ color: Y }}>{t.hero_h1b}</span>
           </h1>
+
+          {/* Subtext */}
           <p className="text-lg md:text-xl text-gray-400 leading-relaxed mb-10 max-w-2xl mx-auto">{t.hero_sub}</p>
-          <div className="flex flex-col sm:flex-row items-center justify-center gap-3 mb-6">
+
+          {/* CTAs */}
+          <div className="flex flex-col sm:flex-row items-center justify-center gap-3 mb-5">
             <Link href="/signup">
               <button className="h-12 px-8 text-base font-bold rounded-xl flex items-center gap-2 transition-all hover:opacity-90" style={{ background: Y, color: BG, boxShadow: `0 8px 32px ${Y}40` }}>
                 {t.hero_cta} <ArrowRight className="w-4 h-4" />
@@ -581,30 +591,69 @@ export default function HomePage() {
               <Play className="w-3.5 h-3.5" /> {t.hero_demo}
             </button>
           </div>
-          <p className="text-sm text-gray-500 flex items-center justify-center gap-1.5">
+
+          {/* Footnote */}
+          <p className="text-sm text-gray-500 flex items-center justify-center gap-1.5 mb-12">
             <CheckCircle2 className="w-3.5 h-3.5" style={{ color: Y }} />
             {t.hero_footnote}
           </p>
 
-          {/* Dashboard screenshot */}
-          <div className="mt-16 mx-auto max-w-5xl rounded-2xl overflow-hidden shadow-2xl" style={{ border: `1px solid ${BORDER}`, boxShadow: `0 0 80px 0 ${Y}18` }}>
-            <Image
-              src="/dashboard.png"
-              alt="Reviewup dashboard"
-              width={1600}
-              height={900}
-              className="w-full h-auto block"
-              priority
-            />
+          {/* Social proof stats */}
+          <div className="flex items-center justify-center gap-4 md:gap-10 mb-14 flex-wrap">
+            {[
+              { value: '500+', label: 'Businesses' },
+              { value: '50k+', label: 'Reviews managed' },
+              { value: '4.8★', label: 'Avg. rating' },
+              { value: '2 min', label: 'Avg. setup time' },
+            ].map((stat, i, arr) => (
+              <div key={stat.label} className="flex items-center gap-4 md:gap-10">
+                <div className="text-center">
+                  <p className="text-2xl font-bold text-white">{stat.value}</p>
+                  <p className="text-xs text-gray-500 mt-0.5">{stat.label}</p>
+                </div>
+                {i < arr.length - 1 && <div className="hidden md:block w-px h-8 bg-gray-800" />}
+              </div>
+            ))}
           </div>
 
-          {/* Partner logos placeholder */}
-          <div className="mt-12 pt-10" style={{ borderTop: `1px solid ${BORDER}` }}>
-            <p className="text-xs font-semibold text-gray-600 uppercase tracking-widest mb-6">{t.hero_trusted}</p>
-            <div className="flex items-center justify-center gap-10 flex-wrap">
-              <span className="text-sm font-bold text-gray-700 tracking-widest uppercase">{t.hero_partner}</span>
+          {/* Dashboard screenshot with browser chrome */}
+          <div className="mx-auto max-w-5xl" style={{ perspective: '1400px' }}>
+            <div
+              className="rounded-2xl overflow-hidden"
+              style={{
+                border: `1px solid ${BORDER}`,
+                boxShadow: `0 40px 100px -20px ${Y}30, 0 0 0 1px ${BORDER}, 0 80px 160px -40px #000`,
+                transform: 'rotateX(5deg)',
+                transformOrigin: 'top center',
+              }}
+            >
+              {/* Browser chrome bar */}
+              <div className="flex items-center gap-2 px-4 py-3 shrink-0" style={{ background: '#111111', borderBottom: `1px solid ${BORDER}` }}>
+                <div className="flex items-center gap-1.5">
+                  <div className="w-3 h-3 rounded-full bg-red-500/80" />
+                  <div className="w-3 h-3 rounded-full bg-yellow-500/80" />
+                  <div className="w-3 h-3 rounded-full bg-green-500/80" />
+                </div>
+                <div className="flex-1 mx-4">
+                  <div className="h-6 rounded-md flex items-center px-3 gap-2 text-xs text-gray-600 max-w-sm mx-auto" style={{ background: '#1e1e1e', border: `1px solid ${BORDER}` }}>
+                    <div className="w-2 h-2 rounded-full" style={{ background: `${Y}80` }} />
+                    app.reviewup.io/dashboard
+                  </div>
+                </div>
+              </div>
+              <Image
+                src="/dashboard.png"
+                alt="Reviewup dashboard"
+                width={1600}
+                height={900}
+                className="w-full h-auto block"
+                priority
+              />
             </div>
           </div>
+
+          {/* Bottom fade */}
+          <div className="h-24 -mt-24 relative pointer-events-none" style={{ background: `linear-gradient(to bottom, transparent, ${BG})` }} />
         </div>
       </section>
 
