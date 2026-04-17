@@ -433,15 +433,19 @@ function FAQItem({ q, a }: { q: string; a: string }) {
 }
 
 function AgencyCalculator({ label }: { label: string }) {
-  const [profiles, setProfiles] = useState(20)
+  const [raw, setRaw] = useState('20')
+  const profiles = Math.max(16, parseInt(raw) || 16)
   const price = profiles * 5
   return (
     <div className="mt-4">
       <label className="text-xs font-semibold text-gray-400 uppercase tracking-wide block mb-2">{label}</label>
       <div className="flex items-center gap-3">
         <input
-          type="number" min={16} value={profiles}
-          onChange={(e) => setProfiles(Math.max(16, parseInt(e.target.value) || 16))}
+          type="text"
+          inputMode="numeric"
+          value={raw}
+          onChange={(e) => setRaw(e.target.value.replace(/[^0-9]/g, ''))}
+          onBlur={() => setRaw(String(Math.max(16, parseInt(raw) || 16)))}
           className="w-24 px-3 py-2 rounded-lg text-sm font-bold text-center text-white border outline-none"
           style={{ background: BG, borderColor: Y }}
         />

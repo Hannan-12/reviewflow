@@ -7,6 +7,38 @@ import { toast } from 'sonner'
 import { Button } from '@/components/ui/button'
 import { cn } from '@/lib/utils'
 
+function AgencyCalculator({ isPopular }: { isPopular?: boolean }) {
+  const [raw, setRaw] = useState('20')
+  const profiles = Math.max(16, parseInt(raw) || 16)
+  const price = profiles * 5
+  return (
+    <div className="mt-1 mb-4 p-3 rounded-xl border border-border bg-muted/40">
+      <p className={cn('text-[10px] font-bold uppercase tracking-widest mb-2', isPopular ? 'text-white/60' : 'text-muted-foreground')}>
+        Number of profiles
+      </p>
+      <div className="flex items-center gap-2">
+        <input
+          type="text"
+          inputMode="numeric"
+          value={raw}
+          onChange={(e) => setRaw(e.target.value.replace(/[^0-9]/g, ''))}
+          onBlur={() => setRaw(String(Math.max(16, parseInt(raw) || 16)))}
+          className={cn(
+            'w-20 px-2 py-1.5 rounded-lg text-sm font-bold text-center border outline-none focus:ring-1 focus:ring-primary',
+            isPopular ? 'bg-white/15 border-white/30 text-white' : 'bg-background border-border text-foreground'
+          )}
+        />
+        <span className={cn('font-bold text-sm', isPopular ? 'text-white' : 'text-foreground')}>
+          = €{price}/mo
+        </span>
+      </div>
+      <p className={cn('text-[10px] mt-1.5', isPopular ? 'text-white/40' : 'text-muted-foreground/60')}>
+        20 profiles = €100/mo · 50 profiles = €250/mo
+      </p>
+    </div>
+  )
+}
+
 interface PlanCardProps {
   name: string
   price: number
@@ -93,6 +125,9 @@ export function PlanCard({ name, price, annual, description, features, priceId, 
 
       {/* Divider */}
       <div className={cn('h-px mb-5', isPopular ? 'bg-white/15' : 'bg-border')} />
+
+      {/* Agency calculator */}
+      {isAgency && <AgencyCalculator isPopular={isPopular} />}
 
       {/* Features */}
       <ul className="space-y-2.5 flex-1 mb-6">
