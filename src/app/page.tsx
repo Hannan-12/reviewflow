@@ -1,6 +1,7 @@
 'use client'
 
 import Link from 'next/link'
+import Image from 'next/image'
 import { useState } from 'react'
 import {
   Star, Bell, BarChart3, MessageSquare, Zap, Shield,
@@ -585,12 +586,16 @@ export default function HomePage() {
             {t.hero_footnote}
           </p>
 
-          {/* Dashboard mockup placeholder */}
-          <div className="mt-16 rounded-2xl overflow-hidden mx-auto max-w-4xl flex items-center justify-center" style={{ background: CARD, border: `1px solid ${BORDER}`, height: '360px' }}>
-            <div className="text-center">
-              <BarChart3 className="w-12 h-12 mx-auto mb-3" style={{ color: Y, opacity: 0.4 }} />
-              <p className="text-gray-600 text-sm">Dashboard screenshot · coming soon</p>
-            </div>
+          {/* Dashboard screenshot */}
+          <div className="mt-16 mx-auto max-w-5xl rounded-2xl overflow-hidden shadow-2xl" style={{ border: `1px solid ${BORDER}`, boxShadow: `0 0 80px 0 ${Y}18` }}>
+            <Image
+              src="/dashboard.png"
+              alt="Reviewup dashboard"
+              width={1600}
+              height={900}
+              className="w-full h-auto block"
+              priority
+            />
           </div>
 
           {/* Partner logos placeholder */}
