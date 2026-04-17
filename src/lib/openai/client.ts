@@ -1,10 +1,9 @@
 import { GoogleGenerativeAI } from '@google/generative-ai'
 
 // Priority-ordered fallback chain. When one model hits its daily free-tier
-// quota (429 / RESOURCE_EXHAUSTED), the next is tried. Each model has its
-// own independent free-tier quota, so stacking multiplies daily capacity.
+// quota (429 / RESOURCE_EXHAUSTED) or is unavailable (404), the next is tried.
 const MODEL_CHAIN = [
-  'gemini-2.5-flash-preview-04-17',
+  'gemini-2.5-flash',
   'gemini-2.0-flash',
   'gemini-2.0-flash-lite',
   'gemini-1.5-flash',
@@ -16,12 +15,13 @@ function getClient() {
   return new GoogleGenerativeAI(key)
 }
 
-function isRateLimitError(err: unknown): boolean {
+function isRetryableError(err: unknown): boolean {
   const e = err as { status?: number; message?: string } | null
   if (!e) return false
-  if (e.status === 429) return true
+  // Retry on quota/rate-limit (429) and model-not-found (404)
+  if (e.status === 429 || e.status === 404) return true
   const msg = (e.message ?? '').toLowerCase()
-  return msg.includes('429') || msg.includes('resource_exhausted') || msg.includes('quota')
+  return msg.includes('429') || msg.includes('resource_exhausted') || msg.includes('quota') || msg.includes('not found')
 }
 
 async function generateText(prompt: string, maxOutputTokens: number): Promise<string> {
@@ -38,8 +38,8 @@ async function generateText(prompt: string, maxOutputTokens: number): Promise<st
       return result.response.text().trim()
     } catch (err) {
       lastErr = err
-      if (!isRateLimitError(err)) throw err
-      console.warn(`[gemini] ${modelName} rate-limited, falling back`)
+      if (!isRetryableError(err)) throw err
+      console.warn(`[gemini] ${modelName} unavailable, falling back`)
     }
   }
 
