@@ -113,7 +113,7 @@ export async function sendDigestEmail(data: {
             </a>
           </div>
           <p style="color: #666; font-size: 12px; margin-top: 30px; border-top: 1px solid #ddd; padding-top: 10px;">
-            You're receiving this ${data.frequency} digest from ReviewFlow.
+            You're receiving this ${data.frequency} digest from Reviewup.
             <a href="${process.env.NEXT_PUBLIC_APP_URL}/dashboard/notifications" style="color: #667eea;">Manage preferences</a>
           </p>
         </div>

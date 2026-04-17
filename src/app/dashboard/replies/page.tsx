@@ -6,7 +6,7 @@ import { SidebarProvider } from '@/components/dashboard/sidebar-context'
 import { RepliesPageClient } from '@/components/dashboard/replies-page-client'
 import { MessageSquare } from 'lucide-react'
 
-export const metadata = { title: 'Replies — ReviewFlow' }
+export const metadata = { title: 'Replies — Reviewup' }
 
 export default async function RepliesPage({
   searchParams,

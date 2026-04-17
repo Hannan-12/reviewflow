@@ -24,7 +24,7 @@ export default function AuthLayout({ children }: { children: React.ReactNode }) 
             <div className="w-8 h-8 bg-white/20 rounded-xl flex items-center justify-center">
               <Star className="w-4 h-4 text-white fill-white" />
             </div>
-            <span className="font-bold text-white text-lg">ReviewFlow</span>
+            <span className="font-bold text-white text-lg">Reviewup</span>
           </Link>
 
           <div className="flex-1 flex flex-col justify-center mt-16">
@@ -52,7 +52,7 @@ export default function AuthLayout({ children }: { children: React.ReactNode }) 
               ))}
             </div>
             <p className="text-white/85 text-sm leading-relaxed mb-4">
-              &ldquo;Our average rating went from 4.1 to 4.7 in just 6 weeks. ReviewFlow changed everything for us.&rdquo;
+              &ldquo;Our average rating went from 4.1 to 4.7 in just 6 weeks. Reviewup changed everything for us.&rdquo;
             </p>
             <div className="flex items-center gap-2.5">
               <div className="w-8 h-8 rounded-full bg-white/20 flex items-center justify-center font-bold text-white text-xs">S</div>
@@ -73,7 +73,7 @@ export default function AuthLayout({ children }: { children: React.ReactNode }) 
             <div className="w-6 h-6 bg-primary rounded-md flex items-center justify-center">
               <Star className="w-3 h-3 text-white fill-white" />
             </div>
-            <span className="font-bold text-sm">ReviewFlow</span>
+            <span className="font-bold text-sm">Reviewup</span>
           </Link>
           <div className="lg:hidden" />
           <ThemeToggle />

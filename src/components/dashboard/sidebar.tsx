@@ -75,7 +75,7 @@ export function Sidebar({ planName }: { planName?: string }) {
             <div className="w-7 h-7 bg-primary rounded-lg flex items-center justify-center shadow-sm shrink-0">
               <Star className="w-3.5 h-3.5 text-white fill-white" />
             </div>
-            <span className="font-bold text-sm tracking-tight">ReviewFlow</span>
+            <span className="font-bold text-sm tracking-tight">Reviewup</span>
           </Link>
         )}
         {collapsed && (
@@ -111,7 +111,7 @@ export function Sidebar({ planName }: { planName?: string }) {
                 'flex items-center gap-2.5 rounded-lg text-sm font-medium transition-all cursor-pointer group relative',
                 collapsed ? 'justify-center p-2' : 'px-2.5 py-2',
                 active
-                  ? 'bg-primary text-white shadow-sm shadow-primary/30'
+                  ? 'bg-primary text-primary-foreground shadow-sm shadow-primary/20'
                   : 'text-muted-foreground hover:text-foreground hover:bg-muted'
               )}>
                 <Icon className="w-4 h-4 shrink-0" />
@@ -143,7 +143,7 @@ export function Sidebar({ planName }: { planName?: string }) {
                   'flex items-center gap-2.5 rounded-lg text-sm font-medium transition-all cursor-pointer group',
                   collapsed ? 'justify-center p-2' : 'px-2.5 py-2',
                   active
-                    ? 'bg-primary text-white shadow-sm shadow-primary/30'
+                    ? 'bg-primary text-primary-foreground shadow-sm shadow-primary/20'
                     : 'text-muted-foreground hover:text-foreground hover:bg-muted'
                 )}>
                   <Icon className="w-4 h-4 shrink-0" />

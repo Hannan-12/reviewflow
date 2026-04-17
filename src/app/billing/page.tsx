@@ -13,7 +13,7 @@ import {
   Zap, HelpCircle, ExternalLink, Check, X,
 } from 'lucide-react'
 
-export const metadata = { title: 'Billing — ReviewFlow' }
+export const metadata = { title: 'Billing — Reviewup' }
 
 const faqItems = [
   { q: 'When does billing start?', a: 'After your 14-day free trial ends. No charge during the trial — cancel before it ends and you will never be billed.' },

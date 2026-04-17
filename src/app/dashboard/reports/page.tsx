@@ -5,7 +5,7 @@ import { Sidebar } from '@/components/dashboard/sidebar'
 import { SidebarProvider } from '@/components/dashboard/sidebar-context'
 import { ReportsClient } from '@/components/dashboard/reports-client'
 
-export const metadata = { title: 'Reports — ReviewFlow' }
+export const metadata = { title: 'Reports — Reviewup' }
 
 export default async function ReportsPage() {
   const supabase = await createClient()

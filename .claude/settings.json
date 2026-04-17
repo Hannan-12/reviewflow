@@ -7,7 +7,8 @@
       "Bash(node -e \"console.log\\(require\\('./package.json'\\).dependencies['@google/generative-ai']\\)\")",
       "Bash(npm run:*)",
       "Bash(find .next/static/chunks -name \"*.js\" -exec ls -lh {} \\\\;)",
-      "Bash(sort -k5 -hr)"
+      "Bash(sort -k5 -hr)",
+      "Bash(xargs sed:*)"
     ]
   }
 }

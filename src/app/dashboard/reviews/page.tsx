@@ -8,7 +8,7 @@ import { Star } from 'lucide-react'
 import Link from 'next/link'
 import { Button } from '@/components/ui/button'
 
-export const metadata = { title: 'Reviews — ReviewFlow' }
+export const metadata = { title: 'Reviews — Reviewup' }
 
 export default async function ReviewsPage({
   searchParams,

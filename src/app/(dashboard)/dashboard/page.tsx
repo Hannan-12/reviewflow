@@ -6,7 +6,7 @@ import { Star, Bell, BarChart3, Plus, ArrowRight, Zap, TrendingUp, MessageSquare
 import Link from 'next/link'
 import { OnboardingChecklist } from '@/components/onboarding-checklist'
 
-export const metadata = { title: 'Dashboard — ReviewFlow' }
+export const metadata = { title: 'Dashboard — Reviewup' }
 
 export default async function DashboardPage() {
   const supabase = await createClient()

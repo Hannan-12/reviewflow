@@ -4,10 +4,10 @@ import { GoogleGenerativeAI } from '@google/generative-ai'
 // quota (429 / RESOURCE_EXHAUSTED), the next is tried. Each model has its
 // own independent free-tier quota, so stacking multiplies daily capacity.
 const MODEL_CHAIN = [
+  'gemini-2.5-flash-preview-04-17',
   'gemini-2.0-flash',
   'gemini-2.0-flash-lite',
   'gemini-1.5-flash',
-  'gemini-1.5-flash-8b',
 ]
 
 function getClient() {

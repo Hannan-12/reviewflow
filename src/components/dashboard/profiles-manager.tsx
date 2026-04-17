@@ -206,7 +206,7 @@ export function ProfilesManager({ profiles: initial, isGoogleConnected, profileL
           <div>
             <h3 className="font-bold text-base mb-1">Connect your Google Business account</h3>
             <p className="text-sm text-muted-foreground max-w-sm">
-              Authorize ReviewFlow to access your Google Business Profiles so we can sync reviews automatically.
+              Authorize Reviewup to access your Google Business Profiles so we can sync reviews automatically.
             </p>
           </div>
           <a href="/api/google/connect">

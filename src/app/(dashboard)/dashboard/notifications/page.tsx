@@ -3,7 +3,7 @@ import { Header } from '@/components/dashboard/header'
 import { createClient } from '@/lib/supabase/server'
 import { NotificationsClient } from './notifications-client'
 
-export const metadata = { title: 'Notifications — ReviewFlow' }
+export const metadata = { title: 'Notifications — Reviewup' }
 
 export default async function NotificationsPage() {
   const supabase = await createClient()
