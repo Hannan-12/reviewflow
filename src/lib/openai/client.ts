@@ -32,9 +32,13 @@ async function generateText(prompt: string, maxOutputTokens: number): Promise<st
     try {
       const model = client.getGenerativeModel({
         model: modelName,
-        generationConfig: { maxOutputTokens, temperature: 0.7 },
+        generationConfig: { maxOutputTokens, temperature: 0.55 },
       })
       const result = await model.generateContent(prompt)
+      const candidate = result.response.candidates?.[0]
+      if (candidate?.finishReason === 'MAX_TOKENS') {
+        console.warn(`[gemini] ${modelName} hit MAX_TOKENS (${maxOutputTokens}) — response truncated`)
+      }
       return result.response.text().trim()
     } catch (err) {
       lastErr = err
@@ -55,27 +59,32 @@ export interface ReplyContext {
 }
 
 export async function generateReplyFromAI(context: ReplyContext): Promise<string> {
-  const prompt = `You are a professional customer service representative for "${context.businessName}".
-A customer left a ${context.rating}-star review:
+  const isPositive = context.rating >= 4
+  const isNeutral  = context.rating === 3
 
-Reviewer: ${context.reviewerName}
+  const toneGuide = isPositive
+    ? 'Express genuine gratitude, specifically mention what they praised, and warmly invite them to visit again.'
+    : isNeutral
+    ? 'Thank them for the honest feedback, acknowledge what fell short, and reassure them you are actively improving it.'
+    : /* negative */ 'Apologise sincerely and specifically, take ownership without making excuses, and give them a clear next step (e.g. reach out directly so you can make it right).'
+
+  const prompt = `You are writing a public Google review reply on behalf of "${context.businessName}".
+
+Customer: ${context.reviewerName}
+Rating: ${context.rating}/5
 Review: "${context.comment}"
 
-Write a genuine, helpful reply on behalf of the business. Follow these rules:
-- 3 to 5 sentences — enough to feel personal and complete, not a one-liner
-- Open by thanking the reviewer by name
-- Acknowledge the specific points they raised (mention details from their review)
-- If the review is positive (4-5 stars): express genuine gratitude, highlight what they praised, invite them back
-- If the review is neutral (3 stars): thank them, acknowledge what could be better, mention you are working on it
-- If the review is negative (1-2 stars): apologise sincerely, take responsibility, offer a concrete next step (contact email, invitation to return, promise to fix the issue)
-- Tone: warm, professional, human — never robotic or generic
-- Do NOT use emojis
-- Do NOT include any intro like "Here is a reply:" — output the reply text only
-
-Reply:`
+Instructions:
+- Write 4 to 6 complete sentences. Never cut off mid-sentence.
+- Start by addressing the reviewer by name.
+- Reference specific details from their review so it feels personal, not templated.
+- ${toneGuide}
+- End with a forward-looking closing line.
+- Professional, warm, human tone. No emojis. No bullet points.
+- Output ONLY the reply text — no labels, no intro, no explanation.`
 
   try {
-    return await generateText(prompt, 450)
+    return await generateText(prompt, 700)
   } catch (error) {
     console.error('Error generating reply from AI:', error)
     throw error
