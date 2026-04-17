@@ -9,12 +9,17 @@ import { cn } from '@/lib/utils'
 
 function AgencyCalculator({ isPopular }: { isPopular?: boolean }) {
   const [raw, setRaw] = useState('20')
-  const profiles = Math.max(16, parseInt(raw) || 16)
+  const parsed = parseInt(raw) || 0
+  const hasError = raw !== '' && parsed < 16
+  const profiles = Math.max(16, parsed)
   const price = profiles * 5
   return (
     <div className="mt-1 mb-4 p-3 rounded-xl border border-border bg-muted/40">
-      <p className={cn('text-[10px] font-bold uppercase tracking-widest mb-2', isPopular ? 'text-white/60' : 'text-muted-foreground')}>
+      <p className={cn('text-[10px] font-bold uppercase tracking-widest mb-0.5', isPopular ? 'text-white/60' : 'text-muted-foreground')}>
         Number of profiles
+      </p>
+      <p className={cn('text-[10px] mb-2', isPopular ? 'text-white/40' : 'text-muted-foreground/60')}>
+        Minimum 16 profiles for an Agency account
       </p>
       <div className="flex items-center gap-2">
         <input
@@ -24,17 +29,21 @@ function AgencyCalculator({ isPopular }: { isPopular?: boolean }) {
           onChange={(e) => setRaw(e.target.value.replace(/[^0-9]/g, ''))}
           onBlur={() => setRaw(String(Math.max(16, parseInt(raw) || 16)))}
           className={cn(
-            'w-20 px-2 py-1.5 rounded-lg text-sm font-bold text-center border outline-none focus:ring-1 focus:ring-primary',
-            isPopular ? 'bg-white/15 border-white/30 text-white' : 'bg-background border-border text-foreground'
+            'w-20 px-2 py-1.5 rounded-lg text-sm font-bold text-center border outline-none focus:ring-1 focus:ring-primary transition-colors',
+            isPopular ? 'bg-white/15 text-white' : 'bg-background text-foreground',
+            hasError ? 'border-red-500' : isPopular ? 'border-white/30' : 'border-border'
           )}
         />
         <span className={cn('font-bold text-sm', isPopular ? 'text-white' : 'text-foreground')}>
           = €{price}/mo
         </span>
       </div>
-      <p className={cn('text-[10px] mt-1.5', isPopular ? 'text-white/40' : 'text-muted-foreground/60')}>
-        20 profiles = €100/mo · 50 profiles = €250/mo
-      </p>
+      {hasError
+        ? <p className="text-[10px] text-red-500 mt-1.5">Minimum 16 profiles required</p>
+        : <p className={cn('text-[10px] mt-1.5', isPopular ? 'text-white/40' : 'text-muted-foreground/60')}>
+            20 profiles = €100/mo · 50 profiles = €250/mo
+          </p>
+      }
     </div>
   )
 }

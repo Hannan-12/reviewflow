@@ -434,11 +434,14 @@ function FAQItem({ q, a }: { q: string; a: string }) {
 
 function AgencyCalculator({ label }: { label: string }) {
   const [raw, setRaw] = useState('20')
-  const profiles = Math.max(16, parseInt(raw) || 16)
+  const parsed = parseInt(raw) || 0
+  const hasError = raw !== '' && parsed < 16
+  const profiles = Math.max(16, parsed)
   const price = profiles * 5
   return (
     <div className="mt-4">
-      <label className="text-xs font-semibold text-gray-400 uppercase tracking-wide block mb-2">{label}</label>
+      <label className="text-xs font-semibold text-gray-400 uppercase tracking-wide block mb-1">{label}</label>
+      <p className="text-[11px] text-gray-500 mb-2">Minimum 16 profiles for an Agency account</p>
       <div className="flex items-center gap-3">
         <input
           type="text"
@@ -446,12 +449,15 @@ function AgencyCalculator({ label }: { label: string }) {
           value={raw}
           onChange={(e) => setRaw(e.target.value.replace(/[^0-9]/g, ''))}
           onBlur={() => setRaw(String(Math.max(16, parseInt(raw) || 16)))}
-          className="w-24 px-3 py-2 rounded-lg text-sm font-bold text-center text-white border outline-none"
-          style={{ background: BG, borderColor: Y }}
+          className="w-24 px-3 py-2 rounded-lg text-sm font-bold text-center text-white border outline-none transition-colors"
+          style={{ background: BG, borderColor: hasError ? '#ef4444' : Y }}
         />
         <span className="text-white font-bold text-lg">= EUR {price}/mo</span>
       </div>
-      <p className="text-xs text-gray-500 mt-2">20 profiles = EUR 100/month · 50 profiles = EUR 250/month</p>
+      {hasError
+        ? <p className="text-xs text-red-400 mt-1.5">Minimum 16 profiles required</p>
+        : <p className="text-xs text-gray-500 mt-2">20 profiles = EUR 100/month · 50 profiles = EUR 250/month</p>
+      }
     </div>
   )
 }

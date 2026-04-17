@@ -5,6 +5,7 @@ import { Toaster } from '@/components/ui/sonner'
 import { ThemeProvider } from '@/components/theme-provider'
 import { CommandPaletteLoader } from '@/components/command-palette-loader'
 import { SpeedInsights } from '@vercel/speed-insights/next'
+import NextTopLoader from 'nextjs-toploader'
 
 const geistSans = Geist({
   variable: '--font-geist-sans',
@@ -26,6 +27,7 @@ export default function RootLayout({
     <html lang="en" suppressHydrationWarning>
       <body className={`${geistSans.variable} antialiased font-sans`} suppressHydrationWarning>
         <ThemeProvider>
+          <NextTopLoader color="#F5C518" showSpinner={false} height={3} />
           {children}
           <CommandPaletteLoader />
           <Toaster richColors closeButton />

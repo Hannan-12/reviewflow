@@ -8,7 +8,8 @@
       "Bash(npm run:*)",
       "Bash(find .next/static/chunks -name \"*.js\" -exec ls -lh {} \\\\;)",
       "Bash(sort -k5 -hr)",
-      "Bash(xargs sed:*)"
+      "Bash(xargs sed:*)",
+      "Bash(npm list *)"
     ]
   }
 }
