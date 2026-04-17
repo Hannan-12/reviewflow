@@ -414,9 +414,9 @@ const featIcons = [Bell, MessageSquare, BarChart3, Star, Zap, Shield]
 
 // ─── Testimonials (English only — quotes) ──────────────────
 const testimonials = [
-  { quote: 'Reviewup cut our response time from 3 days to 3 minutes. Our rating jumped from 4.1 to 4.7 in 6 weeks.', author: 'Sarah M.', role: 'Owner, The Bake House', stars: 5 },
-  { quote: 'The AI suggestions are genuinely good. I barely edit them before hitting send. Saves me an hour every day.', author: 'James K.', role: 'Marketing Manager, FitLife Studios', stars: 5 },
-  { quote: 'Managing 12 locations used to be chaos. Now it takes 20 minutes a week.', author: 'Priya R.', role: 'Head of Operations, Nosh Group', stars: 5 },
+  { quote: 'Reviewup completely changed how we handle reviews. The AI suggestions are spot-on and our response rate has never been better.', author: 'Sarah M.', role: 'Owner, The Bake House', stars: 5 },
+  { quote: 'The AI suggestions are genuinely good. I barely edit them before hitting send — it saves me a lot of time every day.', author: 'James K.', role: 'Marketing Manager, FitLife Studios', stars: 5 },
+  { quote: 'Managing multiple locations used to be chaos. Reviewup brings everything into one place and makes it effortless.', author: 'Priya R.', role: 'Head of Operations, Nosh Group', stars: 5 },
 ]
 
 // ─── Sub-components ─────────────────────────────────────────
@@ -563,7 +563,7 @@ export default function HomePage() {
         <div className="absolute inset-0 pointer-events-none" style={{ background: `radial-gradient(ellipse 70% 40% at 50% 0%, ${Y}22 0%, transparent 65%)` }} />
         <div className="absolute top-0 left-1/2 -translate-x-1/2 w-px h-48 pointer-events-none" style={{ background: `linear-gradient(to bottom, ${Y}60, transparent)` }} />
 
-        <div className="relative max-w-6xl mx-auto px-6 pt-20 pb-0 text-center">
+        <div className="relative max-w-6xl mx-auto px-6 pt-20 pb-24 text-center">
           {/* Badge */}
           <div className="inline-flex items-center gap-2 rounded-full px-4 py-1.5 text-xs font-semibold mb-8 border" style={{ background: `${Y}12`, color: Y, borderColor: `${Y}35` }}>
             <Zap className="w-3 h-3" />
@@ -598,45 +598,20 @@ export default function HomePage() {
             {t.hero_footnote}
           </p>
 
-          {/* Social proof stats */}
-          <div className="flex items-center justify-center gap-4 md:gap-10 mb-14 flex-wrap">
-            {[
-              { value: '500+', label: 'Businesses' },
-              { value: '50k+', label: 'Reviews managed' },
-              { value: '4.8★', label: 'Avg. rating' },
-              { value: '2 min', label: 'Avg. setup time' },
-            ].map((stat, i, arr) => (
-              <div key={stat.label} className="flex items-center gap-4 md:gap-10">
-                <div className="text-center">
-                  <p className="text-2xl font-bold text-white">{stat.value}</p>
-                  <p className="text-xs text-gray-500 mt-0.5">{stat.label}</p>
-                </div>
-                {i < arr.length - 1 && <div className="hidden md:block w-px h-8 bg-gray-800" />}
-              </div>
-            ))}
-          </div>
+          {/* Dashboard screenshot */}
+          <div className="relative mx-auto max-w-5xl">
+            {/* Glow behind the image */}
+            <div className="absolute -inset-4 rounded-3xl pointer-events-none blur-3xl opacity-30" style={{ background: `radial-gradient(ellipse 80% 60% at 50% 80%, ${Y}, transparent)` }} />
 
-          {/* Dashboard screenshot with browser chrome */}
-          <div className="mx-auto max-w-5xl" style={{ perspective: '1400px' }}>
-            <div
-              className="rounded-2xl overflow-hidden"
-              style={{
-                border: `1px solid ${BORDER}`,
-                boxShadow: `0 40px 100px -20px ${Y}30, 0 0 0 1px ${BORDER}, 0 80px 160px -40px #000`,
-                transform: 'rotateX(5deg)',
-                transformOrigin: 'top center',
-              }}
-            >
-              {/* Browser chrome bar */}
-              <div className="flex items-center gap-2 px-4 py-3 shrink-0" style={{ background: '#111111', borderBottom: `1px solid ${BORDER}` }}>
-                <div className="flex items-center gap-1.5">
-                  <div className="w-3 h-3 rounded-full bg-red-500/80" />
-                  <div className="w-3 h-3 rounded-full bg-yellow-500/80" />
-                  <div className="w-3 h-3 rounded-full bg-green-500/80" />
-                </div>
-                <div className="flex-1 mx-4">
-                  <div className="h-6 rounded-md flex items-center px-3 gap-2 text-xs text-gray-600 max-w-sm mx-auto" style={{ background: '#1e1e1e', border: `1px solid ${BORDER}` }}>
-                    <div className="w-2 h-2 rounded-full" style={{ background: `${Y}80` }} />
+            <div className="relative rounded-xl overflow-hidden" style={{ border: `1px solid ${BORDER}`, boxShadow: `0 32px 80px -12px rgba(0,0,0,0.8), 0 0 0 1px ${BORDER}` }}>
+              {/* Minimal chrome bar */}
+              <div className="flex items-center gap-1.5 px-4 py-2.5" style={{ background: '#0e0e0e', borderBottom: `1px solid ${BORDER}` }}>
+                <div className="w-2.5 h-2.5 rounded-full bg-red-500/70" />
+                <div className="w-2.5 h-2.5 rounded-full bg-yellow-400/70" />
+                <div className="w-2.5 h-2.5 rounded-full bg-green-500/70" />
+                <div className="flex-1 flex justify-center">
+                  <div className="flex items-center gap-1.5 h-5 px-3 rounded text-[11px] text-gray-600" style={{ background: '#1a1a1a', border: `1px solid ${BORDER}` }}>
+                    <div className="w-1.5 h-1.5 rounded-full" style={{ background: Y }} />
                     app.reviewup.io/dashboard
                   </div>
                 </div>
@@ -651,9 +626,6 @@ export default function HomePage() {
               />
             </div>
           </div>
-
-          {/* Bottom fade */}
-          <div className="h-24 -mt-24 relative pointer-events-none" style={{ background: `linear-gradient(to bottom, transparent, ${BG})` }} />
         </div>
       </section>
 

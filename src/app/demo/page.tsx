@@ -4,17 +4,31 @@ import { useState } from 'react'
 import Link from 'next/link'
 import { Button } from '@/components/ui/button'
 import { Star, ArrowLeft, CheckCircle2 } from 'lucide-react'
+import { toast } from 'sonner'
 
 export default function DemoPage() {
   const [submitted, setSubmitted] = useState(false)
+  const [loading, setLoading] = useState(false)
   const [form, setForm] = useState({
     name: '', email: '', company: '', phone: '', locations: '', message: '',
   })
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
-    // In production: send to your email/CRM
-    setSubmitted(true)
+    setLoading(true)
+    try {
+      const res = await fetch('/api/demo', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(form),
+      })
+      if (!res.ok) throw new Error('Failed')
+      setSubmitted(true)
+    } catch {
+      toast.error('Something went wrong. Please email us directly at hello@reviewup.de')
+    } finally {
+      setLoading(false)
+    }
   }
 
   return (
@@ -160,8 +174,8 @@ export default function DemoPage() {
                   />
                 </div>
 
-                <Button type="submit" className="w-full font-semibold">
-                  Request demo
+                <Button type="submit" className="w-full font-semibold" disabled={loading}>
+                  {loading ? 'Sending…' : 'Request demo'}
                 </Button>
 
                 <p className="text-xs text-muted-foreground text-center">
