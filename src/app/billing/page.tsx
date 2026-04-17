@@ -2,6 +2,7 @@ export const dynamic = 'force-dynamic'
 import { redirect } from 'next/navigation'
 import { createClient } from '@/lib/supabase/server'
 import { PLANS } from '@/lib/stripe/config'
+import { getStripe } from '@/lib/stripe/client'
 import { ManageSubscriptionButton } from '@/components/billing/manage-subscription-button'
 import { BillingSuccessBanner } from '@/components/billing/billing-success-banner'
 import { Header } from '@/components/dashboard/header'
@@ -57,7 +58,7 @@ export default async function BillingPage({
 
   const { data: userData } = await supabase
     .from('users')
-    .select('plan_name, subscription_status, trial_ends_at, current_period_end, stripe_customer_id, stripe_price_id')
+    .select('plan_name, subscription_status, trial_ends_at, current_period_end, stripe_customer_id, stripe_price_id, stripe_subscription_id')
     .eq('id', user.id)
     .single()
 
@@ -81,8 +82,18 @@ export default async function BillingPage({
     .from('profiles')
     .select('id', { count: 'exact', head: true })
     .eq('user_id', user.id)
-  const profilesUsed = profilesCount ?? 0
+  const profilesConnected = profilesCount ?? 0
 
+  // For Agency, show the Stripe subscription quantity (profiles they're paying for)
+  let agencySubscribedQuantity = 0
+  if (currentPlanKey === 'agency' && userData?.stripe_subscription_id) {
+    try {
+      const sub = await getStripe().subscriptions.retrieve(userData.stripe_subscription_id)
+      agencySubscribedQuantity = sub.items.data[0]?.quantity ?? 0
+    } catch { /* ignore */ }
+  }
+
+  const profilesUsed = currentPlanKey === 'agency' ? agencySubscribedQuantity : profilesConnected
   const profileLimit = currentPlan?.profileLimit === -1 ? null : (currentPlan?.profileLimit ?? 3)
 
   return (
