@@ -65,8 +65,8 @@ export async function generateReplyFromAI(context: ReplyContext): Promise<string
   const toneGuide = isPositive
     ? 'Express genuine gratitude, specifically mention what they praised, and warmly invite them to visit again.'
     : isNeutral
-    ? 'Thank them for the honest feedback, acknowledge what fell short, and reassure them you are actively improving it.'
-    : /* negative */ 'Apologise sincerely and specifically, take ownership without making excuses, and give them a clear next step (e.g. reach out directly so you can make it right).'
+    ? 'Thank them for the honest feedback, acknowledge what fell short, and reassure them you are actively working on it.'
+    : /* negative */ 'Acknowledge their experience with empathy, take their concern seriously without admitting fault for things you cannot verify, and invite them to contact you directly to resolve the matter.'
 
   const prompt = `You are writing a public Google review reply on behalf of "${context.businessName}".
 
@@ -76,10 +76,12 @@ Review: "${context.comment}"
 
 Instructions:
 - Write 4 to 6 complete sentences. Never cut off mid-sentence.
-- Start by addressing the reviewer by name.
+- Do NOT use a letter or email format. Do NOT start with "Dear" or any salutation.
+- Begin naturally, for example: "Thank you [Name] for..." or "[Name], we appreciate..." or "[Name], we take concerns like yours very seriously..."
 - Reference specific details from their review so it feels personal, not templated.
 - ${toneGuide}
-- End with a forward-looking closing line.
+- If the review contains accusations (fake reviews, fraud, identity issues), stay calm and professional: do not admit fault, express that you take such matters seriously, and invite them to contact you directly to investigate.
+- End with a forward-looking or resolution-oriented closing line.
 - Professional, warm, human tone. No emojis. No bullet points.
 - Output ONLY the reply text — no labels, no intro, no explanation.`
 
