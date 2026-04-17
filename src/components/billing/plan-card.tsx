@@ -7,7 +7,7 @@ import { toast } from 'sonner'
 import { Button } from '@/components/ui/button'
 import { cn } from '@/lib/utils'
 
-function AgencyCalculator({ isPopular }: { isPopular?: boolean }) {
+function AgencyCalculator({ isPopular, onQuantityChange }: { isPopular?: boolean; onQuantityChange: (n: number) => void }) {
   const [raw, setRaw] = useState('20')
   const parsed = parseInt(raw) || 0
   const hasError = raw !== '' && parsed < 16
@@ -26,8 +26,8 @@ function AgencyCalculator({ isPopular }: { isPopular?: boolean }) {
           type="text"
           inputMode="numeric"
           value={raw}
-          onChange={(e) => setRaw(e.target.value.replace(/[^0-9]/g, ''))}
-          onBlur={() => setRaw(String(Math.max(16, parseInt(raw) || 16)))}
+          onChange={(e) => { const v = e.target.value.replace(/[^0-9]/g, ''); setRaw(v); const n = parseInt(v) || 0; if (n >= 16) onQuantityChange(n) }}
+          onBlur={() => { const clamped = Math.max(16, parseInt(raw) || 16); setRaw(String(clamped)); onQuantityChange(clamped) }}
           className={cn(
             'w-20 px-2 py-1.5 rounded-lg text-sm font-bold text-center border outline-none focus:ring-1 focus:ring-primary transition-colors',
             isPopular ? 'bg-white/15 text-white' : 'bg-background text-foreground',
@@ -63,6 +63,7 @@ interface PlanCardProps {
 export function PlanCard({ name, price, annual, description, features, priceId, isCurrentPlan, isPopular, isAgency }: PlanCardProps) {
   const router = useRouter()
   const [loading, setLoading] = useState(false)
+  const [agencyQuantity, setAgencyQuantity] = useState(20)
 
   const handleSelect = async () => {
     setLoading(true)
@@ -70,7 +71,7 @@ export function PlanCard({ name, price, annual, description, features, priceId, 
       const res = await fetch('/api/stripe/checkout', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ priceId }),
+        body: JSON.stringify({ priceId, quantity: isAgency ? agencyQuantity : 1 }),
       })
       const data = await res.json()
       if (data.url) {
@@ -136,7 +137,7 @@ export function PlanCard({ name, price, annual, description, features, priceId, 
       <div className={cn('h-px mb-5', isPopular ? 'bg-white/15' : 'bg-border')} />
 
       {/* Agency calculator */}
-      {isAgency && <AgencyCalculator isPopular={isPopular} />}
+      {isAgency && <AgencyCalculator isPopular={isPopular} onQuantityChange={setAgencyQuantity} />}
 
       {/* Features */}
       <ul className="space-y-2.5 flex-1 mb-6">

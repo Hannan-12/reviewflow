@@ -77,8 +77,12 @@ export default async function BillingPage({
   const trialTotal = 14
   const trialProgress = Math.min(100, Math.round(((trialTotal - trialDaysLeft) / trialTotal) * 100))
 
-  // Usage data (placeholder — will be real in Week 2)
-  const profilesUsed = 0
+  const { count: profilesUsed } = await supabase
+    .from('profiles')
+    .select('id', { count: 'exact', head: true })
+    .eq('user_id', user.id)
+    .then(r => ({ count: r.count ?? 0 }))
+
   const profileLimit = currentPlan?.profileLimit === -1 ? null : (currentPlan?.profileLimit ?? 3)
 
   return (
@@ -178,13 +182,13 @@ export default async function BillingPage({
                       <div className="flex items-center gap-2">
                         <Zap className="w-4 h-4 text-muted-foreground shrink-0" />
                         <div>
-                          <p className="text-[10px] text-muted-foreground uppercase tracking-wide font-semibold">Profiles used</p>
+                          <p className="text-[10px] text-muted-foreground uppercase tracking-wide font-semibold">Profiles connected</p>
                           <p className="text-sm font-semibold">
-                            {profilesUsed} / {profileLimit === null ? '∞' : profileLimit}
+                            {profilesUsed}{profileLimit !== null ? ` / ${profileLimit}` : currentPlanKey === 'agency' ? ` (€${profilesUsed * 5}/mo)` : ' / ∞'}
                           </p>
                         </div>
                       </div>
-                      {profileLimit !== null && (
+                      {profileLimit !== null && profilesUsed > 0 && (
                         <div className="h-1 rounded-full bg-muted overflow-hidden ml-6">
                           <div
                             className="h-full rounded-full bg-primary transition-all"

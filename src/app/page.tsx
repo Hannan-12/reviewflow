@@ -464,8 +464,18 @@ function AgencyCalculator({ label }: { label: string }) {
 }
 
 function CookieBanner({ text, privacy, decline, accept }: { text: string; privacy: string; decline: string; accept: string }) {
-  const [dismissed, setDismissed] = useState(false)
-  if (dismissed) return null
+  const [visible, setVisible] = useState(false)
+
+  useEffect(() => {
+    if (!localStorage.getItem('cookie_consent')) setVisible(true)
+  }, [])
+
+  const dismiss = () => {
+    localStorage.setItem('cookie_consent', 'true')
+    setVisible(false)
+  }
+
+  if (!visible) return null
   return (
     <div className="fixed bottom-0 left-0 right-0 z-50 flex flex-col md:flex-row items-center justify-between gap-4 px-6 py-4 shadow-2xl" style={{ background: '#111', borderTop: `2px solid ${Y}` }}>
       <p className="text-sm text-gray-300 max-w-2xl">
@@ -473,10 +483,10 @@ function CookieBanner({ text, privacy, decline, accept }: { text: string; privac
         <Link href="/privacy" style={{ color: Y }} className="underline hover:no-underline">{privacy}</Link>.
       </p>
       <div className="flex gap-3 shrink-0">
-        <button onClick={() => setDismissed(true)} className="px-4 py-2 rounded-lg text-sm font-semibold text-gray-400 border border-gray-600 hover:border-gray-400 transition-colors">
+        <button onClick={dismiss} className="px-4 py-2 rounded-lg text-sm font-semibold text-gray-400 border border-gray-600 hover:border-gray-400 transition-colors">
           {decline}
         </button>
-        <button onClick={() => setDismissed(true)} className="px-4 py-2 rounded-lg text-sm font-bold transition-colors hover:opacity-90" style={{ background: Y, color: BG }}>
+        <button onClick={dismiss} className="px-4 py-2 rounded-lg text-sm font-bold transition-colors hover:opacity-90" style={{ background: Y, color: BG }}>
           {accept}
         </button>
       </div>

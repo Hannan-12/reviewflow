@@ -16,7 +16,7 @@ export async function POST(request: NextRequest) {
       return NextResponse.json({ error: 'Unauthorized' }, { status: 401 })
     }
 
-    const { priceId, skipTrial } = await request.json()
+    const { priceId, skipTrial, quantity = 1 } = await request.json()
 
     // Validate the priceId is one of our plans (monthly or annual)
     const validPriceIds = Object.values(PLANS).flatMap((p) => [p.priceId, p.priceIdAnnual])
@@ -87,7 +87,7 @@ export async function POST(request: NextRequest) {
       customer: customerId,
       mode: 'subscription',
       payment_method_types: ['card'],
-      line_items: [{ price: priceId, quantity: 1 }],
+      line_items: [{ price: priceId, quantity: Math.max(1, quantity) }],
       subscription_data: {
         ...(useTrialEnd ? { trial_end: useTrialEnd } : {}),
         metadata: { supabase_user_id: user.id },
