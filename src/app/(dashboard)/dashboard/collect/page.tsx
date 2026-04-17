@@ -3,7 +3,7 @@ import { Header } from '@/components/dashboard/header'
 import { createClient } from '@/lib/supabase/server'
 import { CollectionLinksManager } from '@/components/dashboard/collection-links-manager'
 
-export const metadata = { title: 'Collect Reviews — Reviewup' }
+export const metadata = { title: 'Collect Reviews — GoHighReview' }
 
 export default async function CollectPage() {
   const supabase = await createClient()

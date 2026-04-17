@@ -145,7 +145,7 @@ export default async function WidgetPage({ params }: WidgetPageProps) {
         )}
 
         <div className="powered">
-          Powered by <a href="https://reviewflow.app" target="_blank" rel="noopener noreferrer">Reviewup</a>
+          Powered by <a href="https://reviewflow.app" target="_blank" rel="noopener noreferrer">GoHighReview</a>
         </div>
       </body>
     </html>

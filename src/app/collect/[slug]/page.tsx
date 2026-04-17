@@ -113,7 +113,7 @@ export default async function CollectPage({ params }: CollectPageProps) {
 
         <p className="text-center text-xs text-gray-400 mt-4">
           Powered by{' '}
-          <Link href="/" className="text-indigo-400 hover:text-indigo-600">Reviewup</Link>
+          <Link href="/" className="text-indigo-400 hover:text-indigo-600">GoHighReview</Link>
         </p>
       </div>
     </div>

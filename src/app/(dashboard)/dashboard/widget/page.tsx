@@ -3,7 +3,7 @@ import { Header } from '@/components/dashboard/header'
 import { createClient } from '@/lib/supabase/server'
 import { WidgetConfigurator } from '@/components/dashboard/widget-configurator'
 
-export const metadata = { title: 'Review Widget — Reviewup' }
+export const metadata = { title: 'Review Widget — GoHighReview' }
 
 export default async function WidgetPage() {
   const supabase = await createClient()

@@ -5,7 +5,7 @@ import { Sidebar } from '@/components/dashboard/sidebar'
 import { SidebarProvider } from '@/components/dashboard/sidebar-context'
 import { SettingsClient } from '@/components/dashboard/settings-client'
 
-export const metadata = { title: 'Settings — Reviewup' }
+export const metadata = { title: 'Settings — GoHighReview' }
 
 export default async function SettingsPage() {
   const supabase = await createClient()

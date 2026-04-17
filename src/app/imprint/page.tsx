@@ -1,7 +1,7 @@
 import Link from 'next/link'
 import { Star } from 'lucide-react'
 
-export const metadata = { title: 'Imprint — Reviewup' }
+export const metadata = { title: 'Imprint — GoHighReview' }
 
 export default function ImprintPage() {
   return (
@@ -12,7 +12,7 @@ export default function ImprintPage() {
             <div className="w-7 h-7 rounded-lg flex items-center justify-center" style={{ background: '#F5C518' }}>
               <Star className="w-3.5 h-3.5" style={{ color: '#1A1A1A', fill: '#1A1A1A' }} />
             </div>
-            <span className="font-bold text-sm text-white">Reviewup</span>
+            <span className="font-bold text-sm text-white">GoHighReview</span>
           </Link>
         </div>
       </nav>
@@ -31,7 +31,7 @@ export default function ImprintPage() {
 
           <div>
             <h2 className="text-white font-semibold text-base mb-2">Contact</h2>
-            <p>Email: <a href="mailto:hello@reviewup.de" style={{ color: '#F5C518' }}>hello@reviewup.de</a></p>
+            <p>Email: <a href="mailto:hello@gohighreview.com" style={{ color: '#F5C518' }}>hello@gohighreview.com</a></p>
           </div>
 
           <div>

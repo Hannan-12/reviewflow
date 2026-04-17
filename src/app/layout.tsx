@@ -13,7 +13,7 @@ const geistSans = Geist({
 })
 
 export const metadata: Metadata = {
-  title: 'Reviewup — Google Review Management',
+  title: 'GoHighReview — Google Review Management',
   description:
     'Monitor, respond to, and manage your Google Business Profile reviews with AI-powered tools.',
 }

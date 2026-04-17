@@ -1,7 +1,7 @@
 import Link from 'next/link'
 import { Star } from 'lucide-react'
 
-export const metadata = { title: 'Privacy Policy — Reviewup' }
+export const metadata = { title: 'Privacy Policy — GoHighReview' }
 
 export default function PrivacyPage() {
   return (
@@ -12,7 +12,7 @@ export default function PrivacyPage() {
             <div className="w-7 h-7 bg-primary rounded-lg flex items-center justify-center shadow-sm">
               <Star className="w-3.5 h-3.5 text-white fill-white" />
             </div>
-            <span className="font-bold text-sm tracking-tight">Reviewup</span>
+            <span className="font-bold text-sm tracking-tight">GoHighReview</span>
           </Link>
           <div className="flex gap-5 text-sm text-muted-foreground">
             <Link href="/terms" className="hover:text-foreground transition-colors">Terms</Link>
@@ -47,7 +47,7 @@ export default function PrivacyPage() {
 
           <section>
             <h2 className="text-xl font-bold mb-3">3. Google Data</h2>
-            <p className="text-muted-foreground leading-relaxed">Reviewup connects to your Google Business Profile via OAuth. We access your review data, business location information, and post replies on your behalf only when authorised by you. We do not sell or share your Google data with third parties. You can revoke access at any time from your Google Account settings.</p>
+            <p className="text-muted-foreground leading-relaxed">GoHighReview connects to your Google Business Profile via OAuth. We access your review data, business location information, and post replies on your behalf only when authorised by you. We do not sell or share your Google data with third parties. You can revoke access at any time from your Google Account settings.</p>
           </section>
 
           <section>
@@ -84,7 +84,7 @@ export default function PrivacyPage() {
 
       <footer className="border-t border-border">
         <div className="max-w-6xl mx-auto px-6 py-6 flex items-center justify-between text-sm text-muted-foreground">
-          <span>© 2026 Reviewup. All rights reserved.</span>
+          <span>© 2026 GoHighReview. All rights reserved.</span>
           <div className="flex gap-5">
             <Link href="/privacy" className="hover:text-foreground transition-colors">Privacy</Link>
             <Link href="/terms" className="hover:text-foreground transition-colors">Terms</Link>

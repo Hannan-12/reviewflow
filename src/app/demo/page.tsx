@@ -25,7 +25,7 @@ export default function DemoPage() {
       if (!res.ok) throw new Error('Failed')
       setSubmitted(true)
     } catch {
-      toast.error('Something went wrong. Please email us directly at hello@reviewup.de')
+      toast.error('Something went wrong. Please email us directly at hello@gohighreview.com')
     } finally {
       setLoading(false)
     }
@@ -40,7 +40,7 @@ export default function DemoPage() {
             <div className="w-7 h-7 bg-primary rounded-lg flex items-center justify-center shadow-sm">
               <Star className="w-3.5 h-3.5 text-white fill-white" />
             </div>
-            <span className="font-bold text-sm tracking-tight">Reviewup</span>
+            <span className="font-bold text-sm tracking-tight">GoHighReview</span>
           </Link>
           <Link href="/" className="flex items-center gap-1.5 text-sm text-muted-foreground hover:text-foreground transition-colors ml-2">
             <ArrowLeft className="w-3.5 h-3.5" />
@@ -56,10 +56,10 @@ export default function DemoPage() {
           <div>
             <p className="text-sm font-semibold text-primary mb-3">Book a demo</p>
             <h1 className="text-4xl font-bold tracking-tight mb-4">
-              See Reviewup in action
+              See GoHighReview in action
             </h1>
             <p className="text-lg text-muted-foreground leading-relaxed mb-8">
-              Get a personalised walkthrough of how Reviewup can automate your Google review management — tailored to your business size and goals.
+              Get a personalised walkthrough of how GoHighReview can automate your Google review management — tailored to your business size and goals.
             </p>
 
             <div className="space-y-4">

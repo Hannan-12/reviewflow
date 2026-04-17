@@ -12,8 +12,8 @@ export async function POST(req: Request) {
     }
 
     await resend.emails.send({
-      from: process.env.RESEND_FROM_EMAIL || 'noreply@reviewup.de',
-      to: 'hello@reviewup.de',
+      from: process.env.RESEND_FROM_EMAIL || 'noreply@gohighreview.com',
+      to: 'hello@gohighreview.com',
       reply_to: email,
       subject: `Demo request from ${name} — ${company}`,
       html: `

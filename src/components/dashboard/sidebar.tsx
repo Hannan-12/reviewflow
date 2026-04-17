@@ -75,7 +75,7 @@ export function Sidebar({ planName }: { planName?: string }) {
             <div className="w-7 h-7 bg-primary rounded-lg flex items-center justify-center shadow-sm shrink-0">
               <Star className="w-3.5 h-3.5 text-white fill-white" />
             </div>
-            <span className="font-bold text-sm tracking-tight">Reviewup</span>
+            <span className="font-bold text-sm tracking-tight">GoHighReview</span>
           </Link>
         )}
         {collapsed && (

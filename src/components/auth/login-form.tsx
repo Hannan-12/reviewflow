@@ -53,7 +53,7 @@ export function LoginForm() {
     <div>
       <div className="mb-8">
         <h1 className="text-2xl font-bold text-foreground mb-1.5">Welcome back</h1>
-        <p className="text-muted-foreground text-sm">Sign in to your Reviewup account</p>
+        <p className="text-muted-foreground text-sm">Sign in to your GoHighReview account</p>
       </div>
 
       <GoogleOAuthButton label="Continue with Google" />

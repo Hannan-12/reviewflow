@@ -5,7 +5,7 @@ import { Sidebar } from '@/components/dashboard/sidebar'
 import { SidebarProvider } from '@/components/dashboard/sidebar-context'
 import { ProfilesManager } from '@/components/dashboard/profiles-manager'
 
-export const metadata = { title: 'Profiles — Reviewup' }
+export const metadata = { title: 'Profiles — GoHighReview' }
 
 export default async function ProfilesPage({
   searchParams,

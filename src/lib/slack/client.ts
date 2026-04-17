@@ -68,7 +68,7 @@ export async function sendSlackNotification(
         type: 'button',
         text: {
           type: 'plain_text',
-          text: 'Reply in Reviewup',
+          text: 'Reply in GoHighReview',
           emoji: true,
         },
         url: data.reviewUrl,
