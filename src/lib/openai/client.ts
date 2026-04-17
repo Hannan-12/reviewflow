@@ -19,7 +19,7 @@ function isRetryableError(err: unknown): boolean {
   const e = err as { status?: number; message?: string } | null
   if (!e) return false
   // Retry on quota/rate-limit (429) and model-not-found (404)
-  if (e.status === 429 || e.status === 404) return true
+  if (e.status === 429 || e.status === 404 || e.status === 503) return true
   const msg = (e.message ?? '').toLowerCase()
   return msg.includes('429') || msg.includes('resource_exhausted') || msg.includes('quota') || msg.includes('not found')
 }
