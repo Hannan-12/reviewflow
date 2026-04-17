@@ -77,11 +77,11 @@ export default async function BillingPage({
   const trialTotal = 14
   const trialProgress = Math.min(100, Math.round(((trialTotal - trialDaysLeft) / trialTotal) * 100))
 
-  const { count: profilesUsed } = await supabase
+  const { count: profilesCount } = await supabase
     .from('profiles')
     .select('id', { count: 'exact', head: true })
     .eq('user_id', user.id)
-    .then(r => ({ count: r.count ?? 0 }))
+  const profilesUsed = profilesCount ?? 0
 
   const profileLimit = currentPlan?.profileLimit === -1 ? null : (currentPlan?.profileLimit ?? 3)
 
