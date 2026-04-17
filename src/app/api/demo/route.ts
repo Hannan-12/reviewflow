@@ -14,7 +14,7 @@ export async function POST(req: Request) {
     await resend.emails.send({
       from: process.env.RESEND_FROM_EMAIL || 'noreply@reviewup.de',
       to: 'hello@reviewup.de',
-      replyTo: email,
+      reply_to: email,
       subject: `Demo request from ${name} — ${company}`,
       html: `
         <div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto;">
