@@ -19,7 +19,7 @@ export interface EmailNotificationData {
 export async function sendNewReviewEmail(data: EmailNotificationData) {
   try {
     const result = await getResend().emails.send({
-      from: process.env.RESEND_FROM_EMAIL || 'noreply@reviewflow.app',
+      from: process.env.RESEND_FROM_EMAIL || 'noreply@gohighreview.de',
       to: data.userEmail,
       subject: `New ${data.rating}★ Review on "${data.profileName}"`,
       html: `
@@ -93,7 +93,7 @@ export async function sendDigestEmail(data: {
   `).join('')
 
   await getResend().emails.send({
-    from: process.env.RESEND_FROM_EMAIL || 'noreply@reviewflow.app',
+    from: process.env.RESEND_FROM_EMAIL || 'noreply@gohighreview.de',
     to: data.userEmail,
     subject: `${count} new review${count !== 1 ? 's' : ''} on "${data.profileName}" ${period}`,
     html: `
@@ -130,7 +130,7 @@ export async function sendReplyConfirmationEmail(
 ) {
   try {
     const result = await getResend().emails.send({
-      from: process.env.RESEND_FROM_EMAIL || 'noreply@reviewflow.app',
+      from: process.env.RESEND_FROM_EMAIL || 'noreply@gohighreview.de',
       to: userEmail,
       subject: `Your reply to ${reviewerName}'s review posted on "${profileName}"`,
       html: `
