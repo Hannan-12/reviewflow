@@ -54,8 +54,8 @@ export async function middleware(request: NextRequest) {
     return NextResponse.redirect(url)
   }
 
-  // Redirect authenticated users away from auth pages
-  if (isAuthPage && user) {
+  // Redirect authenticated users away from auth pages (except reset-password — needs active session)
+  if (isAuthPage && user && !pathname.startsWith('/reset-password')) {
     const url = request.nextUrl.clone()
     url.pathname = '/dashboard'
     return NextResponse.redirect(url)
