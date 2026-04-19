@@ -17,7 +17,7 @@ const BORDER = '#333333'
 // ─── Translations ──────────────────────────────────────────
 const T = {
   en: {
-    nav_features: 'Features', nav_reviews: 'Reviews', nav_pricing: 'Pricing', nav_faq: 'FAQ',
+    nav_features: 'Features', nav_reviews: 'Reviews', nav_pricing: 'Pricing', nav_faq: 'FAQ', nav_demo: 'Request Demo',
     nav_signin: 'Sign in', nav_trial: 'Start free trial',
     hero_badge: 'Now with AI auto-reply agents',
     hero_h1a: 'Review management for', hero_h1b: 'teams that move fast',
@@ -71,7 +71,7 @@ const T = {
     cookie_privacy: 'Privacy Policy', cookie_decline: 'Decline', cookie_accept: 'Accept',
   },
   de: {
-    nav_features: 'Funktionen', nav_reviews: 'Bewertungen', nav_pricing: 'Preise', nav_faq: 'FAQ',
+    nav_features: 'Funktionen', nav_reviews: 'Bewertungen', nav_pricing: 'Preise', nav_faq: 'FAQ', nav_demo: 'Demo anfragen',
     nav_signin: 'Anmelden', nav_trial: 'Kostenlos starten',
     hero_badge: 'Jetzt mit KI-Autoantwort-Agenten',
     hero_h1a: 'Bewertungsmanagement für', hero_h1b: 'Teams, die schnell handeln',
@@ -125,7 +125,7 @@ const T = {
     cookie_privacy: 'Datenschutzerklärung', cookie_decline: 'Ablehnen', cookie_accept: 'Akzeptieren',
   },
   es: {
-    nav_features: 'Funciones', nav_reviews: 'Reseñas', nav_pricing: 'Precios', nav_faq: 'FAQ',
+    nav_features: 'Funciones', nav_reviews: 'Reseñas', nav_pricing: 'Precios', nav_faq: 'FAQ', nav_demo: 'Solicitar demo',
     nav_signin: 'Iniciar sesión', nav_trial: 'Prueba gratuita',
     hero_badge: 'Ahora con agentes de respuesta automática IA',
     hero_h1a: 'Gestión de reseñas para', hero_h1b: 'equipos que se mueven rápido',
@@ -179,7 +179,7 @@ const T = {
     cookie_privacy: 'Política de Privacidad', cookie_decline: 'Rechazar', cookie_accept: 'Aceptar',
   },
   it: {
-    nav_features: 'Funzionalità', nav_reviews: 'Recensioni', nav_pricing: 'Prezzi', nav_faq: 'FAQ',
+    nav_features: 'Funzionalità', nav_reviews: 'Recensioni', nav_pricing: 'Prezzi', nav_faq: 'FAQ', nav_demo: 'Richiedi demo',
     nav_signin: 'Accedi', nav_trial: 'Prova gratuita',
     hero_badge: 'Ora con agenti di risposta automatica IA',
     hero_h1a: 'Gestione delle recensioni per', hero_h1b: 'team che si muovono velocemente',
@@ -233,7 +233,7 @@ const T = {
     cookie_privacy: 'Privacy Policy', cookie_decline: 'Rifiuta', cookie_accept: 'Accetta',
   },
   ar: {
-    nav_features: 'الميزات', nav_reviews: 'التقييمات', nav_pricing: 'الأسعار', nav_faq: 'الأسئلة الشائعة',
+    nav_features: 'الميزات', nav_reviews: 'التقييمات', nav_pricing: 'الأسعار', nav_faq: 'الأسئلة الشائعة', nav_demo: 'طلب عرض',
     nav_signin: 'تسجيل الدخول', nav_trial: 'ابدأ مجاناً',
     hero_badge: 'الآن مع وكلاء الرد التلقائي بالذكاء الاصطناعي',
     hero_h1a: 'إدارة التقييمات لـ', hero_h1b: 'الفرق التي تتحرك بسرعة',
@@ -287,7 +287,7 @@ const T = {
     cookie_privacy: 'سياسة الخصوصية', cookie_decline: 'رفض', cookie_accept: 'قبول',
   },
   zh: {
-    nav_features: '功能', nav_reviews: '评价', nav_pricing: '定价', nav_faq: '常见问题',
+    nav_features: '功能', nav_reviews: '评价', nav_pricing: '定价', nav_faq: '常见问题', nav_demo: '申请演示',
     nav_signin: '登录', nav_trial: '免费试用',
     hero_badge: '现已推出AI自动回复功能',
     hero_h1a: '评价管理，为', hero_h1b: '快速行动的团队而生',
@@ -341,7 +341,7 @@ const T = {
     cookie_privacy: '隐私政策', cookie_decline: '拒绝', cookie_accept: '接受',
   },
   hi: {
-    nav_features: 'विशेषताएं', nav_reviews: 'समीक्षाएं', nav_pricing: 'मूल्य', nav_faq: 'सामान्य प्रश्न',
+    nav_features: 'विशेषताएं', nav_reviews: 'समीक्षाएं', nav_pricing: 'मूल्य', nav_faq: 'सामान्य प्रश्न', nav_demo: 'डेमो अनुरोध',
     nav_signin: 'साइन इन करें', nav_trial: 'मुफ्त ट्रायल शुरू करें',
     hero_badge: 'अब AI ऑटो-रिप्लाई एजेंट के साथ',
     hero_h1a: 'समीक्षा प्रबंधन के लिए', hero_h1b: 'तेज़ गति से काम करने वाली टीमें',
@@ -552,6 +552,7 @@ export default function HomePage() {
             <a href="#testimonials" className="hover:text-white transition-colors">{t.nav_reviews}</a>
             <a href="#pricing" className="hover:text-white transition-colors">{t.nav_pricing}</a>
             <a href="#faq" className="hover:text-white transition-colors">{t.nav_faq}</a>
+            <Link href="/demo" className="font-semibold transition-colors hover:opacity-80" style={{ color: Y }}>{t.nav_demo}</Link>
           </div>
           <div className="flex items-center gap-2">
             <LanguageSwitcher lang={lang} onSelect={setLang} />
