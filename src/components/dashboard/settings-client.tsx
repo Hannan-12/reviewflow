@@ -15,9 +15,10 @@ interface SettingsClientProps {
   fullName: string | null
   planName: string | null
   subscriptionStatus: string | null
+  isGoogleUser: boolean
 }
 
-export function SettingsClient({ email, fullName, planName, subscriptionStatus }: SettingsClientProps) {
+export function SettingsClient({ email, fullName, planName, subscriptionStatus, isGoogleUser }: SettingsClientProps) {
   const router = useRouter()
   const supabase = createClient()
 
@@ -110,8 +111,8 @@ export function SettingsClient({ email, fullName, planName, subscriptionStatus }
         </div>
       </section>
 
-      {/* Password */}
-      <section className="bg-card border border-border rounded-2xl overflow-hidden">
+      {/* Password — hidden for Google OAuth users */}
+      {!isGoogleUser && <section className="bg-card border border-border rounded-2xl overflow-hidden">
         <div className="px-5 py-3.5 border-b border-border flex items-center gap-2.5">
           <Lock className="w-4 h-4 text-muted-foreground" />
           <h2 className="text-sm font-semibold">Change Password</h2>
@@ -143,7 +144,7 @@ export function SettingsClient({ email, fullName, planName, subscriptionStatus }
             {savingPassword ? 'Updating…' : 'Update password'}
           </Button>
         </div>
-      </section>
+      </section>}
 
       {/* Plan & Billing */}
       <section className="bg-card border border-border rounded-2xl overflow-hidden">

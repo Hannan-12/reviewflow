@@ -40,10 +40,12 @@ const T = {
     pricing_sub: 'All plans include a 14-day free trial. No credit card required.',
     pricing_monthly: 'Monthly', pricing_annual: 'Annual', pricing_popular: 'Most popular', pricing_start: 'Start free trial',
     plans: [
-      { name: 'Lite', profiles: 'up to 3 profiles', desc: 'For solo businesses', features: ['3 Google Business Profiles', 'Email alerts', 'AI reply suggestions', 'Basic reports', 'CSV export'] },
-      { name: 'Pro', profiles: 'up to 15 profiles', desc: 'For teams & small chains', features: ['15 Google Business Profiles', 'Email + Slack alerts', 'AI auto-reply agents', 'Advanced reports', 'Review widgets', 'Review auto-tagging'] },
-      { name: 'Agency', profiles: 'from 16 profiles', desc: 'For agencies & franchises', features: ['Unlimited profiles', 'Everything in Pro', 'Custom AI prompts', 'Sentiment analysis', 'Magic review links', 'Priority support'] },
+      { name: 'Lite', profiles: '1–3 profiles', desc: 'For solo businesses', features: ['1–3 Google Business Profiles', 'Email alerts', 'AI reply suggestions', 'AI auto-reply agents', 'Basic reports', 'CSV export'] },
+      { name: 'Pro', profiles: '4–10 profiles', desc: 'For teams & small chains', features: ['Everything in Lite', '4–10 Google Business Profiles', 'Email + Slack alerts', 'Advanced reports', 'Review widgets', 'Review auto-tagging'] },
+      { name: 'Agency', profiles: '11+ profiles', desc: 'For agencies & franchises', features: ['Everything in Pro', 'Unlimited profiles', 'Custom AI prompts', 'Sentiment analysis', 'Magic review links', 'Priority support', 'Dedicated account manager'] },
     ],
+    pricing_agency_label: 'Custom quote',
+    pricing_contact: 'Contact us',
     calc_label: 'Number of profiles',
     faq_h2: 'Frequently asked questions',
     faq: [
@@ -94,10 +96,12 @@ const T = {
     pricing_sub: 'Alle Pläne beinhalten eine 14-tägige kostenlose Testversion. Keine Kreditkarte erforderlich.',
     pricing_monthly: 'Monatlich', pricing_annual: 'Jährlich', pricing_popular: 'Beliebteste', pricing_start: 'Kostenlos testen',
     plans: [
-      { name: 'Lite', profiles: 'bis zu 3 Profile', desc: 'Für Solo-Unternehmen', features: ['3 Google Business Profile', 'E-Mail-Benachrichtigungen', 'KI-Antwortvorschläge', 'Grundberichte', 'CSV-Export'] },
-      { name: 'Pro', profiles: 'bis zu 15 Profile', desc: 'Für Teams & kleine Ketten', features: ['15 Google Business Profile', 'E-Mail + Slack', 'KI-Autoantwort-Agenten', 'Erweiterte Berichte', 'Bewertungs-Widgets', 'Automatisches Tagging'] },
-      { name: 'Agency', profiles: 'ab 16 Profile', desc: 'Für Agenturen & Franchises', features: ['Unbegrenzte Profile', 'Alles aus Pro', 'Benutzerdefinierte KI-Prompts', 'Stimmungsanalyse', 'Magic Review Links', 'Prioritätssupport'] },
+      { name: 'Lite', profiles: '1–3 Profile', desc: 'Für Solo-Unternehmen', features: ['1–3 Google Business Profile', 'E-Mail-Benachrichtigungen', 'KI-Antwortvorschläge', 'KI-Autoantwort-Agenten', 'Grundberichte', 'CSV-Export'] },
+      { name: 'Pro', profiles: '4–10 Profile', desc: 'Für Teams & kleine Ketten', features: ['Alles aus Lite', '4–10 Google Business Profile', 'E-Mail + Slack', 'Erweiterte Berichte', 'Bewertungs-Widgets', 'Automatisches Tagging'] },
+      { name: 'Agency', profiles: 'ab 11 Profile', desc: 'Für Agenturen & Franchises', features: ['Alles aus Pro', 'Unbegrenzte Profile', 'Benutzerdefinierte KI-Prompts', 'Stimmungsanalyse', 'Magic Review Links', 'Prioritätssupport', 'Dedizierter Account-Manager'] },
     ],
+    pricing_agency_label: 'Auf Anfrage',
+    pricing_contact: 'Kontakt aufnehmen',
     calc_label: 'Anzahl der Profile',
     faq_h2: 'Häufig gestellte Fragen',
     faq: [
@@ -148,10 +152,12 @@ const T = {
     pricing_sub: 'Todos los planes incluyen 14 días de prueba gratuita. Sin tarjeta de crédito.',
     pricing_monthly: 'Mensual', pricing_annual: 'Anual', pricing_popular: 'Más popular', pricing_start: 'Empezar gratis',
     plans: [
-      { name: 'Lite', profiles: 'hasta 3 perfiles', desc: 'Para negocios individuales', features: ['3 Google Business Profiles', 'Alertas por email', 'Sugerencias de respuesta IA', 'Informes básicos', 'Exportación CSV'] },
-      { name: 'Pro', profiles: 'hasta 15 perfiles', desc: 'Para equipos y pequeñas cadenas', features: ['15 Google Business Profiles', 'Email + Slack', 'Agentes de respuesta automática', 'Informes avanzados', 'Widgets de reseñas', 'Etiquetado automático'] },
-      { name: 'Agency', profiles: 'desde 16 perfiles', desc: 'Para agencias y franquicias', features: ['Perfiles ilimitados', 'Todo de Pro', 'Prompts IA personalizados', 'Análisis de sentimiento', 'Magic review links', 'Soporte prioritario'] },
+      { name: 'Lite', profiles: '1–3 perfiles', desc: 'Para negocios individuales', features: ['1–3 Google Business Profiles', 'Alertas por email', 'Sugerencias de respuesta IA', 'Agentes de respuesta automática', 'Informes básicos', 'Exportación CSV'] },
+      { name: 'Pro', profiles: '4–10 perfiles', desc: 'Para equipos y pequeñas cadenas', features: ['Todo de Lite', '4–10 Google Business Profiles', 'Email + Slack', 'Informes avanzados', 'Widgets de reseñas', 'Etiquetado automático'] },
+      { name: 'Agency', profiles: '11+ perfiles', desc: 'Para agencias y franquicias', features: ['Todo de Pro', 'Perfiles ilimitados', 'Prompts IA personalizados', 'Análisis de sentimiento', 'Magic review links', 'Soporte prioritario', 'Gestor de cuenta dedicado'] },
     ],
+    pricing_agency_label: 'Consultar precio',
+    pricing_contact: 'Contáctanos',
     calc_label: 'Número de perfiles',
     faq_h2: 'Preguntas frecuentes',
     faq: [
@@ -202,10 +208,12 @@ const T = {
     pricing_sub: 'Tutti i piani includono 14 giorni di prova gratuita. Nessuna carta di credito.',
     pricing_monthly: 'Mensile', pricing_annual: 'Annuale', pricing_popular: 'Più popolare', pricing_start: 'Inizia gratis',
     plans: [
-      { name: 'Lite', profiles: 'fino a 3 profili', desc: 'Per attività individuali', features: ['3 Google Business Profile', 'Avvisi email', 'Suggerimenti di risposta IA', 'Report di base', 'Esportazione CSV'] },
-      { name: 'Pro', profiles: 'fino a 15 profili', desc: 'Per team e piccole catene', features: ['15 Google Business Profile', 'Email + Slack', 'Agenti di risposta automatica', 'Report avanzati', 'Widget recensioni', 'Tagging automatico'] },
-      { name: 'Agency', profiles: 'da 16 profili', desc: 'Per agenzie e franchise', features: ['Profili illimitati', 'Tutto di Pro', 'Prompt IA personalizzati', 'Analisi del sentiment', 'Magic review links', 'Supporto prioritario'] },
+      { name: 'Lite', profiles: '1–3 profili', desc: 'Per attività individuali', features: ['1–3 Google Business Profile', 'Avvisi email', 'Suggerimenti di risposta IA', 'Agenti di risposta automatica', 'Report di base', 'Esportazione CSV'] },
+      { name: 'Pro', profiles: '4–10 profili', desc: 'Per team e piccole catene', features: ['Tutto di Lite', '4–10 Google Business Profile', 'Email + Slack', 'Report avanzati', 'Widget recensioni', 'Tagging automatico'] },
+      { name: 'Agency', profiles: '11+ profili', desc: 'Per agenzie e franchise', features: ['Tutto di Pro', 'Profili illimitati', 'Prompt IA personalizzati', 'Analisi del sentiment', 'Magic review links', 'Supporto prioritario', 'Account manager dedicato'] },
     ],
+    pricing_agency_label: 'Preventivo su misura',
+    pricing_contact: 'Contattaci',
     calc_label: 'Numero di profili',
     faq_h2: 'Domande frequenti',
     faq: [
@@ -256,10 +264,12 @@ const T = {
     pricing_sub: 'تشمل جميع الخطط تجربة مجانية لمدة 14 يوماً. لا بطاقة ائتمان مطلوبة.',
     pricing_monthly: 'شهري', pricing_annual: 'سنوي', pricing_popular: 'الأكثر شيوعاً', pricing_start: 'ابدأ مجاناً',
     plans: [
-      { name: 'Lite', profiles: 'حتى 3 ملفات', desc: 'للأعمال الفردية', features: ['3 ملفات Google Business', 'تنبيهات البريد الإلكتروني', 'اقتراحات الرد بالذكاء الاصطناعي', 'تقارير أساسية', 'تصدير CSV'] },
-      { name: 'Pro', profiles: 'حتى 15 ملفاً', desc: 'للفرق والسلاسل الصغيرة', features: ['15 ملف Google Business', 'البريد + Slack', 'وكلاء الرد التلقائي', 'تقارير متقدمة', 'أدوات التقييم', 'وضع العلامات التلقائي'] },
-      { name: 'Agency', profiles: 'من 16 ملفاً', desc: 'للوكالات والامتيازات', features: ['ملفات غير محدودة', 'كل ميزات Pro', 'مطالبات AI مخصصة', 'تحليل المشاعر', 'روابط التقييم السحرية', 'دعم ذو أولوية'] },
+      { name: 'Lite', profiles: '1–3 ملفات', desc: 'للأعمال الفردية', features: ['1–3 ملفات Google Business', 'تنبيهات البريد الإلكتروني', 'اقتراحات الرد بالذكاء الاصطناعي', 'وكلاء الرد التلقائي', 'تقارير أساسية', 'تصدير CSV'] },
+      { name: 'Pro', profiles: '4–10 ملفات', desc: 'للفرق والسلاسل الصغيرة', features: ['كل ميزات Lite', '4–10 ملفات Google Business', 'البريد + Slack', 'تقارير متقدمة', 'أدوات التقييم', 'وضع العلامات التلقائي'] },
+      { name: 'Agency', profiles: '11+ ملفاً', desc: 'للوكالات والامتيازات', features: ['كل ميزات Pro', 'ملفات غير محدودة', 'مطالبات AI مخصصة', 'تحليل المشاعر', 'روابط التقييم السحرية', 'دعم ذو أولوية', 'مدير حساب مخصص'] },
     ],
+    pricing_agency_label: 'عرض مخصص',
+    pricing_contact: 'تواصل معنا',
     calc_label: 'عدد الملفات',
     faq_h2: 'الأسئلة الشائعة',
     faq: [
@@ -310,10 +320,12 @@ const T = {
     pricing_sub: '所有方案均包含14天免费试用。无需信用卡。',
     pricing_monthly: '月付', pricing_annual: '年付', pricing_popular: '最受欢迎', pricing_start: '免费开始',
     plans: [
-      { name: 'Lite', profiles: '最多3个主页', desc: '适合个体企业', features: ['3个Google商家主页', '电子邮件提醒', 'AI回复建议', '基础报告', 'CSV导出'] },
-      { name: 'Pro', profiles: '最多15个主页', desc: '适合团队和小型连锁', features: ['15个Google商家主页', '邮件 + Slack提醒', 'AI自动回复代理', '高级报告', '评价小工具', '自动标签'] },
-      { name: 'Agency', profiles: '16个主页起', desc: '适合代理机构和特许经营', features: ['无限主页', 'Pro全部功能', '自定义AI提示', '情感分析', '神奇评价链接', '优先支持'] },
+      { name: 'Lite', profiles: '1–3个主页', desc: '适合个体企业', features: ['1–3个Google商家主页', '电子邮件提醒', 'AI回复建议', 'AI自动回复代理', '基础报告', 'CSV导出'] },
+      { name: 'Pro', profiles: '4–10个主页', desc: '适合团队和小型连锁', features: ['包含Lite所有功能', '4–10个Google商家主页', '邮件 + Slack提醒', '高级报告', '评价小工具', '自动标签'] },
+      { name: 'Agency', profiles: '11+个主页', desc: '适合代理机构和特许经营', features: ['包含Pro所有功能', '无限主页', '自定义AI提示', '情感分析', '神奇评价链接', '优先支持', '专属客户经理'] },
     ],
+    pricing_agency_label: '定制报价',
+    pricing_contact: '联系我们',
     calc_label: '主页数量',
     faq_h2: '常见问题',
     faq: [
@@ -364,10 +376,12 @@ const T = {
     pricing_sub: 'सभी प्लान में 14 दिन की मुफ्त ट्रायल शामिल है। क्रेडिट कार्ड की जरूरत नहीं।',
     pricing_monthly: 'मासिक', pricing_annual: 'वार्षिक', pricing_popular: 'सबसे लोकप्रिय', pricing_start: 'मुफ्त शुरू करें',
     plans: [
-      { name: 'Lite', profiles: 'अधिकतम 3 प्रोफाइल', desc: 'एकल व्यवसायों के लिए', features: ['3 Google Business Profiles', 'ईमेल अलर्ट', 'AI उत्तर सुझाव', 'बेसिक रिपोर्ट', 'CSV एक्सपोर्ट'] },
-      { name: 'Pro', profiles: 'अधिकतम 15 प्रोफाइल', desc: 'टीम और छोटी चेन के लिए', features: ['15 Google Business Profiles', 'Email + Slack अलर्ट', 'AI ऑटो-रिप्लाई एजेंट', 'उन्नत रिपोर्ट', 'रिव्यू विजेट', 'ऑटो-टैगिंग'] },
-      { name: 'Agency', profiles: '16 प्रोफाइल से', desc: 'एजेंसी और फ्रेंचाइज़ के लिए', features: ['असीमित प्रोफाइल', 'Pro की सभी सुविधाएं', 'कस्टम AI प्रॉम्प्ट', 'सेंटीमेंट विश्लेषण', 'मैजिक रिव्यू लिंक', 'प्राथमिकता सहायता'] },
+      { name: 'Lite', profiles: '1–3 प्रोफाइल', desc: 'एकल व्यवसायों के लिए', features: ['1–3 Google Business Profiles', 'ईमेल अलर्ट', 'AI उत्तर सुझाव', 'AI ऑटो-रिप्लाई एजेंट', 'बेसिक रिपोर्ट', 'CSV एक्सपोर्ट'] },
+      { name: 'Pro', profiles: '4–10 प्रोफाइल', desc: 'टीम और छोटी चेन के लिए', features: ['Lite की सभी सुविधाएं', '4–10 Google Business Profiles', 'Email + Slack अलर्ट', 'उन्नत रिपोर्ट', 'रिव्यू विजेट', 'ऑटो-टैगिंग'] },
+      { name: 'Agency', profiles: '11+ प्रोफाइल', desc: 'एजेंसी और फ्रेंचाइज़ के लिए', features: ['Pro की सभी सुविधाएं', 'असीमित प्रोफाइल', 'कस्टम AI प्रॉम्प्ट', 'सेंटीमेंट विश्लेषण', 'मैजिक रिव्यू लिंक', 'प्राथमिकता सहायता', 'समर्पित खाता प्रबंधक'] },
     ],
+    pricing_agency_label: 'कस्टम कोटेशन',
+    pricing_contact: 'संपर्क करें',
     calc_label: 'प्रोफाइल की संख्या',
     faq_h2: 'अक्सर पूछे जाने वाले प्रश्न',
     faq: [
@@ -529,10 +543,12 @@ export default function HomePage() {
   const t = T[lang]
   const isRtl = languages.find((l) => l.code === lang)?.rtl ?? false
 
+  const fmtPrice = (n: number) => n === Math.floor(n) ? String(n) : n.toFixed(2).replace('.', ',')
+
   const plans = [
-    { ...t.plans[0], price: annual ? Math.round(29 * 0.8) : 29, highlight: false, agency: false },
-    { ...t.plans[1], price: annual ? Math.round(59 * 0.8) : 59, highlight: true, agency: false },
-    { ...t.plans[2], price: 5, highlight: false, agency: true },
+    { ...t.plans[0], price: annual ? 15.83 : 19.9, highlight: false, agency: false },
+    { ...t.plans[1], price: annual ? 47.17 : 59, highlight: true, agency: false },
+    { ...t.plans[2], price: 0, highlight: false, agency: true },
   ]
 
   return (
@@ -623,7 +639,7 @@ export default function HomePage() {
                 <div className="flex-1 flex justify-center">
                   <div className="flex items-center gap-1.5 h-5 px-3 rounded text-[11px] text-gray-600" style={{ background: '#1a1a1a', border: `1px solid ${BORDER}` }}>
                     <div className="w-1.5 h-1.5 rounded-full" style={{ background: Y }} />
-                    app.gohighreview.com/dashboard
+                    gohighreview.de/dashboard
                   </div>
                 </div>
               </div>
@@ -693,13 +709,19 @@ export default function HomePage() {
         <div className="text-center mb-10">
           <h2 className="text-3xl md:text-4xl font-bold tracking-tight mb-4 text-white">{t.pricing_h2}</h2>
           <p className="text-lg text-gray-400 mb-8">{t.pricing_sub}</p>
-          <div className="inline-flex items-center gap-1 rounded-xl p-1" style={{ background: CARD, border: `1px solid ${BORDER}` }}>
-            <button onClick={() => setAnnual(false)} className="px-4 py-2 rounded-lg text-sm font-semibold transition-colors" style={!annual ? { background: Y, color: BG } : { color: '#9ca3af' }}>
-              {t.pricing_monthly}
-            </button>
-            <button onClick={() => setAnnual(true)} className="px-4 py-2 rounded-lg text-sm font-semibold transition-colors flex items-center gap-2" style={annual ? { background: Y, color: BG } : { color: '#9ca3af' }}>
-              {t.pricing_annual} <span className="text-xs font-bold px-1.5 py-0.5 rounded-full" style={{ background: `${Y}20`, color: Y }}>-20%</span>
-            </button>
+          <div className="flex flex-col items-center gap-2">
+            <div className="inline-flex items-center gap-1 rounded-2xl p-1.5" style={{ background: CARD, border: `2px solid ${BORDER}` }}>
+              <button onClick={() => setAnnual(false)} className="px-6 py-3 rounded-xl text-base font-bold transition-all" style={!annual ? { background: Y, color: BG, boxShadow: `0 4px 12px ${Y}40` } : { color: '#9ca3af' }}>
+                {t.pricing_monthly}
+              </button>
+              <button onClick={() => setAnnual(true)} className="px-6 py-3 rounded-xl text-base font-bold transition-all flex items-center gap-2.5" style={annual ? { background: Y, color: BG, boxShadow: `0 4px 12px ${Y}40` } : { color: '#9ca3af' }}>
+                {t.pricing_annual}
+                <span className="text-xs font-extrabold px-2 py-0.5 rounded-full" style={annual ? { background: `${BG}30`, color: BG } : { background: `${Y}25`, color: Y }}>–20%</span>
+              </button>
+            </div>
+            {annual && (
+              <p className="text-sm font-semibold" style={{ color: Y }}>Save 20% with annual billing</p>
+            )}
           </div>
         </div>
         <div className="grid grid-cols-1 md:grid-cols-3 gap-4 max-w-4xl mx-auto">
@@ -711,17 +733,20 @@ export default function HomePage() {
                 </div>
               )}
               <p className="font-bold mb-1" style={{ color: p.highlight ? BG : '#fff' }}>{p.name}</p>
-              <div className="flex items-end gap-1 mb-1">
-                <span className="font-bold" style={{ fontSize: p.agency ? '1.875rem' : '2.25rem', color: p.highlight ? BG : '#fff' }}>
-                  EUR {p.agency ? '5' : p.price}
-                </span>
-                <span className="text-sm mb-1.5" style={{ color: p.highlight ? `${BG}99` : '#6b7280' }}>
-                  {p.agency ? '/profile/mo' : '/mo'}
-                </span>
-              </div>
+              {p.agency ? (
+                <div className="mb-1">
+                  <span className="font-bold" style={{ fontSize: '1.875rem', color: '#fff' }}>{(t as typeof t & { pricing_agency_label: string }).pricing_agency_label}</span>
+                </div>
+              ) : (
+                <div className="flex items-end gap-1 mb-1">
+                  <span className="font-bold" style={{ fontSize: '2.25rem', color: p.highlight ? BG : '#fff' }}>
+                    EUR {fmtPrice(p.price)}
+                  </span>
+                  <span className="text-sm mb-1.5" style={{ color: p.highlight ? `${BG}99` : '#6b7280' }}>/mo</span>
+                </div>
+              )}
               <p className="text-xs mb-1 font-medium" style={{ color: p.highlight ? `${BG}cc` : '#9ca3af' }}>{p.profiles}</p>
               <p className="text-sm mb-4" style={{ color: p.highlight ? `${BG}99` : '#6b7280' }}>{p.desc}</p>
-              {p.agency && <AgencyCalculator label={t.calc_label} />}
               <ul className="space-y-2.5 flex-1 mb-7 mt-4">
                 {p.features.map((f, i) => (
                   <li key={i} className="flex items-center gap-2 text-sm" style={{ color: p.highlight ? BG : '#d1d5db' }}>
@@ -730,11 +755,19 @@ export default function HomePage() {
                   </li>
                 ))}
               </ul>
-              <Link href="/signup">
-                <button className="w-full py-3 rounded-xl font-bold text-sm transition-all hover:opacity-90" style={p.highlight ? { background: BG, color: Y } : { background: Y, color: BG }}>
-                  {t.pricing_start}
-                </button>
-              </Link>
+              {p.agency ? (
+                <a href="mailto:hello@gohighreview.de" className="block">
+                  <button className="w-full py-3 rounded-xl font-bold text-sm transition-all hover:opacity-90" style={{ background: Y, color: BG }}>
+                    {(t as typeof t & { pricing_contact: string }).pricing_contact}
+                  </button>
+                </a>
+              ) : (
+                <Link href="/signup">
+                  <button className="w-full py-3 rounded-xl font-bold text-sm transition-all hover:opacity-90" style={p.highlight ? { background: BG, color: Y } : { background: Y, color: BG }}>
+                    {t.pricing_start}
+                  </button>
+                </Link>
+              )}
             </div>
           ))}
         </div>

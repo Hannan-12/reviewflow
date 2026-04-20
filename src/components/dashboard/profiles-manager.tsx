@@ -191,7 +191,7 @@ export function ProfilesManager({ profiles: initial, isGoogleConnected, profileL
         ) : atLimit ? (
           <a href="/billing">
             <Button size="sm" variant="outline" className="font-semibold text-xs h-8 gap-1.5">
-              Upgrade to add more
+              {profileLimit === 3 ? 'Upgrade to Pro to add more' : 'Contact us for Agency plan'}
             </Button>
           </a>
         ) : null}

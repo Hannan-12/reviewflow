@@ -17,14 +17,15 @@ function buildPlans(): Record<PlanKey, PlanConfig> {
       name: 'Lite',
       priceId: process.env.STRIPE_PRICE_LITE_MONTHLY ?? '',
       priceIdAnnual: process.env.STRIPE_PRICE_LITE_YEARLY ?? '',
-      price: 29,
-      priceAnnual: 23,
+      price: 19.9,
+      priceAnnual: 15.83, // EUR 190/year ÷ 12
       profileLimit: 3,
       description: 'For solo businesses',
       features: [
-        '3 Google Business Profiles',
+        '1–3 Google Business Profiles',
         'Email alerts',
         'AI reply suggestions',
+        'AI auto-reply agents',
         'Basic reports',
         'CSV export',
       ],
@@ -34,13 +35,13 @@ function buildPlans(): Record<PlanKey, PlanConfig> {
       priceId: process.env.STRIPE_PRICE_PRO_MONTHLY ?? '',
       priceIdAnnual: process.env.STRIPE_PRICE_PRO_YEARLY ?? '',
       price: 59,
-      priceAnnual: 47,
-      profileLimit: 15,
+      priceAnnual: 47.17, // EUR 566/year ÷ 12
+      profileLimit: 10,
       description: 'For teams & small chains',
       features: [
-        '15 Google Business Profiles',
+        'Everything in Lite',
+        '4–10 Google Business Profiles',
         'Email + Slack alerts',
-        'AI auto-reply agents',
         'Advanced reports',
         'Review widgets',
         'Review auto-tagging',
@@ -50,17 +51,18 @@ function buildPlans(): Record<PlanKey, PlanConfig> {
       name: 'Agency',
       priceId: process.env.STRIPE_PRICE_AGENCY_MONTHLY ?? '',
       priceIdAnnual: process.env.STRIPE_PRICE_AGENCY_YEARLY ?? '',
-      price: 5,        // per profile/mo
-      priceAnnual: 4,  // per profile/mo billed annually
+      price: 0,
+      priceAnnual: 0,
       profileLimit: -1,
       description: 'For agencies & franchises',
       features: [
-        'Unlimited profiles (€5/profile/mo)',
         'Everything in Pro',
+        'Unlimited profiles',
         'Custom AI prompts',
         'Sentiment analysis',
         'Magic review links',
         'Priority support',
+        'Dedicated account manager',
       ],
     },
   }

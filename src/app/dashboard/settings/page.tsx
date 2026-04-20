@@ -18,6 +18,9 @@ export default async function SettingsPage() {
     .eq('id', user.id)
     .single()
 
+  const provider = user.app_metadata?.provider ?? ''
+  const isGoogleUser = provider === 'google'
+
   return (
     <SidebarProvider>
       <div className="flex h-screen overflow-hidden bg-muted/20">
@@ -30,6 +33,7 @@ export default async function SettingsPage() {
               fullName={userData?.full_name ?? null}
               planName={userData?.plan_name ?? null}
               subscriptionStatus={userData?.subscription_status ?? null}
+              isGoogleUser={isGoogleUser}
             />
           </div>
         </main>

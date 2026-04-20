@@ -13,7 +13,7 @@ import { Label } from '@/components/ui/label'
 import { Separator } from '@/components/ui/separator'
 import { GoogleOAuthButton } from './google-oauth-button'
 import { createClient } from '@/lib/supabase/client'
-import { CheckCircle2, Mail, Eye, EyeOff } from 'lucide-react'
+import { CheckCircle2, Mail, Eye, EyeOff, ArrowRight } from 'lucide-react'
 import { cn } from '@/lib/utils'
 
 const schema = z.object({
@@ -38,6 +38,12 @@ function getStrength(password: string): { score: number; label: string; color: s
   return                     { score, label: 'Very strong', color: 'bg-emerald-600' }
 }
 
+const PROFILE_OPTIONS = [
+  { label: '1–3 profiles', sub: 'Lite — EUR 19,90/mo', value: 'lite' },
+  { label: '4–10 profiles', sub: 'Pro — EUR 59/mo', value: 'pro' },
+  { label: '11+ profiles', sub: 'Agency — contact us', value: 'agency' },
+]
+
 export function SignupForm() {
   const router = useRouter()
   const [loading, setLoading] = useState(false)
@@ -45,6 +51,8 @@ export function SignupForm() {
   const [sentToEmail, setSentToEmail] = useState('')
   const [password, setPassword] = useState('')
   const [showPassword, setShowPassword] = useState(false)
+  const [profilePlan, setProfilePlan] = useState<string | null>(null)
+  const [showForm, setShowForm] = useState(false)
 
   const { register, handleSubmit, formState: { errors } } = useForm<FormData>({
     resolver: zodResolver(schema),
@@ -57,7 +65,7 @@ export function SignupForm() {
       email: data.email,
       password: data.password,
       options: {
-        data: { full_name: data.fullName },
+        data: { full_name: data.fullName, intended_plan: profilePlan },
         emailRedirectTo: `${window.location.origin}/api/auth/callback`,
       },
     })
@@ -65,6 +73,42 @@ export function SignupForm() {
     setSentToEmail(data.email)
     setEmailSent(true)
     setLoading(false)
+  }
+
+  const handlePlanSelect = (value: string) => {
+    if (value === 'agency') { router.push('/demo'); return }
+    setProfilePlan(value)
+    setShowForm(true)
+  }
+
+  if (!showForm) {
+    return (
+      <div>
+        <div className="mb-7">
+          <h1 className="text-2xl font-bold text-foreground mb-1">How many Google profiles do you manage?</h1>
+          <p className="text-muted-foreground text-sm">We&apos;ll recommend the right plan for you.</p>
+        </div>
+        <div className="space-y-3">
+          {PROFILE_OPTIONS.map((opt) => (
+            <button
+              key={opt.value}
+              onClick={() => handlePlanSelect(opt.value)}
+              className="w-full flex items-center justify-between p-4 rounded-xl border border-border hover:border-primary transition-colors text-left"
+            >
+              <div>
+                <p className="font-semibold text-sm">{opt.label}</p>
+                <p className="text-xs text-muted-foreground mt-0.5">{opt.sub}</p>
+              </div>
+              <ArrowRight className="w-4 h-4 text-muted-foreground" />
+            </button>
+          ))}
+        </div>
+        <p className="text-center text-sm text-muted-foreground mt-5">
+          Already have an account?{' '}
+          <Link href="/login" className="text-primary font-semibold hover:underline">Sign in</Link>
+        </p>
+      </div>
+    )
   }
 
   if (emailSent) {
