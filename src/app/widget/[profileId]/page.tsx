@@ -26,8 +26,9 @@ export default async function WidgetPage({ params }: WidgetPageProps) {
 
   if (!profile) notFound()
 
-  const theme       = config?.theme       ?? 'light'
-  const accentColor = config?.accent_color ?? '#6366f1'
+  const theme       = config?.theme === 'dark' ? 'dark' : 'light'
+  const rawAccent   = config?.accent_color ?? '#6366f1'
+  const accentColor = /^#[0-9a-fA-F]{3,8}$/.test(rawAccent) ? rawAccent : '#6366f1'
   const minRating   = config?.min_rating   ?? 1
   const maxReviews  = config?.max_reviews  ?? 6
   const showDates   = config?.show_dates   ?? true

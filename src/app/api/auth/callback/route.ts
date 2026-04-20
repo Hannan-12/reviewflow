@@ -47,8 +47,8 @@ export async function GET(request: NextRequest) {
           const trialStillValid = existing.trial_ends_at && new Date(existing.trial_ends_at) > new Date()
           const statusWrong = existing.subscription_status !== 'trialing' && trialStillValid
 
-          if (noTrial) {
-            // User exists but never had a trial — grant one (edge case)
+          if (noTrial && !['active', 'canceled', 'past_due', 'trialing'].includes(existing.subscription_status ?? '')) {
+            // User exists but never had a trial and has never subscribed — grant one
             await admin.from('users').update({
               subscription_status: 'trialing',
               trial_ends_at: trialEndsAt,

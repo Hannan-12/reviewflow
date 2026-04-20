@@ -31,13 +31,7 @@ export async function POST(request: NextRequest) {
       .eq('id', user.id)
       .single()
 
-    // Block if user already has an active/trialing subscription
-    if (userData?.stripe_subscription_id && (userData.subscription_status === 'active' || userData.subscription_status === 'trialing')) {
-      return NextResponse.json(
-        { error: 'You already have an active subscription. Use "Manage subscription" to change plans.' },
-        { status: 400 }
-      )
-    }
+    // Allow checkout even with existing subscription — old subscription will be cancelled below to allow plan changes
 
     let customerId = userData?.stripe_customer_id
 
