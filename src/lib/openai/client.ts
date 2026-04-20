@@ -102,7 +102,7 @@ SPECIAL CASES — handle these exactly as described:
 Always end with a forward-looking line (e.g. hope to see them again, commitment to improvement, or invitation to reach out).`
 
   try {
-    return await generateText(prompt, 700)
+    return await generateText(prompt, 1200)
   } catch (error) {
     console.error('Error generating reply from AI:', error)
     throw error
