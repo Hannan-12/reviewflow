@@ -756,7 +756,7 @@ export default function HomePage() {
                 ))}
               </ul>
               {p.agency ? (
-                <a href="mailto:hello@gohighreview.de" className="block">
+                <a href="/agency" className="block">
                   <button className="w-full py-3 rounded-xl font-bold text-sm transition-all hover:opacity-90" style={{ background: Y, color: BG }}>
                     {(t as typeof t & { pricing_contact: string }).pricing_contact}
                   </button>

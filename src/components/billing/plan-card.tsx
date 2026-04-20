@@ -154,9 +154,9 @@ export function PlanCard({ name, price, annual, description, features, priceId, 
 
       {/* CTA */}
       {isAgency ? (
-        <a href="mailto:hello@gohighreview.de" className="block">
+        <a href="/agency" className="block">
           <Button className="w-full font-semibold h-10" variant="default">
-            Contact us
+            Contact us for a quote
           </Button>
         </a>
       ) : (
