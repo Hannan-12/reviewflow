@@ -117,27 +117,30 @@ export function PlanCard({ name, price, annual, description, features, priceId, 
       {/* Plan name & price */}
       <div className="mb-5">
         <p className={cn('font-bold text-base mb-3', isPopular ? 'text-white' : '')}>{name}</p>
-        <div className="flex items-end gap-1 mb-1.5">
-          <span className={cn('text-4xl font-bold tracking-tight', isPopular ? 'text-white' : '')}>
-            €{price}
-          </span>
-          <span className={cn('text-sm mb-1.5', isPopular ? 'text-white/60' : 'text-muted-foreground')}>
-            {isAgency ? '/profile/mo' : annual ? '/mo*' : '/mo'}
-          </span>
-        </div>
+        {isAgency ? (
+          <div className="mb-1.5">
+            <span className={cn('text-3xl font-bold tracking-tight', isPopular ? 'text-white' : '')}>Auf Anfrage</span>
+          </div>
+        ) : (
+          <div className="flex items-end gap-1 mb-1.5">
+            <span className={cn('text-4xl font-bold tracking-tight', isPopular ? 'text-white' : '')}>
+              €{price % 1 === 0 ? price : price.toFixed(2).replace('.', ',')}
+            </span>
+            <span className={cn('text-sm mb-1.5', isPopular ? 'text-white/60' : 'text-muted-foreground')}>
+              {annual ? '/mo*' : '/mo'}
+            </span>
+          </div>
+        )}
         <p className={cn('text-sm', isPopular ? 'text-white/65' : 'text-muted-foreground')}>{description}</p>
         {annual && !isAgency && (
           <p className={cn('text-xs mt-1', isPopular ? 'text-white/50' : 'text-muted-foreground/70')}>
-            * billed as €{price * 12}/yr
+            * billed as €{(price * 12).toFixed(2).replace('.', ',')}/yr
           </p>
         )}
       </div>
 
       {/* Divider */}
       <div className={cn('h-px mb-5', isPopular ? 'bg-white/15' : 'bg-border')} />
-
-      {/* Agency calculator */}
-      {isAgency && <AgencyCalculator isPopular={isPopular} onQuantityChange={setAgencyQuantity} />}
 
       {/* Features */}
       <ul className="space-y-2.5 flex-1 mb-6">
@@ -150,17 +153,25 @@ export function PlanCard({ name, price, annual, description, features, priceId, 
       </ul>
 
       {/* CTA */}
-      <Button
-        className={cn(
-          'w-full font-semibold h-10',
-          isPopular ? 'bg-white text-primary hover:bg-white/90 shadow-none' : ''
-        )}
-        variant={isCurrentPlan ? 'outline' : isPopular ? 'secondary' : 'default'}
-        disabled={isCurrentPlan || loading}
-        onClick={handleSelect}
-      >
-        {isCurrentPlan ? 'Current plan' : loading ? 'Redirecting…' : `Get ${name}`}
-      </Button>
+      {isAgency ? (
+        <a href="mailto:hello@gohighreview.de" className="block">
+          <Button className="w-full font-semibold h-10" variant="default">
+            Contact us
+          </Button>
+        </a>
+      ) : (
+        <Button
+          className={cn(
+            'w-full font-semibold h-10',
+            isPopular ? 'bg-white text-primary hover:bg-white/90 shadow-none' : ''
+          )}
+          variant={isCurrentPlan ? 'outline' : isPopular ? 'secondary' : 'default'}
+          disabled={isCurrentPlan || loading}
+          onClick={handleSelect}
+        >
+          {isCurrentPlan ? 'Current plan' : loading ? 'Redirecting…' : `Get ${name}`}
+        </Button>
+      )}
     </div>
   )
 }

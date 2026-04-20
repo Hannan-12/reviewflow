@@ -24,21 +24,22 @@ const faqItems = [
 ]
 
 const comparisonFeatures = [
-  { label: 'Google Business Profiles', lite: '3', pro: '15', agency: 'Unlimited' },
+  { label: 'Google Business Profiles', lite: '1–3', pro: '4–10', agency: 'Unlimited' },
   { label: 'Review dashboard', lite: true, pro: true, agency: true },
   { label: 'Email alerts', lite: true, pro: true, agency: true },
-  { label: 'CSV export', lite: true, pro: true, agency: true },
+  { label: 'AI reply suggestions', lite: true, pro: true, agency: true },
+  { label: 'AI auto-reply agents', lite: true, pro: true, agency: true },
   { label: 'Basic reports', lite: true, pro: true, agency: true },
+  { label: 'CSV export', lite: true, pro: true, agency: true },
   { label: 'Slack notifications', lite: false, pro: true, agency: true },
-  { label: 'AI reply suggestions', lite: false, pro: true, agency: true },
   { label: 'Advanced reports', lite: false, pro: true, agency: true },
   { label: 'Review auto-tagging', lite: false, pro: true, agency: true },
   { label: 'Review widget', lite: false, pro: true, agency: true },
-  { label: 'AI auto-reply agents', lite: false, pro: false, agency: true },
   { label: 'Magic review links', lite: false, pro: false, agency: true },
   { label: 'Sentiment analysis', lite: false, pro: false, agency: true },
   { label: 'Custom AI prompts', lite: false, pro: false, agency: true },
   { label: 'Priority support', lite: false, pro: false, agency: true },
+  { label: 'Dedicated account manager', lite: false, pro: false, agency: true },
 ]
 
 function FeatureValue({ val }: { val: boolean | string }) {

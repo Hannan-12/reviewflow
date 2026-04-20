@@ -539,7 +539,7 @@ function LanguageSwitcher({ lang, onSelect }: { lang: LangCode; onSelect: (code:
 // ─── Main page ──────────────────────────────────────────────
 export default function HomePage() {
   const [annual, setAnnual] = useState(false)
-  const [lang, setLang] = useState<LangCode>('en')
+  const [lang, setLang] = useState<LangCode>('de')
   const t = T[lang]
   const isRtl = languages.find((l) => l.code === lang)?.rtl ?? false
 
