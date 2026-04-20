@@ -66,13 +66,13 @@ export async function GET(request: NextRequest) {
           }
           // If trial expired → do nothing; middleware redirects to /billing
         }
-      }
 
-      // After all user setup — redirect to billing checkout if intended_plan is set and not yet subscribed
-      const intendedPlan = user?.user_metadata?.intended_plan
-      const hasSubscription = existing?.stripe_subscription_id || existing?.subscription_status === 'active'
-      if (intendedPlan && (intendedPlan === 'lite' || intendedPlan === 'pro') && !hasSubscription) {
-        return NextResponse.redirect(`${origin}/billing?checkout=${intendedPlan}`)
+        // After all user setup — redirect to billing checkout if intended_plan is set and not yet subscribed
+        const intendedPlan = user.user_metadata?.intended_plan
+        const hasSubscription = existing?.stripe_subscription_id || existing?.subscription_status === 'active'
+        if (intendedPlan && (intendedPlan === 'lite' || intendedPlan === 'pro') && !hasSubscription) {
+          return NextResponse.redirect(`${origin}/billing?checkout=${intendedPlan}`)
+        }
       }
 
       return NextResponse.redirect(`${origin}${next}`)
