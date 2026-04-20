@@ -49,20 +49,30 @@ export async function POST(request: NextRequest) {
         .eq('id', user.id)
     } else {
       // Cancel any existing active subscriptions before creating a new one
-      const existingSubs = await getStripe().subscriptions.list({
-        customer: customerId,
-        status: 'active',
-      })
-      for (const sub of existingSubs.data) {
-        await getStripe().subscriptions.cancel(sub.id)
-      }
-      // Also cancel trialing subscriptions
-      const trialSubs = await getStripe().subscriptions.list({
-        customer: customerId,
-        status: 'trialing',
-      })
-      for (const sub of trialSubs.data) {
-        await getStripe().subscriptions.cancel(sub.id)
+      try {
+        const existingSubs = await getStripe().subscriptions.list({
+          customer: customerId,
+          status: 'active',
+        })
+        for (const sub of existingSubs.data) {
+          await getStripe().subscriptions.cancel(sub.id)
+        }
+        const trialSubs = await getStripe().subscriptions.list({
+          customer: customerId,
+          status: 'trialing',
+        })
+        for (const sub of trialSubs.data) {
+          await getStripe().subscriptions.cancel(sub.id)
+        }
+      } catch {
+        // Customer ID is from a different Stripe mode (e.g. live vs test) — create a fresh one
+        const customer = await getStripe().customers.create({
+          email: user.email,
+          name: userData?.full_name ?? undefined,
+          metadata: { supabase_user_id: user.id },
+        })
+        customerId = customer.id
+        await supabase.from('users').update({ stripe_customer_id: customerId }).eq('id', user.id)
       }
     }
 

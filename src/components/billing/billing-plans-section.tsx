@@ -1,6 +1,7 @@
 'use client'
 
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
+import { useRouter } from 'next/navigation'
 import { PlanCard } from './plan-card'
 import { BillingToggle } from './billing-toggle'
 
@@ -19,10 +20,27 @@ interface BillingPlansSectionProps {
   plans: PlanData[]
   currentPlanKey: string
   isSubscribed: boolean
+  autoCheckout?: string
 }
 
-export function BillingPlansSection({ plans, currentPlanKey, isSubscribed }: BillingPlansSectionProps) {
+export function BillingPlansSection({ plans, currentPlanKey, isSubscribed, autoCheckout }: BillingPlansSectionProps) {
   const [annual, setAnnual] = useState(false)
+  const router = useRouter()
+
+  useEffect(() => {
+    if (!autoCheckout) return
+    const plan = plans.find(p => p.key === autoCheckout)
+    if (!plan) return
+    const priceId = plan.priceId
+    if (!priceId) return
+    fetch('/api/stripe/checkout', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ priceId }),
+    })
+      .then(r => r.json())
+      .then(d => { if (d.url) router.push(d.url) })
+  }, [autoCheckout]) // eslint-disable-line react-hooks/exhaustive-deps
 
   return (
     <div>

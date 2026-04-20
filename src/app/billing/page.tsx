@@ -51,7 +51,7 @@ function FeatureValue({ val }: { val: boolean | string }) {
 export default async function BillingPage({
   searchParams,
 }: {
-  searchParams: Promise<{ success?: string; canceled?: string; expired?: string }>
+  searchParams: Promise<{ success?: string; canceled?: string; expired?: string; checkout?: string }>
 }) {
   const supabase = await createClient()
   const { data: { user } } = await supabase.auth.getUser()
@@ -63,7 +63,7 @@ export default async function BillingPage({
     .eq('id', user.id)
     .single()
 
-  const { success, canceled, expired } = await searchParams
+  const { success, canceled, expired, checkout } = await searchParams
 
   const isSubscribed = userData?.subscription_status === 'active' || userData?.subscription_status === 'trialing'
   const isTrialing = userData?.subscription_status === 'trialing'
@@ -235,6 +235,7 @@ export default async function BillingPage({
               }))}
               currentPlanKey={currentPlanKey}
               isSubscribed={isSubscribed}
+              autoCheckout={checkout === 'lite' || checkout === 'pro' ? checkout : undefined}
             />
 
             {/* Feature comparison table */}

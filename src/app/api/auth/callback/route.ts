@@ -28,7 +28,7 @@ export async function GET(request: NextRequest) {
 
         const { data: existing } = await admin
           .from('users')
-          .select('id, subscription_status, trial_ends_at')
+          .select('id, subscription_status, trial_ends_at, stripe_subscription_id')
           .eq('id', user.id)
           .single()
 
@@ -42,6 +42,11 @@ export async function GET(request: NextRequest) {
             subscription_status: 'trialing',
             trial_ends_at: trialEndsAt,
           })
+          // Send new Google OAuth users to plan selection before dashboard
+          const isOAuth = user.app_metadata?.provider === 'google'
+          if (isOAuth && !user.user_metadata?.intended_plan) {
+            return NextResponse.redirect(`${origin}/onboarding`)
+          }
         } else if (existing.subscription_status !== 'active') {
           const noTrial = !existing.trial_ends_at
           const trialStillValid = existing.trial_ends_at && new Date(existing.trial_ends_at) > new Date()
@@ -61,6 +66,13 @@ export async function GET(request: NextRequest) {
           }
           // If trial expired → do nothing; middleware redirects to /billing
         }
+      }
+
+      // After all user setup — redirect to billing checkout if intended_plan is set and not yet subscribed
+      const intendedPlan = user?.user_metadata?.intended_plan
+      const hasSubscription = existing?.stripe_subscription_id || existing?.subscription_status === 'active'
+      if (intendedPlan && (intendedPlan === 'lite' || intendedPlan === 'pro') && !hasSubscription) {
+        return NextResponse.redirect(`${origin}/billing?checkout=${intendedPlan}`)
       }
 
       return NextResponse.redirect(`${origin}${next}`)
