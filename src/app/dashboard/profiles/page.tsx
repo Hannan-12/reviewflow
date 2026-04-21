@@ -4,6 +4,7 @@ import { Header } from '@/components/dashboard/header'
 import { Sidebar } from '@/components/dashboard/sidebar'
 import { SidebarProvider } from '@/components/dashboard/sidebar-context'
 import { ProfilesManager } from '@/components/dashboard/profiles-manager'
+import { getServerT } from '@/lib/i18n/server'
 
 export const metadata = { title: 'Profiles — GoHighReview' }
 
@@ -15,6 +16,7 @@ export default async function ProfilesPage({
   const supabase = await createClient()
   const { data: { user } } = await supabase.auth.getUser()
   if (!user) redirect('/login')
+  const t = await getServerT()
 
   const [{ data: userData }, { data: profiles }] = await Promise.all([
     supabase
@@ -44,7 +46,7 @@ export default async function ProfilesPage({
       <div className="flex h-screen overflow-hidden bg-muted/20">
         <Sidebar planName={userData?.plan_name ?? 'free'} />
         <main className="flex-1 overflow-y-auto">
-          <Header title="Profiles" />
+          <Header title={t.nav_profiles} />
           <div className="max-w-4xl mx-auto p-5 space-y-5 page-animate">
             <ProfilesManager
               profiles={profiles ?? []}

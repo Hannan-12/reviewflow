@@ -75,7 +75,7 @@ export default async function ReviewsPage({
       <div className="flex h-screen overflow-hidden bg-muted/20">
         <Sidebar planName={userData?.plan_name ?? 'free'} />
         <main className="flex-1 overflow-y-auto">
-          <Header title="Reviews" />
+          <Header title={t.nav_reviews} />
           <div className="max-w-5xl mx-auto p-5 space-y-5 page-animate">
 
             {!hasProfiles ? (

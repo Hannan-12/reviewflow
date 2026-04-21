@@ -4,6 +4,7 @@ import { useState, useEffect } from 'react'
 import { Button } from '@/components/ui/button'
 import { toast } from 'sonner'
 import { Copy, ExternalLink, Code2 } from 'lucide-react'
+import { useDashboardLang } from '@/components/dashboard/lang-context'
 
 interface Profile {
   id: string
@@ -24,6 +25,7 @@ interface WidgetConfiguratorProps {
 }
 
 export function WidgetConfigurator({ profiles, appUrl }: WidgetConfiguratorProps) {
+  const { t } = useDashboardLang()
   const [selectedProfile, setSelectedProfile] = useState<string>(profiles[0]?.id ?? '')
   const [config, setConfig] = useState<WidgetConfig>({
     theme: 'light', max_reviews: 6, min_rating: 4, show_dates: true, accent_color: '#6366f1',
@@ -64,8 +66,8 @@ export function WidgetConfigurator({ profiles, appUrl }: WidgetConfiguratorProps
         accentColor: config.accent_color,
       }),
     })
-    if (res.ok) toast.success('Widget settings saved')
-    else toast.error('Failed to save settings')
+    if (res.ok) toast.success(t.wgt_saved_toast)
+    else toast.error(t.wgt_save_failed_toast)
     setSaving(false)
   }
 
@@ -75,13 +77,13 @@ export function WidgetConfigurator({ profiles, appUrl }: WidgetConfiguratorProps
 
   const copyEmbed = () => {
     navigator.clipboard.writeText(embedCode)
-    toast.success('Embed code copied!')
+    toast.success(t.wgt_copied_toast)
   }
 
   if (profiles.length === 0) {
     return (
       <div className="glass-card rounded-2xl p-10 text-center">
-        <p className="text-muted-foreground text-sm">No profiles yet. Add a Google Business Profile first.</p>
+        <p className="text-muted-foreground text-sm">{t.wgt_no_profiles}</p>
       </div>
     )
   }
@@ -90,10 +92,10 @@ export function WidgetConfigurator({ profiles, appUrl }: WidgetConfiguratorProps
     <div className="space-y-4">
       {/* Profile selector */}
       <div className="glass-card rounded-2xl p-5 space-y-4">
-        <h2 className="font-semibold text-sm">Widget Settings</h2>
+        <h2 className="font-semibold text-sm">{t.wgt_title}</h2>
 
         <div className="space-y-1">
-          <label className="text-xs font-medium text-muted-foreground">Profile</label>
+          <label className="text-xs font-medium text-muted-foreground">{t.wgt_profile_label}</label>
           <select
             value={selectedProfile}
             onChange={e => setSelectedProfile(e.target.value)}
@@ -111,20 +113,20 @@ export function WidgetConfigurator({ profiles, appUrl }: WidgetConfiguratorProps
           <div className="grid grid-cols-2 gap-4">
             {/* Theme */}
             <div className="space-y-1">
-              <label className="text-xs font-medium text-muted-foreground">Theme</label>
+              <label className="text-xs font-medium text-muted-foreground">{t.wgt_theme_label}</label>
               <select
                 value={config.theme}
                 onChange={e => setConfig(c => ({ ...c, theme: e.target.value as 'light' | 'dark' }))}
                 className="w-full h-9 text-sm rounded-lg border border-border bg-card px-2 focus:outline-none focus:ring-1 focus:ring-primary"
               >
-                <option value="light">Light</option>
-                <option value="dark">Dark</option>
+                <option value="light">{t.wgt_theme_light}</option>
+                <option value="dark">{t.wgt_theme_dark}</option>
               </select>
             </div>
 
             {/* Max reviews */}
             <div className="space-y-1">
-              <label className="text-xs font-medium text-muted-foreground">Max reviews shown</label>
+              <label className="text-xs font-medium text-muted-foreground">{t.wgt_max_reviews_label}</label>
               <select
                 value={config.max_reviews}
                 onChange={e => setConfig(c => ({ ...c, max_reviews: Number(e.target.value) }))}
@@ -138,21 +140,21 @@ export function WidgetConfigurator({ profiles, appUrl }: WidgetConfiguratorProps
 
             {/* Min rating */}
             <div className="space-y-1">
-              <label className="text-xs font-medium text-muted-foreground">Minimum rating to show</label>
+              <label className="text-xs font-medium text-muted-foreground">{t.wgt_min_rating_label}</label>
               <select
                 value={config.min_rating}
                 onChange={e => setConfig(c => ({ ...c, min_rating: Number(e.target.value) }))}
                 className="w-full h-9 text-sm rounded-lg border border-border bg-card px-2 focus:outline-none focus:ring-1 focus:ring-primary"
               >
                 {[1, 2, 3, 4, 5].map(n => (
-                  <option key={n} value={n}>{n}★ and above</option>
+                  <option key={n} value={n}>{n}{t.wgt_and_above}</option>
                 ))}
               </select>
             </div>
 
             {/* Accent color */}
             <div className="space-y-1">
-              <label className="text-xs font-medium text-muted-foreground">Accent color</label>
+              <label className="text-xs font-medium text-muted-foreground">{t.wgt_accent_label}</label>
               <div className="flex items-center gap-2">
                 <input
                   type="color"
@@ -175,14 +177,14 @@ export function WidgetConfigurator({ profiles, appUrl }: WidgetConfiguratorProps
                 >
                   <span className={`pointer-events-none inline-block h-4 w-4 rounded-full bg-white shadow-sm transition-transform ${config.show_dates ? 'translate-x-4' : 'translate-x-0'}`} />
                 </button>
-                <span className="text-sm">Show review dates</span>
+                <span className="text-sm">{t.wgt_show_dates}</span>
               </div>
             </div>
           </div>
         )}
 
         <Button size="sm" onClick={handleSave} disabled={saving} className="font-semibold">
-          {saving ? 'Saving...' : 'Save Settings'}
+          {saving ? t.wgt_saving : t.wgt_save}
         </Button>
       </div>
 
@@ -190,10 +192,10 @@ export function WidgetConfigurator({ profiles, appUrl }: WidgetConfiguratorProps
       <div className="glass-card rounded-2xl p-5 space-y-3">
         <div className="flex items-center gap-2">
           <Code2 className="w-4 h-4 text-primary" />
-          <h2 className="font-semibold text-sm">Embed on your website</h2>
+          <h2 className="font-semibold text-sm">{t.wgt_embed_title}</h2>
         </div>
         <p className="text-xs text-muted-foreground">
-          Copy and paste this code anywhere on your website to display your reviews.
+          {t.wgt_embed_desc}
         </p>
         <div className="bg-muted rounded-xl p-3 font-mono text-xs text-muted-foreground break-all">
           {embedCode}
@@ -201,12 +203,12 @@ export function WidgetConfigurator({ profiles, appUrl }: WidgetConfiguratorProps
         <div className="flex gap-2">
           <Button size="sm" variant="outline" onClick={copyEmbed} className="gap-1.5">
             <Copy className="w-3.5 h-3.5" />
-            Copy embed code
+            {t.wgt_copy_embed}
           </Button>
           <a href={previewUrl} target="_blank" rel="noopener noreferrer">
             <Button size="sm" variant="outline" className="gap-1.5">
               <ExternalLink className="w-3.5 h-3.5" />
-              Preview widget
+              {t.wgt_preview}
             </Button>
           </a>
         </div>

@@ -4,6 +4,7 @@ import { Header } from '@/components/dashboard/header'
 import { Sidebar } from '@/components/dashboard/sidebar'
 import { SidebarProvider } from '@/components/dashboard/sidebar-context'
 import { SettingsClient } from '@/components/dashboard/settings-client'
+import { getServerT } from '@/lib/i18n/server'
 
 export const metadata = { title: 'Settings — GoHighReview' }
 
@@ -11,6 +12,7 @@ export default async function SettingsPage() {
   const supabase = await createClient()
   const { data: { user } } = await supabase.auth.getUser()
   if (!user) redirect('/login')
+  const t = await getServerT()
 
   const { data: userData } = await supabase
     .from('users')
@@ -26,7 +28,7 @@ export default async function SettingsPage() {
       <div className="flex h-screen overflow-hidden bg-muted/20">
         <Sidebar planName={userData?.plan_name ?? 'free'} />
         <main className="flex-1 overflow-y-auto">
-          <Header title="Settings" breadcrumbs={[{ label: 'Dashboard', href: '/dashboard' }]} />
+          <Header title={t.nav_settings} breadcrumbs={[{ label: t.nav_dashboard, href: '/dashboard' }]} />
           <div className="p-5 page-animate">
             <SettingsClient
               email={user.email ?? ''}

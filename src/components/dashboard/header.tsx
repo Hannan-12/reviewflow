@@ -3,6 +3,7 @@ import Link from 'next/link'
 import { ChevronRight } from 'lucide-react'
 import { NotificationBell } from './notification-bell'
 import { DashboardLangSwitcher } from './lang-switcher'
+import { getServerT } from '@/lib/i18n/server'
 
 interface HeaderProps {
   title: string
@@ -12,6 +13,7 @@ interface HeaderProps {
 export async function Header({ title, breadcrumbs }: HeaderProps) {
   const supabase = await createClient()
   const { data: { user } } = await supabase.auth.getUser()
+  const t = await getServerT()
 
   const { data: userData } = await supabase
     .from('users')
@@ -65,7 +67,7 @@ export async function Header({ title, breadcrumbs }: HeaderProps) {
                 : 'bg-primary/8 text-primary border border-primary/20 hover:bg-primary/12'
             }`}>
               <span className={`w-1.5 h-1.5 rounded-full animate-pulse ${isUrgent ? 'bg-red-500' : 'bg-primary'}`} />
-              {trialDaysLeft}d left in trial
+              {trialDaysLeft}{t.trial_left}
             </span>
           </Link>
         )}

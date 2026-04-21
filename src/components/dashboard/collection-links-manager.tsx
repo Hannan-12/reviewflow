@@ -4,6 +4,7 @@ import { useState, useEffect, useCallback } from 'react'
 import { Button } from '@/components/ui/button'
 import { toast } from 'sonner'
 import { Copy, Trash2, Plus, Link2, QrCode, MousePointerClick } from 'lucide-react'
+import { useDashboardLang } from '@/components/dashboard/lang-context'
 
 interface Profile {
   id: string
@@ -28,6 +29,7 @@ interface CollectionLinksManagerProps {
 }
 
 export function CollectionLinksManager({ profiles, appUrl }: CollectionLinksManagerProps) {
+  const { t } = useDashboardLang()
   const [links, setLinks] = useState<CollectionLink[]>([])
   const [loading, setLoading] = useState(true)
   const [creating, setCreating] = useState(false)
@@ -36,8 +38,8 @@ export function CollectionLinksManager({ profiles, appUrl }: CollectionLinksMana
 
   const [form, setForm] = useState({
     profileId:        profiles[0]?.id ?? '',
-    title:            'Leave us a review!',
-    message:          'Your feedback means the world to us. It only takes 30 seconds!',
+    title:            t.col_default_title,
+    message:          t.col_default_message,
     googleReviewUrl:  '',
   })
 
@@ -51,7 +53,7 @@ export function CollectionLinksManager({ profiles, appUrl }: CollectionLinksMana
   useEffect(() => { fetchLinks() }, [fetchLinks])
 
   const handleCreate = async () => {
-    if (!form.profileId) { toast.error('Select a profile'); return }
+    if (!form.profileId) { toast.error(t.col_no_profiles); return }
     setCreating(true)
     const res = await fetch('/api/collection-links', {
       method: 'POST',
@@ -59,25 +61,25 @@ export function CollectionLinksManager({ profiles, appUrl }: CollectionLinksMana
       body: JSON.stringify(form),
     })
     if (res.ok) {
-      toast.success('Collection link created!')
+      toast.success(t.col_created_toast)
       setShowForm(false)
       fetchLinks()
     } else {
-      toast.error('Failed to create link')
+      toast.error(t.col_create_failed_toast)
     }
     setCreating(false)
   }
 
   const handleDelete = async (id: string) => {
-    if (!confirm('Delete this link?')) return
+    if (!confirm(t.col_delete_confirm)) return
     const res = await fetch(`/api/collection-links?id=${id}`, { method: 'DELETE' })
-    if (res.ok) { toast.success('Link deleted'); fetchLinks() }
-    else toast.error('Failed to delete')
+    if (res.ok) { toast.success(t.col_deleted_toast); fetchLinks() }
+    else toast.error(t.col_delete_failed_toast)
   }
 
   const copyLink = (slug: string) => {
     navigator.clipboard.writeText(`${appUrl}/collect/${slug}`)
-    toast.success('Link copied!')
+    toast.success(t.col_copied_toast)
   }
 
   const qrUrl = (slug: string) =>
@@ -86,7 +88,7 @@ export function CollectionLinksManager({ profiles, appUrl }: CollectionLinksMana
   if (profiles.length === 0) {
     return (
       <div className="glass-card rounded-2xl p-10 text-center">
-        <p className="text-muted-foreground text-sm">No profiles yet. Add a Google Business Profile first.</p>
+        <p className="text-muted-foreground text-sm">{t.col_no_profiles}</p>
       </div>
     )
   }
@@ -96,21 +98,21 @@ export function CollectionLinksManager({ profiles, appUrl }: CollectionLinksMana
       {/* Header row */}
       <div className="flex items-center justify-between">
         <p className="text-sm text-muted-foreground">
-          Share these links with customers to collect more Google reviews.
+          {t.col_share_desc}
         </p>
         <Button size="sm" onClick={() => setShowForm(v => !v)} className="gap-1.5 font-semibold">
           <Plus className="w-3.5 h-3.5" />
-          New link
+          {t.col_new_link}
         </Button>
       </div>
 
       {/* Create form */}
       {showForm && (
         <div className="glass-card rounded-2xl p-5 space-y-4">
-          <h2 className="font-semibold text-sm">Create collection link</h2>
+          <h2 className="font-semibold text-sm">{t.col_form_title}</h2>
 
           <div className="space-y-1">
-            <label className="text-xs font-medium text-muted-foreground">Profile</label>
+            <label className="text-xs font-medium text-muted-foreground">{t.wgt_profile_label}</label>
             <select
               value={form.profileId}
               onChange={e => setForm(f => ({ ...f, profileId: e.target.value }))}
@@ -121,7 +123,7 @@ export function CollectionLinksManager({ profiles, appUrl }: CollectionLinksMana
           </div>
 
           <div className="space-y-1">
-            <label className="text-xs font-medium text-muted-foreground">Page title</label>
+            <label className="text-xs font-medium text-muted-foreground">{t.col_page_title_label}</label>
             <input
               type="text"
               value={form.title}
@@ -131,7 +133,7 @@ export function CollectionLinksManager({ profiles, appUrl }: CollectionLinksMana
           </div>
 
           <div className="space-y-1">
-            <label className="text-xs font-medium text-muted-foreground">Message to customer</label>
+            <label className="text-xs font-medium text-muted-foreground">{t.col_message_label}</label>
             <textarea
               value={form.message}
               onChange={e => setForm(f => ({ ...f, message: e.target.value }))}
@@ -142,7 +144,7 @@ export function CollectionLinksManager({ profiles, appUrl }: CollectionLinksMana
 
           <div className="space-y-1">
             <label className="text-xs font-medium text-muted-foreground">
-              Google review URL <span className="text-muted-foreground/60">(paste from GBP dashboard)</span>
+              {t.col_google_url_label} <span className="text-muted-foreground/60">{t.col_google_url_hint}</span>
             </label>
             <input
               type="url"
@@ -155,9 +157,9 @@ export function CollectionLinksManager({ profiles, appUrl }: CollectionLinksMana
 
           <div className="flex gap-2">
             <Button size="sm" onClick={handleCreate} disabled={creating} className="font-semibold">
-              {creating ? 'Creating...' : 'Create link'}
+              {creating ? t.col_creating : t.col_create}
             </Button>
-            <Button size="sm" variant="outline" onClick={() => setShowForm(false)}>Cancel</Button>
+            <Button size="sm" variant="outline" onClick={() => setShowForm(false)}>{t.col_cancel}</Button>
           </div>
         </div>
       )}
@@ -170,7 +172,7 @@ export function CollectionLinksManager({ profiles, appUrl }: CollectionLinksMana
       ) : links.length === 0 ? (
         <div className="glass-card rounded-2xl p-10 text-center">
           <Link2 className="w-8 h-8 text-muted-foreground/40 mx-auto mb-3" />
-          <p className="text-sm text-muted-foreground">No collection links yet. Create your first one!</p>
+          <p className="text-sm text-muted-foreground">{t.col_no_links}</p>
         </div>
       ) : (
         <div className="space-y-3">
@@ -189,7 +191,7 @@ export function CollectionLinksManager({ profiles, appUrl }: CollectionLinksMana
                   </p>
                   <div className="flex items-center gap-1 mt-2">
                     <MousePointerClick className="w-3 h-3 text-muted-foreground" />
-                    <span className="text-xs text-muted-foreground">{link.click_count} clicks</span>
+                    <span className="text-xs text-muted-foreground">{link.click_count} {t.col_clicks}</span>
                   </div>
                 </div>
                 <div className="flex items-center gap-1 shrink-0">
@@ -226,8 +228,8 @@ export function CollectionLinksManager({ profiles, appUrl }: CollectionLinksMana
                     className="rounded-lg border border-border"
                   />
                   <div className="space-y-1">
-                    <p className="text-xs font-medium">QR Code</p>
-                    <p className="text-xs text-muted-foreground">Print and place at your location for customers to scan and leave a review.</p>
+                    <p className="text-xs font-medium">{t.col_qr_title}</p>
+                    <p className="text-xs text-muted-foreground">{t.col_qr_desc}</p>
                     <a
                       href={qrUrl(link.slug)}
                       download={`qr-${link.slug}.png`}
@@ -235,7 +237,7 @@ export function CollectionLinksManager({ profiles, appUrl }: CollectionLinksMana
                       rel="noopener noreferrer"
                     >
                       <Button size="sm" variant="outline" className="h-7 text-xs mt-1">
-                        Download QR
+                        {t.col_download_qr}
                       </Button>
                     </a>
                   </div>
