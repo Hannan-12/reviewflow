@@ -1,0 +1,68 @@
+export const dashboardT = {
+  en: {
+    nav_dashboard: 'Dashboard', nav_profiles: 'Profiles', nav_reviews: 'Reviews',
+    nav_notifications: 'Notifications', nav_reports: 'Reports', nav_replies: 'Replies',
+    nav_widget: 'Widget', nav_collect: 'Collect Reviews', nav_billing: 'Billing',
+    nav_settings: 'Settings', nav_main: 'Main', nav_account: 'Account',
+    nav_theme: 'Theme', nav_signout: 'Sign out',
+    trial_left: 'd left in trial',
+    plan_badge: 'Plan',
+  },
+  de: {
+    nav_dashboard: 'Dashboard', nav_profiles: 'Profile', nav_reviews: 'Bewertungen',
+    nav_notifications: 'Benachrichtigungen', nav_reports: 'Berichte', nav_replies: 'Antworten',
+    nav_widget: 'Widget', nav_collect: 'Bewertungen sammeln', nav_billing: 'Abrechnung',
+    nav_settings: 'Einstellungen', nav_main: 'Hauptmenü', nav_account: 'Konto',
+    nav_theme: 'Design', nav_signout: 'Abmelden',
+    trial_left: 'T. Testphase',
+    plan_badge: 'Plan',
+  },
+  es: {
+    nav_dashboard: 'Panel', nav_profiles: 'Perfiles', nav_reviews: 'Reseñas',
+    nav_notifications: 'Notificaciones', nav_reports: 'Informes', nav_replies: 'Respuestas',
+    nav_widget: 'Widget', nav_collect: 'Recopilar reseñas', nav_billing: 'Facturación',
+    nav_settings: 'Configuración', nav_main: 'Principal', nav_account: 'Cuenta',
+    nav_theme: 'Tema', nav_signout: 'Cerrar sesión',
+    trial_left: 'd de prueba',
+    plan_badge: 'Plan',
+  },
+  it: {
+    nav_dashboard: 'Dashboard', nav_profiles: 'Profili', nav_reviews: 'Recensioni',
+    nav_notifications: 'Notifiche', nav_reports: 'Report', nav_replies: 'Risposte',
+    nav_widget: 'Widget', nav_collect: 'Raccogli recensioni', nav_billing: 'Fatturazione',
+    nav_settings: 'Impostazioni', nav_main: 'Principale', nav_account: 'Account',
+    nav_theme: 'Tema', nav_signout: 'Esci',
+    trial_left: 'g rimanenti',
+    plan_badge: 'Piano',
+  },
+  ar: {
+    nav_dashboard: 'لوحة التحكم', nav_profiles: 'الملفات', nav_reviews: 'التقييمات',
+    nav_notifications: 'الإشعارات', nav_reports: 'التقارير', nav_replies: 'الردود',
+    nav_widget: 'الأداة', nav_collect: 'جمع التقييمات', nav_billing: 'الفواتير',
+    nav_settings: 'الإعدادات', nav_main: 'الرئيسية', nav_account: 'الحساب',
+    nav_theme: 'المظهر', nav_signout: 'تسجيل الخروج',
+    trial_left: 'أيام متبقية',
+    plan_badge: 'الخطة',
+  },
+  zh: {
+    nav_dashboard: '仪表板', nav_profiles: '主页', nav_reviews: '评价',
+    nav_notifications: '通知', nav_reports: '报告', nav_replies: '回复',
+    nav_widget: '小工具', nav_collect: '收集评价', nav_billing: '账单',
+    nav_settings: '设置', nav_main: '主菜单', nav_account: '账户',
+    nav_theme: '主题', nav_signout: '退出登录',
+    trial_left: '天试用',
+    plan_badge: '计划',
+  },
+  hi: {
+    nav_dashboard: 'डैशबोर्ड', nav_profiles: 'प्रोफाइल', nav_reviews: 'समीक्षाएं',
+    nav_notifications: 'सूचनाएं', nav_reports: 'रिपोर्ट', nav_replies: 'उत्तर',
+    nav_widget: 'विजेट', nav_collect: 'समीक्षाएं एकत्र करें', nav_billing: 'बिलिंग',
+    nav_settings: 'सेटिंग्स', nav_main: 'मुख्य', nav_account: 'खाता',
+    nav_theme: 'थीम', nav_signout: 'साइन आउट',
+    trial_left: 'दिन शेष',
+    plan_badge: 'प्लान',
+  },
+} as const
+
+export type DashboardLang = keyof typeof dashboardT
+export type DashboardT = typeof dashboardT.en

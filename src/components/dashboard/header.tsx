@@ -2,6 +2,7 @@ import { createClient } from '@/lib/supabase/server'
 import Link from 'next/link'
 import { ChevronRight } from 'lucide-react'
 import { NotificationBell } from './notification-bell'
+import { DashboardLangSwitcher } from './lang-switcher'
 
 interface HeaderProps {
   title: string
@@ -69,6 +70,7 @@ export async function Header({ title, breadcrumbs }: HeaderProps) {
           </Link>
         )}
 
+        <DashboardLangSwitcher />
         <NotificationBell />
 
         {/* Avatar */}

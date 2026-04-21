@@ -12,23 +12,8 @@ import { createClient } from '@/lib/supabase/client'
 import { useRouter } from 'next/navigation'
 import { ThemeToggle } from '@/components/theme-toggle'
 import { useSidebar } from './sidebar-context'
+import { useDashboardLang } from './lang-context'
 import { useEffect, useState } from 'react'
-
-const navItems = [
-  { href: '/dashboard', label: 'Dashboard', icon: LayoutDashboard, shortcut: 'G D' },
-  { href: '/dashboard/profiles', label: 'Profiles', icon: MapPin, shortcut: 'G L' },
-  { href: '/dashboard/reviews', label: 'Reviews', icon: Star, shortcut: 'G R' },
-  { href: '/dashboard/notifications', label: 'Notifications', icon: Bell, shortcut: 'G N' },
-  { href: '/dashboard/reports', label: 'Reports', icon: BarChart3, shortcut: 'G A' },
-  { href: '/dashboard/replies', label: 'Replies', icon: MessageSquare, shortcut: 'G P' },
-  { href: '/dashboard/widget', label: 'Widget', icon: Code2, shortcut: 'G W' },
-  { href: '/dashboard/collect', label: 'Collect Reviews', icon: Link2, shortcut: 'G C' },
-]
-
-const accountItems = [
-  { href: '/billing', label: 'Billing', icon: CreditCard, shortcut: 'G B' },
-  { href: '/dashboard/settings', label: 'Settings', icon: Settings, shortcut: 'G S' },
-]
 
 const PLAN_COLORS: Record<string, string> = {
   lite: 'bg-primary/10 text-primary',
@@ -41,9 +26,26 @@ export function Sidebar({ planName }: { planName?: string }) {
   const pathname = usePathname()
   const router = useRouter()
   const { collapsed, toggle } = useSidebar()
+  const { t } = useDashboardLang()
   const [mounted, setMounted] = useState(false)
 
   useEffect(() => setMounted(true), [])
+
+  const navItems = [
+    { href: '/dashboard', label: t.nav_dashboard, icon: LayoutDashboard, shortcut: 'G D' },
+    { href: '/dashboard/profiles', label: t.nav_profiles, icon: MapPin, shortcut: 'G L' },
+    { href: '/dashboard/reviews', label: t.nav_reviews, icon: Star, shortcut: 'G R' },
+    { href: '/dashboard/notifications', label: t.nav_notifications, icon: Bell, shortcut: 'G N' },
+    { href: '/dashboard/reports', label: t.nav_reports, icon: BarChart3, shortcut: 'G A' },
+    { href: '/dashboard/replies', label: t.nav_replies, icon: MessageSquare, shortcut: 'G P' },
+    { href: '/dashboard/widget', label: t.nav_widget, icon: Code2, shortcut: 'G W' },
+    { href: '/dashboard/collect', label: t.nav_collect, icon: Link2, shortcut: 'G C' },
+  ]
+
+  const accountItems = [
+    { href: '/billing', label: t.nav_billing, icon: CreditCard, shortcut: 'G B' },
+    { href: '/dashboard/settings', label: t.nav_settings, icon: Settings, shortcut: 'G S' },
+  ]
 
   const handleSignOut = async () => {
     const supabase = createClient()
@@ -99,7 +101,7 @@ export function Sidebar({ planName }: { planName?: string }) {
       <nav className="flex-1 px-2 py-3 space-y-0.5 overflow-y-auto overflow-x-hidden">
         {!collapsed && (
           <p className="text-[9px] font-bold text-muted-foreground uppercase tracking-widest px-2 pb-1.5">
-            Main
+            {t.nav_main}
           </p>
         )}
         {navItems.map((item) => {
@@ -131,7 +133,7 @@ export function Sidebar({ planName }: { planName?: string }) {
         <div className={cn('pt-3', !collapsed && 'mt-1')}>
           {!collapsed && (
             <p className="text-[9px] font-bold text-muted-foreground uppercase tracking-widest px-2 pb-1.5">
-              Account
+              {t.nav_account}
             </p>
           )}
           {accountItems.map((item) => {
@@ -168,13 +170,13 @@ export function Sidebar({ planName }: { planName?: string }) {
         {!collapsed && planName && planName !== 'free' && (
           <div className={cn('flex items-center gap-2 px-2.5 py-1.5 rounded-lg mb-1', planColor)}>
             <Star className="w-3 h-3 shrink-0" />
-            <span className="text-xs font-bold capitalize">{planName} Plan</span>
+            <span className="text-xs font-bold capitalize">{planName} {t.plan_badge}</span>
           </div>
         )}
 
         {/* Theme + Expand */}
         <div className={cn('flex items-center', collapsed ? 'justify-center' : 'justify-between px-1')}>
-          {!collapsed && <span className="text-xs text-muted-foreground font-medium ml-1.5">Theme</span>}
+          {!collapsed && <span className="text-xs text-muted-foreground font-medium ml-1.5">{t.nav_theme}</span>}
           <div className="flex items-center gap-1">
             <ThemeToggle />
             {collapsed && (
@@ -197,7 +199,7 @@ export function Sidebar({ planName }: { planName?: string }) {
           )}
         >
           <LogOut className="w-4 h-4 shrink-0" />
-          {!collapsed && 'Sign out'}
+          {!collapsed && t.nav_signout}
         </button>
       </div>
     </aside>
