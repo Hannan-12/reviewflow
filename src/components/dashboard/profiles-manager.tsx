@@ -190,12 +190,27 @@ export function ProfilesManager({ profiles: initial, isGoogleConnected, profileL
           </Button>
         ) : atLimit ? (
           <a href={profileLimit === 3 ? '/billing' : '/agency'}>
-            <Button size="sm" variant="outline" className="font-semibold text-xs h-8 gap-1.5">
+            <Button
+              className="font-bold text-sm h-10 px-5 gap-2"
+              style={{ backgroundColor: '#F5C518', color: '#000' }}
+            >
+              <Plus className="w-4 h-4" />
               {profileLimit === 3 ? t.prof_upgrade_pro : t.prof_contact_agency}
             </Button>
           </a>
         ) : null}
       </div>
+
+      {/* Lite limit banner */}
+      {atLimit && profileLimit === 3 && (
+        <a href="/billing" className="block">
+          <div className="flex items-center gap-3 px-4 py-3 rounded-xl border text-sm font-medium transition-opacity hover:opacity-90"
+            style={{ backgroundColor: '#F5C51820', borderColor: '#F5C51860', color: '#92710a' }}>
+            <span className="w-2 h-2 rounded-full shrink-0" style={{ backgroundColor: '#F5C518' }} />
+            {t.prof_limit_banner}
+          </div>
+        </a>
+      )}
 
       {/* Connect Google CTA */}
       {!isGoogleConnected && (

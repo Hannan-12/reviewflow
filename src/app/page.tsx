@@ -29,7 +29,7 @@ const T = {
     feat_sub: 'From monitoring to AI replies — your entire review operation in one place.',
     feat: [
       { title: 'Instant alerts', desc: 'Email and Slack notifications the moment a review lands — never miss a response window.' },
-      { title: 'AI reply suggestions', desc: 'Gemini-powered responses tailored to your brand. Edit, approve, and send in seconds.' },
+      { title: 'AI reply suggestions', desc: 'AI-powered responses tailored to your brand. Edit, approve, and send in seconds.' },
       { title: 'Analytics & reports', desc: 'Ratings over time, sentiment trends, review volume — all in a clean dashboard.' },
       { title: 'Multi-location', desc: 'Manage every Google Business Profile in one place. No tab switching.' },
       { title: 'Auto-reply agents', desc: 'Set up AI agents to reply automatically based on rating, keywords, or custom rules.' },
@@ -85,7 +85,7 @@ const T = {
     feat_sub: 'Von der Überwachung bis zur KI-Antwort — dein gesamter Bewertungsbetrieb an einem Ort.',
     feat: [
       { title: 'Sofortige Benachrichtigungen', desc: 'E-Mail- und Slack-Benachrichtigungen in dem Moment, in dem eine Bewertung eintrifft.' },
-      { title: 'KI-Antwortvorschläge', desc: 'Von Gemini generierte Antworten, angepasst an deine Marke. Bearbeiten, genehmigen und versenden in Sekunden.' },
+      { title: 'KI-Antwortvorschläge', desc: 'KI-generierte Antworten, angepasst an deine Marke. Bearbeiten, genehmigen und versenden in Sekunden.' },
       { title: 'Analysen & Berichte', desc: 'Bewertungen über Zeit, Stimmungstrends, Bewertungsvolumen — alles in einem übersichtlichen Dashboard.' },
       { title: 'Mehrere Standorte', desc: 'Verwalte alle Google Business Profile an einem Ort. Kein Tab-Wechsel mehr.' },
       { title: 'Autoantwort-Agenten', desc: 'KI-Agenten, die automatisch basierend auf Bewertung, Stichwörtern oder Regeln antworten.' },
@@ -141,7 +141,7 @@ const T = {
     feat_sub: 'Desde la monitorización hasta las respuestas IA — toda tu operación en un lugar.',
     feat: [
       { title: 'Alertas instantáneas', desc: 'Notificaciones por email y Slack en el momento en que llega una reseña.' },
-      { title: 'Sugerencias de respuesta IA', desc: 'Respuestas generadas por Gemini adaptadas a tu marca. Edita, aprueba y envía en segundos.' },
+      { title: 'Sugerencias de respuesta IA', desc: 'Respuestas generadas por IA adaptadas a tu marca. Edita, aprueba y envía en segundos.' },
       { title: 'Análisis e informes', desc: 'Valoraciones, tendencias de sentimiento, volumen de reseñas — todo en un panel limpio.' },
       { title: 'Múltiples ubicaciones', desc: 'Gestiona todos tus Google Business Profiles en un solo lugar. Sin cambiar de pestaña.' },
       { title: 'Agentes de respuesta automática', desc: 'Configura agentes IA para responder automáticamente según la valoración o palabras clave.' },
@@ -197,7 +197,7 @@ const T = {
     feat_sub: 'Dal monitoraggio alle risposte IA — tutta la tua operazione in un unico posto.',
     feat: [
       { title: 'Avvisi istantanei', desc: 'Notifiche via email e Slack nel momento in cui arriva una recensione.' },
-      { title: 'Suggerimenti di risposta IA', desc: 'Risposte generate da Gemini adattate al tuo brand. Modifica, approva e invia in pochi secondi.' },
+      { title: 'Suggerimenti di risposta IA', desc: 'Risposte generate dall\'IA adattate al tuo brand. Modifica, approva e invia in pochi secondi.' },
       { title: 'Analisi e report', desc: 'Valutazioni nel tempo, tendenze del sentiment, volume delle recensioni — tutto in un pannello chiaro.' },
       { title: 'Multi-location', desc: 'Gestisci tutti i tuoi Google Business Profile in un unico posto. Nessun cambio di scheda.' },
       { title: 'Agenti di risposta automatica', desc: 'Configura agenti IA per rispondere automaticamente in base alla valutazione o parole chiave.' },
@@ -253,7 +253,7 @@ const T = {
     feat_sub: 'من المراقبة إلى الردود بالذكاء الاصطناعي — كل عملياتك في مكان واحد.',
     feat: [
       { title: 'تنبيهات فورية', desc: 'إشعارات البريد الإلكتروني وSlack في اللحظة التي يصل فيها التقييم.' },
-      { title: 'اقتراحات الرد بالذكاء الاصطناعي', desc: 'ردود مدعومة بـ Gemini ومخصصة لعلامتك التجارية. تحرير والموافقة والإرسال في ثوانٍ.' },
+      { title: 'اقتراحات الرد بالذكاء الاصطناعي', desc: 'ردود مدعومة بالذكاء الاصطناعي ومخصصة لعلامتك التجارية. تحرير والموافقة والإرسال في ثوانٍ.' },
       { title: 'التحليلات والتقارير', desc: 'التقييمات بمرور الوقت واتجاهات المشاعر وحجم التقييمات — كل شيء في لوحة تحكم واضحة.' },
       { title: 'مواقع متعددة', desc: 'إدارة جميع ملفات Google Business Profile في مكان واحد. لا تبديل للتبويبات.' },
       { title: 'وكلاء الرد التلقائي', desc: 'إعداد وكلاء الذكاء الاصطناعي للرد تلقائياً بناءً على التقييم أو الكلمات المفتاحية.' },
@@ -309,7 +309,7 @@ const T = {
     feat_sub: '从监控到AI回复——您的全部评价运营尽在一处。',
     feat: [
       { title: '即时提醒', desc: '收到评价的瞬间即可获得电子邮件和Slack通知。' },
-      { title: 'AI回复建议', desc: 'Gemini驱动的回复，专为您的品牌量身定制。几秒钟内编辑、审批并发送。' },
+      { title: 'AI回复建议', desc: 'AI驱动的回复，专为您的品牌量身定制。几秒钟内编辑、审批并发送。' },
       { title: '分析与报告', desc: '随时间变化的评分、情感趋势、评价数量——尽在简洁的仪表板中。' },
       { title: '多地点管理', desc: '在一处管理所有Google商家主页。无需切换标签。' },
       { title: '自动回复代理', desc: '设置AI代理，根据评分、关键词或自定义规则自动回复。' },
@@ -365,7 +365,7 @@ const T = {
     feat_sub: 'मॉनिटरिंग से AI उत्तरों तक — आपका पूरा समीक्षा संचालन एक जगह।',
     feat: [
       { title: 'तत्काल अलर्ट', desc: 'समीक्षा आते ही ईमेल और Slack अधिसूचनाएं — कोई रिस्पॉन्स विंडो न चूकें।' },
-      { title: 'AI उत्तर सुझाव', desc: 'Gemini-संचालित उत्तर आपके ब्रांड के लिए अनुकूलित। सेकंड में संपादित करें, अनुमोदित करें और भेजें।' },
+      { title: 'AI उत्तर सुझाव', desc: 'AI-संचालित उत्तर आपके ब्रांड के लिए अनुकूलित। सेकंड में संपादित करें, अनुमोदित करें और भेजें।' },
       { title: 'एनालिटिक्स और रिपोर्ट', desc: 'समय के साथ रेटिंग, सेंटीमेंट ट्रेंड, समीक्षा वॉल्यूम — सब एक साफ डैशबोर्ड में।' },
       { title: 'मल्टी-लोकेशन', desc: 'एक जगह से हर Google Business Profile प्रबंधित करें। टैब बदलने की जरूरत नहीं।' },
       { title: 'ऑटो-रिप्लाई एजेंट', desc: 'रेटिंग, कीवर्ड या कस्टम नियमों के आधार पर स्वचालित रूप से उत्तर देने के लिए AI एजेंट सेट करें।' },

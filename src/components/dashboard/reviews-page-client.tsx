@@ -3,7 +3,6 @@
 import { useState } from 'react'
 import { ReviewsTable } from '@/components/dashboard/reviews-table'
 import { ReviewDetailModal } from '@/components/dashboard/review-detail-modal'
-import type { ReviewsTable as ReviewsTableType } from '@/components/dashboard/reviews-table'
 
 interface Review {
   id: string
@@ -28,6 +27,7 @@ interface ReviewsPageClientProps {
   profiles: Profile[]
   currentRating: string | null
   currentProfile: string | null
+  lastSyncedAt: string | null
 }
 
 export function ReviewsPageClient({
@@ -35,6 +35,7 @@ export function ReviewsPageClient({
   profiles,
   currentRating,
   currentProfile,
+  lastSyncedAt,
 }: ReviewsPageClientProps) {
   const [selectedReview, setSelectedReview] = useState<Review | null>(null)
   const [isModalOpen, setIsModalOpen] = useState(false)
@@ -56,6 +57,7 @@ export function ReviewsPageClient({
         profiles={profiles}
         currentRating={currentRating}
         currentProfile={currentProfile}
+        lastSyncedAt={lastSyncedAt}
         onReviewClick={handleReviewClick}
       />
 

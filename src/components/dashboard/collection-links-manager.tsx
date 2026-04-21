@@ -82,8 +82,10 @@ export function CollectionLinksManager({ profiles, appUrl }: CollectionLinksMana
     toast.success(t.col_copied_toast)
   }
 
-  const qrUrl = (slug: string) =>
-    `https://api.qrserver.com/v1/create-qr-code/?data=${encodeURIComponent(`${appUrl}/collect/${slug}`)}&size=300x300&margin=10`
+  const qrUrl = (link: CollectionLink) => {
+    const target = link.google_review_url ?? `${appUrl}/collect/${link.slug}`
+    return `https://api.qrserver.com/v1/create-qr-code/?data=${encodeURIComponent(target)}&size=300x300&margin=10`
+  }
 
   if (profiles.length === 0) {
     return (
@@ -221,7 +223,7 @@ export function CollectionLinksManager({ profiles, appUrl }: CollectionLinksMana
               {qrLink === link.slug && (
                 <div className="mt-3 pt-3 border-t border-border flex items-center gap-4">
                   <img
-                    src={qrUrl(link.slug)}
+                    src={qrUrl(link)}
                     alt="QR Code"
                     width={100}
                     height={100}
@@ -231,7 +233,7 @@ export function CollectionLinksManager({ profiles, appUrl }: CollectionLinksMana
                     <p className="text-xs font-medium">{t.col_qr_title}</p>
                     <p className="text-xs text-muted-foreground">{t.col_qr_desc}</p>
                     <a
-                      href={qrUrl(link.slug)}
+                      href={qrUrl(link)}
                       download={`qr-${link.slug}.png`}
                       target="_blank"
                       rel="noopener noreferrer"

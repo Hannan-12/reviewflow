@@ -29,6 +29,7 @@ interface Props {
   profiles: Profile[]
   currentRating: string | null
   currentProfile: string | null
+  lastSyncedAt: string | null
   onReviewClick?: (review: Review) => void
 }
 
@@ -42,7 +43,7 @@ function Stars({ rating }: { rating: number }) {
   )
 }
 
-export function ReviewsTable({ reviews, profiles, currentRating, currentProfile, onReviewClick }: Props) {
+export function ReviewsTable({ reviews, profiles, currentRating, currentProfile, lastSyncedAt, onReviewClick }: Props) {
   const router  = useRouter()
   const pathname = usePathname()
   const [syncing, setSyncing] = useState(false)
@@ -116,7 +117,12 @@ export function ReviewsTable({ reviews, profiles, currentRating, currentProfile,
           </select>
         )}
 
-        <div className="ml-auto flex gap-2">
+        <div className="ml-auto flex items-center gap-2">
+          {lastSyncedAt && (
+            <span className="text-[10px] text-muted-foreground hidden sm:block">
+              {t.prof_last_synced} {new Date(lastSyncedAt).toLocaleDateString('en-US', { month: 'short', day: 'numeric', hour: '2-digit', minute: '2-digit' })}
+            </span>
+          )}
           <Button size="sm" variant="outline" className="h-7 text-xs gap-1.5" disabled={exporting} onClick={exportCsv}>
             <Download className="w-3 h-3" />
             {exporting ? t.rev_exporting : t.rev_export}

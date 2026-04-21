@@ -31,7 +31,7 @@ export default async function ReviewsPage({
 
   const { data: profiles } = await supabase
     .from('profiles')
-    .select('id, business_name')
+    .select('id, business_name, last_synced_at')
     .eq('user_id', user.id)
     .eq('is_active', true)
 
@@ -69,6 +69,11 @@ export default async function ReviewsPage({
   }))
 
   const hasProfiles = (profiles?.length ?? 0) > 0
+  const lastSyncedAt = profiles
+    ?.map(p => (p as unknown as { last_synced_at: string | null }).last_synced_at)
+    .filter(Boolean)
+    .sort()
+    .at(-1) ?? null
 
   return (
     <SidebarProvider>
@@ -142,9 +147,10 @@ export default async function ReviewsPage({
                     business_name:      (r.profiles as unknown as { business_name: string })?.business_name ?? '',
                     profile_id:         (r.profiles as unknown as { id: string })?.id ?? '',
                   }))}
-                  profiles={profiles ?? []}
+                  profiles={(profiles ?? []).map(p => ({ id: p.id, business_name: p.business_name }))}
                   currentRating={rating ?? null}
                   currentProfile={profileFilter ?? null}
+                  lastSyncedAt={lastSyncedAt}
                 />
               </>
             )}

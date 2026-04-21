@@ -34,7 +34,7 @@ export default async function DashboardPage() {
   if ((profiles?.length ?? 0) > 0) serverCompleted.push('profile')
   if ((notifPrefs?.length ?? 0) > 0) serverCompleted.push('notifications')
   if ((repliedReview?.length ?? 0) > 0) serverCompleted.push('reply')
-  if (userData?.plan_name && userData.plan_name !== 'free' && userData?.subscription_status === 'active') {
+  if (userData?.plan_name && userData.plan_name !== 'free' && (userData?.subscription_status === 'active' || userData?.subscription_status === 'trialing')) {
     serverCompleted.push('billing')
   }
 

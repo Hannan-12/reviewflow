@@ -112,17 +112,18 @@ async function syncUser(userId: string, admin: ReturnType<typeof getAdmin>) {
     }
 
     const rows = reviews.map((r) => ({
-      profile_id:         profile.id,
-      user_id:            userId,
-      google_review_id:   r.reviewId,
-      reviewer_name:      r.reviewer.isAnonymous ? 'Anonymous' : (r.reviewer.displayName ?? 'Unknown'),
-      reviewer_photo_url: r.reviewer.profilePhotoUrl ?? null,
-      rating:             starToNumber(r.starRating),
-      comment:            r.comment ?? null,
-      google_review_name: r.name,
-      reply:              r.reviewReply?.comment ?? null,
-      replied_at:         r.reviewReply?.updateTime ?? null,
-      review_date:        r.createTime,
+      profile_id:           profile.id,
+      user_id:              userId,
+      google_review_id:     r.reviewId,
+      reviewer_name:        r.reviewer.isAnonymous ? 'Anonymous' : (r.reviewer.displayName ?? 'Unknown'),
+      reviewer_photo_url:   r.reviewer.profilePhotoUrl ?? null,
+      rating:               starToNumber(r.starRating),
+      comment:              r.comment ?? null,
+      google_review_name:   r.name,
+      reply:                r.reviewReply?.comment ?? null,
+      replied_at:           r.reviewReply?.updateTime ?? null,
+      review_date:          r.createTime,
+      reply_synced_to_gbp:  r.reviewReply?.comment != null,
     }))
 
     const { data: existing } = await admin.from('reviews').select('google_review_id').eq('profile_id', profile.id)
@@ -162,6 +163,24 @@ async function syncUser(userId: string, admin: ReturnType<typeof getAdmin>) {
             console.error(`[cron-sync] sentiment error for review ${nr.id}:`, e)
           }
         }
+      }
+    }
+
+    // Retry replies that failed to post to GBP previously
+    const { data: pendingReplies } = await admin
+      .from('reviews')
+      .select('id, google_review_name, reply')
+      .eq('profile_id', profile.id)
+      .eq('reply_synced_to_gbp', false)
+      .not('reply', 'is', null)
+      .not('google_review_name', 'is', null)
+
+    for (const pr of pendingReplies || []) {
+      try {
+        await replyToReview(pr.google_review_name!, pr.reply!, token)
+        await admin.from('reviews').update({ reply_synced_to_gbp: true }).eq('id', pr.id)
+      } catch (e) {
+        console.warn(`[cron-sync] retry reply failed for review ${pr.id}:`, e)
       }
     }
 
@@ -251,17 +270,18 @@ export async function POST(request: NextRequest) {
       }
 
       const rows = reviews.map((r) => ({
-        profile_id:         profile.id,
-        user_id:            user.id,
-        google_review_id:   r.reviewId,
-        reviewer_name:      r.reviewer.isAnonymous ? 'Anonymous' : (r.reviewer.displayName ?? 'Unknown'),
-        reviewer_photo_url: r.reviewer.profilePhotoUrl ?? null,
-        rating:             starToNumber(r.starRating),
-        comment:            r.comment ?? null,
-        google_review_name: r.name,
-        reply:              r.reviewReply?.comment ?? null,
-        replied_at:         r.reviewReply?.updateTime ?? null,
-        review_date:        r.createTime,
+        profile_id:           profile.id,
+        user_id:              user.id,
+        google_review_id:     r.reviewId,
+        reviewer_name:        r.reviewer.isAnonymous ? 'Anonymous' : (r.reviewer.displayName ?? 'Unknown'),
+        reviewer_photo_url:   r.reviewer.profilePhotoUrl ?? null,
+        rating:               starToNumber(r.starRating),
+        comment:              r.comment ?? null,
+        google_review_name:   r.name,
+        reply:                r.reviewReply?.comment ?? null,
+        replied_at:           r.reviewReply?.updateTime ?? null,
+        review_date:          r.createTime,
+        reply_synced_to_gbp:  r.reviewReply?.comment != null,
       }))
 
       // Get existing Google review IDs to detect new reviews
@@ -325,6 +345,24 @@ export async function POST(request: NextRequest) {
               )
             }
           }
+        }
+      }
+
+      // Retry replies that failed to post to GBP previously
+      const { data: pendingReplies } = await admin
+        .from('reviews')
+        .select('id, google_review_name, reply')
+        .eq('profile_id', profile.id)
+        .eq('reply_synced_to_gbp', false)
+        .not('reply', 'is', null)
+        .not('google_review_name', 'is', null)
+
+      for (const pr of pendingReplies || []) {
+        try {
+          await replyToReview(pr.google_review_name!, pr.reply!, token)
+          await admin.from('reviews').update({ reply_synced_to_gbp: true }).eq('id', pr.id)
+        } catch (e) {
+          console.warn(`[sync] retry reply failed for review ${pr.id}:`, e)
         }
       }
 
