@@ -4,14 +4,7 @@ import { useState, useEffect } from 'react'
 import { CheckCircle2, Circle, ChevronDown, ChevronUp, Zap } from 'lucide-react'
 import { cn } from '@/lib/utils'
 import Link from 'next/link'
-
-const STEPS = [
-  { id: 'account',       label: 'Create your account',                  href: null },
-  { id: 'profile',       label: 'Connect a Google Business Profile',     href: '/dashboard/profiles' },
-  { id: 'notifications', label: 'Set up email or Slack alerts',          href: '/dashboard/notifications' },
-  { id: 'reply',         label: 'Reply to your first review',            href: '/dashboard/reviews' },
-  { id: 'billing',       label: 'Choose a plan',                         href: '/billing' },
-]
+import { useDashboardLang } from '@/components/dashboard/lang-context'
 
 const STORAGE_KEY = 'rf-onboarding-done'
 
@@ -21,6 +14,7 @@ interface Props {
 }
 
 export function OnboardingChecklist({ serverCompleted }: Props) {
+  const { t } = useDashboardLang()
   const [checked, setChecked] = useState<string[]>(serverCompleted)
   const [collapsed, setCollapsed] = useState(false)
   const [dismissed, setDismissed] = useState(false)
@@ -57,6 +51,14 @@ export function OnboardingChecklist({ serverCompleted }: Props) {
     save({ collapsed: next })
   }
 
+  const STEPS = [
+    { id: 'account',       label: t.onboard_step_account,  href: null },
+    { id: 'profile',       label: t.onboard_step_profile,  href: '/dashboard/profiles' },
+    { id: 'notifications', label: t.onboard_step_alerts,   href: '/dashboard/notifications' },
+    { id: 'reply',         label: t.onboard_step_reply,    href: '/dashboard/reviews' },
+    { id: 'billing',       label: t.onboard_step_plan,     href: '/billing' },
+  ]
+
   if (dismissed) return null
 
   const completedCount = checked.length
@@ -77,10 +79,10 @@ export function OnboardingChecklist({ serverCompleted }: Props) {
           </div>
           <div className="text-left">
             <p className="text-sm font-bold">
-              {allDone ? 'You\'re all set! 🎉' : 'Getting started'}
+              {allDone ? t.onboard_all_done : t.onboard_title}
             </p>
             <p className="text-xs text-muted-foreground">
-              {completedCount} of {totalCount} steps complete
+              {t.onboard_steps_done.replace('{n}', String(completedCount)).replace('{total}', String(totalCount))}
             </p>
           </div>
         </div>
@@ -131,7 +133,7 @@ export function OnboardingChecklist({ serverCompleted }: Props) {
                 </span>
                 {isAutoDetected && isDone && (
                   <span className="text-[9px] font-semibold text-primary/60 uppercase tracking-widest bg-primary/8 rounded-full px-2 py-0.5">
-                    done
+                    {t.onboard_done_badge}
                   </span>
                 )}
                 {!isAutoDetected && (
@@ -150,7 +152,7 @@ export function OnboardingChecklist({ serverCompleted }: Props) {
               onClick={dismiss}
               className="text-xs text-muted-foreground hover:text-foreground transition-colors"
             >
-              Dismiss
+              {t.onboard_dismiss}
             </button>
           </div>
         </div>

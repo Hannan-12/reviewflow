@@ -4,6 +4,7 @@ import { Header } from '@/components/dashboard/header'
 import { Sidebar } from '@/components/dashboard/sidebar'
 import { SidebarProvider } from '@/components/dashboard/sidebar-context'
 import { RepliesPageClient } from '@/components/dashboard/replies-page-client'
+import { getServerT } from '@/lib/i18n/server'
 import { MessageSquare } from 'lucide-react'
 
 export const metadata = { title: 'Replies — GoHighReview' }
@@ -16,6 +17,7 @@ export default async function RepliesPage({
   const supabase = await createClient()
   const { data: { user } } = await supabase.auth.getUser()
   if (!user) redirect('/login')
+  const t = await getServerT()
 
   const { profile: profileFilter, status } = await searchParams
 
@@ -74,15 +76,15 @@ export default async function RepliesPage({
             {/* Stats */}
             <div className="grid grid-cols-3 gap-3">
               <div className="bg-card border border-border rounded-2xl p-4">
-                <p className="text-[10px] font-bold text-muted-foreground uppercase tracking-wide mb-1.5">Total Replied</p>
+                <p className="text-[10px] font-bold text-muted-foreground uppercase tracking-wide mb-1.5">{t.rpl_stat_total}</p>
                 <p className="text-2xl font-bold tabular-nums">{totalReplied}</p>
               </div>
               <div className="bg-card border border-border rounded-2xl p-4">
-                <p className="text-[10px] font-bold text-muted-foreground uppercase tracking-wide mb-1.5">Synced to Google</p>
+                <p className="text-[10px] font-bold text-muted-foreground uppercase tracking-wide mb-1.5">{t.rpl_stat_synced}</p>
                 <p className="text-2xl font-bold tabular-nums text-green-600">{syncedCount}</p>
               </div>
               <div className="bg-card border border-border rounded-2xl p-4">
-                <p className="text-[10px] font-bold text-muted-foreground uppercase tracking-wide mb-1.5">AI-Assisted</p>
+                <p className="text-[10px] font-bold text-muted-foreground uppercase tracking-wide mb-1.5">{t.rpl_stat_ai}</p>
                 <p className="text-2xl font-bold tabular-nums text-primary">{aiCount}</p>
               </div>
             </div>
@@ -91,9 +93,9 @@ export default async function RepliesPage({
               <div className="rounded-2xl border border-dashed border-border bg-card flex flex-col items-center justify-center py-16 text-center gap-3">
                 <MessageSquare className="w-8 h-8 text-muted-foreground/40" />
                 <div>
-                  <p className="font-semibold text-sm">No replies yet</p>
+                  <p className="font-semibold text-sm">{t.rpl_no_replies_title}</p>
                   <p className="text-xs text-muted-foreground mt-1">
-                    Reply to reviews from the Reviews page to see them here.
+                    {t.rpl_no_replies_desc}
                   </p>
                 </div>
               </div>

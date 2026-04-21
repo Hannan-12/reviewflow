@@ -4,6 +4,7 @@ import { Header } from '@/components/dashboard/header'
 import { Sidebar } from '@/components/dashboard/sidebar'
 import { SidebarProvider } from '@/components/dashboard/sidebar-context'
 import { ReviewsPageClient } from '@/components/dashboard/reviews-page-client'
+import { getServerT } from '@/lib/i18n/server'
 import { Star } from 'lucide-react'
 import Link from 'next/link'
 import { Button } from '@/components/ui/button'
@@ -18,6 +19,7 @@ export default async function ReviewsPage({
   const supabase = await createClient()
   const { data: { user } } = await supabase.auth.getUser()
   if (!user) redirect('/login')
+  const t = await getServerT()
 
   const { rating, profile: profileFilter } = await searchParams
 
@@ -82,13 +84,13 @@ export default async function ReviewsPage({
                   <Star className="w-6 h-6 text-primary" />
                 </div>
                 <div>
-                  <h3 className="font-bold text-base mb-1">No profiles connected yet</h3>
+                  <h3 className="font-bold text-base mb-1">{t.rev_no_profiles_title}</h3>
                   <p className="text-sm text-muted-foreground max-w-xs">
-                    Connect a Google Business Profile to start syncing and viewing reviews.
+                    {t.rev_no_profiles_desc}
                   </p>
                 </div>
                 <Link href="/dashboard/profiles">
-                  <Button className="font-semibold">Go to Profiles</Button>
+                  <Button className="font-semibold">{t.rev_go_profiles}</Button>
                 </Link>
               </div>
             ) : (
@@ -96,18 +98,18 @@ export default async function ReviewsPage({
                 {/* Rating stats */}
                 <div className="grid grid-cols-2 sm:grid-cols-4 gap-3">
                   <div className="bg-card border border-border rounded-2xl p-4">
-                    <p className="text-[10px] font-bold text-muted-foreground uppercase tracking-wide mb-1.5">Total Reviews</p>
+                    <p className="text-[10px] font-bold text-muted-foreground uppercase tracking-wide mb-1.5">{t.dash_stat_total}</p>
                     <p className="text-2xl font-bold tabular-nums">{totalCount}</p>
                   </div>
                   <div className="bg-card border border-border rounded-2xl p-4">
-                    <p className="text-[10px] font-bold text-muted-foreground uppercase tracking-wide mb-1.5">Avg. Rating</p>
+                    <p className="text-[10px] font-bold text-muted-foreground uppercase tracking-wide mb-1.5">{t.dash_stat_avg}</p>
                     <p className="text-2xl font-bold tabular-nums flex items-center gap-1.5">
                       {avgRating ?? '—'}
                       {avgRating && <Star className="w-4 h-4 text-amber-400 fill-amber-400" />}
                     </p>
                   </div>
                   <div className="bg-card border border-border rounded-2xl p-4 col-span-2">
-                    <p className="text-[10px] font-bold text-muted-foreground uppercase tracking-wide mb-2">Rating breakdown</p>
+                    <p className="text-[10px] font-bold text-muted-foreground uppercase tracking-wide mb-2">{t.rev_stat_breakdown}</p>
                     <div className="space-y-1">
                       {ratingDist.map(({ rating: r, count }) => (
                         <div key={r} className="flex items-center gap-2">
