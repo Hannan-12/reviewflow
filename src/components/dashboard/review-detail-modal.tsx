@@ -7,6 +7,7 @@ import { ReplyPanel } from './reply-panel'
 import { NotificationPreferences } from './notification-preferences'
 import { TagPicker } from './tag-picker'
 import { Bell } from 'lucide-react'
+import { useDashboardLang } from './lang-context'
 
 interface Review {
   id: string
@@ -32,6 +33,7 @@ export function ReviewDetailModal({
   onClose,
   onReplySubmitted,
 }: ReviewDetailModalProps) {
+  const { t } = useDashboardLang()
   const [showPreferences, setShowPreferences] = useState(false)
 
   if (!review) return null
@@ -40,9 +42,9 @@ export function ReviewDetailModal({
     <Dialog open={isOpen} onOpenChange={onClose}>
       <DialogContent className="max-w-2xl max-h-[90vh] overflow-y-auto">
         <DialogHeader>
-          <DialogTitle>Review Details</DialogTitle>
+          <DialogTitle>{t.modal_title}</DialogTitle>
           <DialogDescription>
-            {review.reviewer_name || 'Anonymous'}'s {review.rating}★ review
+            {review.reviewer_name || t.modal_anonymous}'s {review.rating}★ review
           </DialogDescription>
         </DialogHeader>
 
@@ -51,7 +53,7 @@ export function ReviewDetailModal({
           <div className="bg-gray-50 rounded-lg p-4 space-y-3">
             <div className="flex justify-between items-start">
               <div>
-                <p className="font-semibold">{review.reviewer_name || 'Anonymous'}</p>
+                <p className="font-semibold">{review.reviewer_name || t.modal_anonymous}</p>
                 <p className="text-sm text-gray-600">
                   ⭐ {review.rating}/5 • {new Date(review.review_date).toLocaleDateString()}
                 </p>
@@ -63,11 +65,11 @@ export function ReviewDetailModal({
                 className="text-gray-600"
               >
                 <Bell className="w-4 h-4 mr-2" />
-                Notifications
+                {t.modal_notifications}
               </Button>
             </div>
 
-            <p className="text-gray-800">{review.comment || '(No comment)'}</p>
+            <p className="text-gray-800">{review.comment || t.modal_no_comment}</p>
 
             {/* Tags */}
             <div className="pt-1">
@@ -101,10 +103,10 @@ export function ReviewDetailModal({
           {/* Existing Reply */}
           {review.reply && (
             <div className="bg-blue-50 border border-blue-200 rounded-lg p-4">
-              <p className="text-sm font-semibold text-blue-900 mb-2">✓ Your Reply</p>
+              <p className="text-sm font-semibold text-blue-900 mb-2">{t.modal_your_reply}</p>
               <p className="text-sm text-blue-800">{review.reply}</p>
               <p className="text-xs text-blue-600 mt-2">
-                Posted: {new Date(review.replied_at || '').toLocaleDateString()}
+                {t.modal_posted} {new Date(review.replied_at || '').toLocaleDateString()}
               </p>
             </div>
           )}

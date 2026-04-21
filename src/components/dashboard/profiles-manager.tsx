@@ -4,6 +4,7 @@ import { useState, useEffect } from 'react'
 import { MapPin, Plus, Trash2, RefreshCw, CheckCircle, AlertCircle, Link2, Star, Building2, ChevronDown } from 'lucide-react'
 import { Button } from '@/components/ui/button'
 import { AutoReplySettings } from './auto-reply-settings'
+import { useDashboardLang } from './lang-context'
 
 interface Profile {
   id: string
@@ -33,6 +34,7 @@ interface Props {
 }
 
 export function ProfilesManager({ profiles: initial, isGoogleConnected, profileLimit, connected, googleError }: Props) {
+  const { t } = useDashboardLang()
   const [profiles, setProfiles]         = useState(initial)
   const [locations, setLocations]       = useState<GBPLocation[]>([])
   const [loadingLocs, setLoadingLocs]   = useState(false)
@@ -91,7 +93,6 @@ export function ProfilesManager({ profiles: initial, isGoogleConnected, profileL
     setShowPicker(false)
     showToast(`${loc.title} added!`, 'success')
 
-    // Kick off initial sync
     syncProfile(data.profile.id)
   }
 
@@ -106,11 +107,10 @@ export function ProfilesManager({ profiles: initial, isGoogleConnected, profileL
     setSyncing(null)
 
     if (!res.ok) {
-      showToast(data.error ?? 'Sync failed', 'error')
+      showToast(t.prof_sync_failed, 'error')
       return
     }
 
-    // Update last_synced_at in local state
     setProfiles(p => p.map(pr =>
       pr.id === profileId
         ? { ...pr, last_synced_at: new Date().toISOString() }
@@ -124,7 +124,7 @@ export function ProfilesManager({ profiles: initial, isGoogleConnected, profileL
     await fetch(`/api/profiles/${id}`, { method: 'DELETE' })
     setDeleting(null)
     setProfiles(p => p.filter(pr => pr.id !== id))
-    showToast('Profile removed', 'success')
+    showToast(t.prof_removed, 'success')
   }
 
   const atLimit = profileLimit !== -1 && profiles.length >= profileLimit && profileLimit !== 0
@@ -153,26 +153,26 @@ export function ProfilesManager({ profiles: initial, isGoogleConnected, profileL
       {connected && (
         <div className="flex items-center gap-2.5 px-4 py-3 rounded-xl text-sm font-medium bg-emerald-500/10 text-emerald-600 dark:text-emerald-400 border border-emerald-500/20">
           <CheckCircle className="w-4 h-4 shrink-0" />
-          Google Business account connected! You can now add your profiles below.
+          {t.prof_connected_banner}
         </div>
       )}
       {googleError && (
         <div className="flex items-center gap-2.5 px-4 py-3 rounded-xl text-sm font-medium bg-destructive/10 text-destructive border border-destructive/20">
           <AlertCircle className="w-4 h-4 shrink-0" />
-          {googleError === 'google_denied' ? 'Google authorization was denied.' : 'Failed to connect Google. Please try again.'}
+          {googleError === 'google_denied' ? t.prof_google_denied : t.prof_google_failed}
         </div>
       )}
 
       {/* Header */}
       <div className="flex items-center justify-between flex-wrap gap-3">
         <div>
-          <h2 className="font-bold text-base">Google Business Profiles</h2>
+          <h2 className="font-bold text-base">{t.prof_title}</h2>
           <p className="text-sm text-muted-foreground mt-0.5">
             {profileLimit === -1
-              ? `${profiles.length} profile${profiles.length !== 1 ? 's' : ''} connected`
+              ? `${profiles.length} ${profiles.length !== 1 ? t.prof_connected_many : t.prof_connected_one}`
               : profileLimit === 0
-              ? 'Subscribe to a plan to add profiles'
-              : `${profiles.length} / ${profileLimit} profile${profileLimit !== 1 ? 's' : ''} connected`}
+              ? t.prof_subscribe
+              : `${profiles.length} / ${profileLimit} ${profileLimit !== 1 ? t.prof_connected_many : t.prof_connected_one}`}
           </p>
         </div>
 
@@ -180,18 +180,18 @@ export function ProfilesManager({ profiles: initial, isGoogleConnected, profileL
           <a href="/api/google/connect">
             <Button size="sm" className="font-semibold text-xs h-8 gap-1.5">
               <Link2 className="w-3.5 h-3.5" />
-              Connect Google Business
+              {t.prof_connect_google}
             </Button>
           </a>
         ) : !atLimit && profileLimit !== 0 ? (
           <Button size="sm" className="font-semibold text-xs h-8 gap-1.5" onClick={() => setShowPicker(v => !v)}>
             <Plus className="w-3.5 h-3.5" />
-            Add Profile
+            {t.prof_add_profile}
           </Button>
         ) : atLimit ? (
           <a href={profileLimit === 3 ? '/billing' : '/agency'}>
             <Button size="sm" variant="outline" className="font-semibold text-xs h-8 gap-1.5">
-              {profileLimit === 3 ? 'Upgrade to Pro to add more' : 'Contact us for Agency plan'}
+              {profileLimit === 3 ? t.prof_upgrade_pro : t.prof_contact_agency}
             </Button>
           </a>
         ) : null}
@@ -204,15 +204,15 @@ export function ProfilesManager({ profiles: initial, isGoogleConnected, profileL
             <Link2 className="w-6 h-6 text-primary" />
           </div>
           <div>
-            <h3 className="font-bold text-base mb-1">Connect your Google Business account</h3>
+            <h3 className="font-bold text-base mb-1">{t.prof_cta_title}</h3>
             <p className="text-sm text-muted-foreground max-w-sm">
-              Authorize GoHighReview to access your Google Business Profiles so we can sync reviews automatically.
+              {t.prof_cta_desc}
             </p>
           </div>
           <a href="/api/google/connect">
             <Button className="font-semibold gap-2">
               <Link2 className="w-4 h-4" />
-              Connect Google Business
+              {t.prof_connect_google}
             </Button>
           </a>
         </div>
@@ -222,20 +222,20 @@ export function ProfilesManager({ profiles: initial, isGoogleConnected, profileL
       {showPicker && isGoogleConnected && (
         <div className="rounded-2xl border border-border bg-card overflow-hidden">
           <div className="px-4 py-3 border-b border-border flex items-center justify-between">
-            <p className="text-sm font-semibold">Select a location to add</p>
+            <p className="text-sm font-semibold">{t.prof_picker_title}</p>
             <button onClick={() => setShowPicker(false)} className="text-xs text-muted-foreground hover:text-foreground">
-              Cancel
+              {t.prof_picker_cancel}
             </button>
           </div>
           {loadingLocs ? (
             <div className="p-6 flex items-center justify-center gap-2 text-sm text-muted-foreground">
-              <RefreshCw className="w-4 h-4 animate-spin" /> Loading locations…
+              <RefreshCw className="w-4 h-4 animate-spin" /> {t.prof_loading_locs}
             </div>
           ) : availableLocations.length === 0 ? (
             <div className="p-6 text-center text-sm text-muted-foreground">
               {locations.length === 0
-                ? 'No Google Business locations found on this account.'
-                : 'All your locations are already added.'}
+                ? t.prof_no_locations
+                : t.prof_all_added}
             </div>
           ) : (
             <div className="divide-y divide-border">
@@ -261,7 +261,7 @@ export function ProfilesManager({ profiles: initial, isGoogleConnected, profileL
                       disabled={adding === loc.name}
                       onClick={() => addProfile(loc)}
                     >
-                      {adding === loc.name ? <RefreshCw className="w-3 h-3 animate-spin" /> : 'Add'}
+                      {adding === loc.name ? <RefreshCw className="w-3 h-3 animate-spin" /> : t.prof_add_btn}
                     </Button>
                   </div>
                 )
@@ -286,8 +286,8 @@ export function ProfilesManager({ profiles: initial, isGoogleConnected, profileL
                 )}
                 <p className="text-[10px] text-muted-foreground mt-1">
                   {profile.last_synced_at
-                    ? `Last synced ${new Date(profile.last_synced_at).toLocaleDateString('en-US', { month: 'short', day: 'numeric', hour: '2-digit', minute: '2-digit' })}`
-                    : 'Never synced'}
+                    ? `${t.prof_last_synced} ${new Date(profile.last_synced_at).toLocaleDateString('en-US', { month: 'short', day: 'numeric', hour: '2-digit', minute: '2-digit' })}`
+                    : t.prof_never_synced}
                 </p>
               </div>
               <div className="flex items-center gap-2 shrink-0">
@@ -320,7 +320,7 @@ export function ProfilesManager({ profiles: initial, isGoogleConnected, profileL
                   onClick={() => setExpandedAutoReply(expandedAutoReply === profile.id ? null : profile.id)}
                 >
                   <ChevronDown className={`w-3.5 h-3.5 transition-transform ${expandedAutoReply === profile.id ? 'rotate-180' : ''}`} />
-                  AI Auto-Reply settings
+                  {t.prof_auto_reply}
                 </button>
                 {expandedAutoReply === profile.id && (
                   <div className="mt-3">
@@ -340,14 +340,14 @@ export function ProfilesManager({ profiles: initial, isGoogleConnected, profileL
             <Star className="w-6 h-6 text-primary" />
           </div>
           <div>
-            <h3 className="font-bold text-base mb-1">Add your first profile</h3>
+            <h3 className="font-bold text-base mb-1">{t.prof_empty_title}</h3>
             <p className="text-sm text-muted-foreground max-w-sm">
-              Click &quot;Add Profile&quot; to connect a Google Business location and start syncing reviews.
+              {t.prof_empty_desc}
             </p>
           </div>
           {profileLimit !== 0 && (
             <Button className="font-semibold gap-2" onClick={() => setShowPicker(true)}>
-              <Plus className="w-4 h-4" /> Add Profile
+              <Plus className="w-4 h-4" /> {t.prof_add_profile}
             </Button>
           )}
         </div>

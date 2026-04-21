@@ -5,12 +5,14 @@ import { Button } from '@/components/ui/button'
 import { Star, Bell, BarChart3, Plus, ArrowRight, Zap, TrendingUp, MessageSquare, MapPin } from 'lucide-react'
 import Link from 'next/link'
 import { OnboardingChecklist } from '@/components/onboarding-checklist'
+import { getServerT } from '@/lib/i18n/server'
 
 export const metadata = { title: 'Dashboard — GoHighReview' }
 
 export default async function DashboardPage() {
   const supabase = await createClient()
   const { data: { user } } = await supabase.auth.getUser()
+  const t = await getServerT()
 
   const [
     { data: userData },
@@ -20,42 +22,14 @@ export default async function DashboardPage() {
     { data: notifPrefs },
     { data: repliedReview },
   ] = await Promise.all([
-    supabase
-      .from('users')
-      .select('full_name, plan_name, subscription_status, trial_ends_at, profile_limit')
-      .eq('id', user?.id ?? '')
-      .single(),
-    supabase
-      .from('reviews')
-      .select('rating, reply')
-      .eq('user_id', user?.id ?? ''),
-    supabase
-      .from('reviews')
-      .select('id')
-      .eq('user_id', user?.id ?? '')
-      .gte('review_date', new Date(Date.now() - 7 * 86400000).toISOString()),
-    // Onboarding: check if user has connected a GBP
-    supabase
-      .from('profiles')
-      .select('id')
-      .eq('user_id', user?.id ?? '')
-      .limit(1),
-    // Onboarding: check if notifications configured
-    supabase
-      .from('notification_preferences')
-      .select('id')
-      .eq('user_id', user?.id ?? '')
-      .limit(1),
-    // Onboarding: check if replied to any review
-    supabase
-      .from('reviews')
-      .select('id')
-      .eq('user_id', user?.id ?? '')
-      .not('reply', 'is', null)
-      .limit(1),
+    supabase.from('users').select('full_name, plan_name, subscription_status, trial_ends_at, profile_limit').eq('id', user?.id ?? '').single(),
+    supabase.from('reviews').select('rating, reply').eq('user_id', user?.id ?? ''),
+    supabase.from('reviews').select('id').eq('user_id', user?.id ?? '').gte('review_date', new Date(Date.now() - 7 * 86400000).toISOString()),
+    supabase.from('profiles').select('id').eq('user_id', user?.id ?? '').limit(1),
+    supabase.from('notification_preferences').select('id').eq('user_id', user?.id ?? '').limit(1),
+    supabase.from('reviews').select('id').eq('user_id', user?.id ?? '').not('reply', 'is', null).limit(1),
   ])
 
-  // Detect which onboarding steps are actually complete
   const serverCompleted = ['account']
   if ((profiles?.length ?? 0) > 0) serverCompleted.push('profile')
   if ((notifPrefs?.length ?? 0) > 0) serverCompleted.push('notifications')
@@ -72,7 +46,7 @@ export default async function DashboardPage() {
 
   const firstName = userData?.full_name?.split(' ')[0] ?? user?.email?.split('@')[0] ?? 'there'
   const hour = new Date().getHours()
-  const greeting = hour < 12 ? 'Good morning' : hour < 17 ? 'Good afternoon' : 'Good evening'
+  const greeting = hour < 12 ? t.dash_morning : hour < 17 ? t.dash_afternoon : t.dash_evening
 
   const totalReviews = allReviews?.length ?? 0
   const newThisWeek  = weekReviews?.length ?? 0
@@ -83,27 +57,27 @@ export default async function DashboardPage() {
   const replyRate  = totalReviews > 0 ? `${Math.round((withReply / totalReviews) * 100)}%` : '0%'
 
   const stats = [
-    { label: 'Total Reviews',   value: String(totalReviews), icon: Star,          iconBg: 'bg-amber-500/10',  iconColor: 'text-amber-500'   },
-    { label: 'New This Week',   value: String(newThisWeek),  icon: TrendingUp,    iconBg: 'bg-primary/10',    iconColor: 'text-primary'     },
-    { label: 'Avg. Rating',     value: avgRating,            icon: BarChart3,     iconBg: 'bg-emerald-500/10',iconColor: 'text-emerald-500' },
-    { label: 'Reply Rate',      value: replyRate,            icon: MessageSquare, iconBg: 'bg-violet-500/10', iconColor: 'text-violet-500'  },
+    { label: t.dash_stat_total,      value: String(totalReviews), icon: Star,          iconBg: 'bg-amber-500/10',  iconColor: 'text-amber-500'   },
+    { label: t.dash_stat_week,       value: String(newThisWeek),  icon: TrendingUp,    iconBg: 'bg-primary/10',    iconColor: 'text-primary'     },
+    { label: t.dash_stat_avg,        value: avgRating,            icon: BarChart3,     iconBg: 'bg-emerald-500/10',iconColor: 'text-emerald-500' },
+    { label: t.dash_stat_reply_rate, value: replyRate,            icon: MessageSquare, iconBg: 'bg-violet-500/10', iconColor: 'text-violet-500'  },
   ]
 
   return (
     <div className="flex flex-col h-full min-h-0">
-      <Header title="Dashboard" />
+      <Header title={t.nav_dashboard} />
       <div className="flex-1 overflow-y-auto bg-muted/20 p-5 space-y-4 page-animate">
 
         {/* Greeting */}
         <div className="flex items-center justify-between flex-wrap gap-3">
           <div>
             <h2 className="text-xl font-bold">{greeting}, {firstName} 👋</h2>
-            <p className="text-sm text-muted-foreground mt-0.5">Here&apos;s your review activity at a glance.</p>
+            <p className="text-sm text-muted-foreground mt-0.5">{t.dash_subtitle}</p>
           </div>
           <Link href="/dashboard/profiles">
             <Button size="sm" className="font-semibold text-xs h-8">
               <Plus className="w-3.5 h-3.5 mr-1.5" />
-              Add Profile
+              {t.dash_add_profile}
             </Button>
           </Link>
         </div>
@@ -120,13 +94,13 @@ export default async function DashboardPage() {
                 <Zap className="w-4 h-4 text-white" />
               </div>
               <div>
-                <p className="text-white font-semibold text-sm">{trialDaysLeft} day{trialDaysLeft !== 1 ? 's' : ''} left in your free trial</p>
-                <p className="text-white/65 text-xs mt-0.5">Choose a plan to keep access when it ends.</p>
+                <p className="text-white font-semibold text-sm">{trialDaysLeft} {t.dash_trial_title}</p>
+                <p className="text-white/65 text-xs mt-0.5">{t.dash_trial_sub}</p>
               </div>
             </div>
             <Link href="/billing" className="relative shrink-0">
               <Button size="sm" className="bg-white text-primary hover:bg-white/90 font-semibold shadow-none h-8 text-xs px-3">
-                View plans <ArrowRight className="w-3 h-3 ml-1" />
+                {t.dash_trial_cta} <ArrowRight className="w-3 h-3 ml-1" />
               </Button>
             </Link>
           </div>
@@ -161,20 +135,20 @@ export default async function DashboardPage() {
                 <Plus className="w-3 h-3 text-white" />
               </div>
             </div>
-            <h3 className="font-bold text-base mb-1.5">Connect your first Google Business Profile</h3>
+            <h3 className="font-bold text-base mb-1.5">{t.dash_empty_title}</h3>
             <p className="text-sm text-muted-foreground leading-relaxed mb-5 max-w-xs">
-              Add a profile to start monitoring reviews, getting alerts, and replying with AI — all in real time.
+              {t.dash_empty_desc}
             </p>
-            <div className="flex items-center gap-2 flex-wrap justify-center">
-              {['Monitor reviews', 'AI replies', 'Instant alerts'].map((t) => (
-                <span key={t} className="flex items-center gap-1 bg-muted rounded-full px-2.5 py-1 text-xs">
-                  <Star className="w-3 h-3 text-primary" />{t}
+            <div className="flex items-center gap-2 flex-wrap justify-center mb-4">
+              {[t.dash_feat_monitor, t.dash_feat_ai, t.dash_feat_alerts].map((feat) => (
+                <span key={feat} className="flex items-center gap-1 bg-muted rounded-full px-2.5 py-1 text-xs">
+                  <Star className="w-3 h-3 text-primary" />{feat}
                 </span>
               ))}
             </div>
             <Link href="/dashboard/profiles">
               <Button size="sm" className="font-semibold text-xs gap-1.5">
-                <Plus className="w-3.5 h-3.5" /> Add Profile
+                <Plus className="w-3.5 h-3.5" /> {t.dash_add_profile}
               </Button>
             </Link>
           </div>
@@ -182,18 +156,18 @@ export default async function DashboardPage() {
           {/* Quick actions */}
           <div className="bg-card border border-border rounded-2xl overflow-hidden">
             <div className="px-4 py-3 border-b border-border">
-              <p className="text-[10px] font-bold text-muted-foreground uppercase tracking-widest">Quick actions</p>
+              <p className="text-[10px] font-bold text-muted-foreground uppercase tracking-widest">{t.dash_quick_title}</p>
             </div>
             <div className="p-2 space-y-0.5">
               {[
-                { icon: Bell,         title: 'Notifications',    desc: 'Email & Slack alerts',    href: '/dashboard/notifications', color: 'text-primary',     bg: 'bg-primary/8'      },
-                { icon: BarChart3,    title: 'Analytics',        desc: 'Ratings & sentiment',     href: '/dashboard/reports',       color: 'text-emerald-500', bg: 'bg-emerald-500/8'  },
-                { icon: MessageSquare,title: 'AI Replies',       desc: 'Reply faster with GPT-4', href: '/dashboard/replies',       color: 'text-violet-500',  bg: 'bg-violet-500/8'   },
-                { icon: Star,         title: 'Review Widget',    desc: 'Embed on your website',   href: '/billing',                 color: 'text-amber-500',   bg: 'bg-amber-500/8'    },
+                { icon: Bell,          title: t.dash_qa_notif,     desc: t.dash_qa_notif_desc,     href: '/dashboard/notifications', color: 'text-primary',     bg: 'bg-primary/8'      },
+                { icon: BarChart3,     title: t.dash_qa_analytics, desc: t.dash_qa_analytics_desc, href: '/dashboard/reports',       color: 'text-emerald-500', bg: 'bg-emerald-500/8'  },
+                { icon: MessageSquare, title: t.dash_qa_ai_replies, desc: t.dash_qa_ai_replies_desc,href: '/dashboard/replies',       color: 'text-violet-500',  bg: 'bg-violet-500/8'   },
+                { icon: Star,          title: t.dash_qa_widget,    desc: t.dash_qa_widget_desc,    href: '/billing',                 color: 'text-amber-500',   bg: 'bg-amber-500/8'    },
               ].map((a) => {
                 const Icon = a.icon
                 return (
-                  <Link key={a.title} href={a.href}>
+                  <Link key={a.href} href={a.href}>
                     <div className="flex items-center gap-3 px-2 py-2.5 rounded-xl hover:bg-muted transition-colors group cursor-pointer">
                       <div className={`w-8 h-8 rounded-lg ${a.bg} flex items-center justify-center shrink-0`}>
                         <Icon className={`w-4 h-4 ${a.color}`} />
@@ -211,7 +185,6 @@ export default async function DashboardPage() {
           </div>
         </div>
 
-        {/* Onboarding checklist */}
         <OnboardingChecklist serverCompleted={serverCompleted} />
 
       </div>

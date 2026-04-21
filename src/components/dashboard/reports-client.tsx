@@ -6,6 +6,7 @@ import {
   XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer,
 } from 'recharts'
 import { Star, MessageSquare, BarChart3, TrendingUp, Trophy, Smile, Meh, Frown } from 'lucide-react'
+import { useDashboardLang } from './lang-context'
 
 interface Profile { id: string; business_name: string }
 
@@ -23,13 +24,13 @@ interface ReportData {
   }
 }
 
-const RANGES = [
-  { label: '7 days', value: 7 },
-  { label: '30 days', value: 30 },
-  { label: '90 days', value: 90 },
-]
-
 export function ReportsClient({ profiles }: { profiles: Profile[] }) {
+  const { t } = useDashboardLang()
+  const RANGES = [
+    { label: t.rep_range_7, value: 7 },
+    { label: t.rep_range_30, value: 30 },
+    { label: t.rep_range_90, value: 90 },
+  ]
   const [profileId, setProfileId] = useState<string>('')
   const [range, setRange] = useState(30)
   const [data, setData] = useState<ReportData | null>(null)
@@ -75,7 +76,7 @@ export function ReportsClient({ profiles }: { profiles: Profile[] }) {
           onChange={(e) => setProfileId(e.target.value)}
           className="h-8 text-sm rounded-lg border border-border bg-card px-3 pr-8 focus:outline-none focus:ring-1 focus:ring-primary"
         >
-          <option value="">All profiles</option>
+          <option value="">{t.rep_all_profiles}</option>
           {profiles.map((p) => (
             <option key={p.id} value={p.id}>{p.business_name}</option>
           ))}
@@ -108,25 +109,25 @@ export function ReportsClient({ profiles }: { profiles: Profile[] }) {
         <div className="rounded-2xl border border-dashed border-border bg-card flex flex-col items-center justify-center py-16 text-center gap-3">
           <BarChart3 className="w-8 h-8 text-muted-foreground/40" />
           <div>
-            <p className="font-semibold text-sm">No data yet</p>
-            <p className="text-xs text-muted-foreground mt-1">Sync reviews from the Reviews page to see reports.</p>
+            <p className="font-semibold text-sm">{t.rep_no_data}</p>
+            <p className="text-xs text-muted-foreground mt-1">{t.rep_no_data_desc}</p>
           </div>
         </div>
       ) : (
         <>
           {/* Summary stats */}
           <div className="grid grid-cols-2 sm:grid-cols-4 gap-3">
-            {stat(<Star className="w-3.5 h-3.5" />, `Reviews (${RANGES.find(r=>r.value===range)?.label})`, data?.summary.periodTotal ?? 0)}
-            {stat(<TrendingUp className="w-3.5 h-3.5" />, 'Avg rating (period)', data?.summary.periodAvg ? `${data.summary.periodAvg} ★` : '—')}
-            {stat(<MessageSquare className="w-3.5 h-3.5" />, 'Response rate', `${data?.responseRate ?? 0}%`, 'all time')}
-            {stat(<BarChart3 className="w-3.5 h-3.5" />, 'Total reviews', data?.summary.allTimeTotal ?? 0, 'all time')}
+            {stat(<Star className="w-3.5 h-3.5" />, `${t.rep_reviews} (${RANGES.find(r=>r.value===range)?.label})`, data?.summary.periodTotal ?? 0)}
+            {stat(<TrendingUp className="w-3.5 h-3.5" />, t.rep_stat_avg, data?.summary.periodAvg ? `${data.summary.periodAvg} ★` : '—')}
+            {stat(<MessageSquare className="w-3.5 h-3.5" />, t.rep_stat_response, `${data?.responseRate ?? 0}%`, t.rep_all_time)}
+            {stat(<BarChart3 className="w-3.5 h-3.5" />, t.rep_stat_total, data?.summary.allTimeTotal ?? 0, t.rep_all_time)}
           </div>
 
           {/* Rating trend chart */}
           {(data?.ratingTrend?.length ?? 0) > 0 && (
             <div className="bg-card border border-border rounded-2xl p-5">
               <p className="text-xs font-bold text-muted-foreground uppercase tracking-widest mb-4">
-                Rating trend — last {range} days
+                {t.rep_trend_title} {range} {t.rep_trend_days}
               </p>
               <ResponsiveContainer width="100%" height={200}>
                 <LineChart data={data!.ratingTrend} margin={{ top: 4, right: 8, left: -20, bottom: 0 }}>
@@ -144,7 +145,7 @@ export function ReportsClient({ profiles }: { profiles: Profile[] }) {
                   />
                   <Tooltip
                     contentStyle={{ fontSize: 12, borderRadius: 8, border: '1px solid hsl(var(--border))' }}
-                    formatter={(v) => [`${v} ★`, 'Avg rating']}
+                    formatter={(v) => [`${v} ★`, t.rep_avg_rating]}
                     labelFormatter={(d) => new Date(d).toLocaleDateString('en-US', { month: 'long', day: 'numeric' })}
                   />
                   <Line
@@ -165,7 +166,7 @@ export function ReportsClient({ profiles }: { profiles: Profile[] }) {
             {(data?.ratingTrend?.length ?? 0) > 0 && (
               <div className="bg-card border border-border rounded-2xl p-5">
                 <p className="text-xs font-bold text-muted-foreground uppercase tracking-widest mb-4">
-                  Review volume
+                  {t.rep_volume_title}
                 </p>
                 <ResponsiveContainer width="100%" height={160}>
                   <BarChart data={data!.ratingTrend} margin={{ top: 4, right: 8, left: -20, bottom: 0 }}>
@@ -179,7 +180,7 @@ export function ReportsClient({ profiles }: { profiles: Profile[] }) {
                     <YAxis tick={{ fontSize: 10, fill: 'hsl(var(--muted-foreground))' }} allowDecimals={false} />
                     <Tooltip
                       contentStyle={{ fontSize: 12, borderRadius: 8, border: '1px solid hsl(var(--border))' }}
-                      formatter={(v) => [v, 'Reviews']}
+                      formatter={(v) => [v, t.rep_reviews]}
                       labelFormatter={(d) => new Date(d).toLocaleDateString('en-US', { month: 'long', day: 'numeric' })}
                     />
                     <Bar dataKey="count" fill="hsl(var(--primary))" radius={[4, 4, 0, 0]} />
@@ -191,7 +192,7 @@ export function ReportsClient({ profiles }: { profiles: Profile[] }) {
             {/* Rating distribution */}
             <div className="bg-card border border-border rounded-2xl p-5">
               <p className="text-xs font-bold text-muted-foreground uppercase tracking-widest mb-4">
-                Rating breakdown (all time)
+                {t.rep_breakdown_title}
               </p>
               <div className="space-y-2.5">
                 {(data?.ratingDistribution ?? []).map(({ rating, count }) => {
@@ -230,9 +231,9 @@ export function ReportsClient({ profiles }: { profiles: Profile[] }) {
                   </span>
                 </div>
                 <div>
-                  <p className="text-sm font-semibold">Response rate</p>
+                  <p className="text-sm font-semibold">{t.rep_response_rate}</p>
                   <p className="text-xs text-muted-foreground">
-                    {data?.summary.allTimeReplied ?? 0} of {data?.summary.allTimeTotal ?? 0} reviews replied
+                    {data?.summary.allTimeReplied ?? 0} / {data?.summary.allTimeTotal ?? 0} {t.rep_replied_of}
                   </p>
                 </div>
               </div>
@@ -243,13 +244,13 @@ export function ReportsClient({ profiles }: { profiles: Profile[] }) {
           {sentimentTotal > 0 && (
             <div className="bg-card border border-border rounded-2xl p-5">
               <p className="text-xs font-bold text-muted-foreground uppercase tracking-widest mb-4">
-                Sentiment analysis (all time)
+                {t.rep_sentiment_title}
               </p>
               <div className="space-y-3">
                 {[
-                  { label: 'Positive', key: 'positive' as const, icon: <Smile className="w-3.5 h-3.5" />, color: 'bg-green-500', text: 'text-green-600' },
-                  { label: 'Neutral',  key: 'neutral'  as const, icon: <Meh  className="w-3.5 h-3.5" />, color: 'bg-amber-400', text: 'text-amber-600' },
-                  { label: 'Negative', key: 'negative' as const, icon: <Frown className="w-3.5 h-3.5" />, color: 'bg-red-500',   text: 'text-red-600'   },
+                  { label: t.rep_pos, key: 'positive' as const, icon: <Smile className="w-3.5 h-3.5" />, color: 'bg-green-500', text: 'text-green-600' },
+                  { label: t.rep_neu, key: 'neutral'  as const, icon: <Meh  className="w-3.5 h-3.5" />, color: 'bg-amber-400', text: 'text-amber-600' },
+                  { label: t.rep_neg, key: 'negative' as const, icon: <Frown className="w-3.5 h-3.5" />, color: 'bg-red-500',   text: 'text-red-600'   },
                 ].map(({ label, key, icon, color, text }) => {
                   const count = data?.sentimentCounts[key] ?? 0
                   const pct = sentimentPct(count)
@@ -286,7 +287,7 @@ export function ReportsClient({ profiles }: { profiles: Profile[] }) {
               <div className="flex items-center gap-2 mb-4">
                 <Trophy className="w-4 h-4 text-amber-500" />
                 <p className="text-xs font-bold text-muted-foreground uppercase tracking-widest">
-                  Profile leaderboard (all time)
+                  {t.rep_leaderboard_title}
                 </p>
               </div>
               <div className="space-y-2">
@@ -299,7 +300,7 @@ export function ReportsClient({ profiles }: { profiles: Profile[] }) {
                       </span>
                       <div className="flex-1 min-w-0">
                         <p className="text-sm font-medium truncate">{entry.businessName}</p>
-                        <p className="text-[10px] text-muted-foreground">{entry.total} reviews · {replyRate}% replied</p>
+                        <p className="text-[10px] text-muted-foreground">{entry.total} {t.rep_reviews_count} · {replyRate}% {t.rep_replied_pct}</p>
                       </div>
                       <div className="flex items-center gap-1 shrink-0">
                         <span className="text-sm font-bold tabular-nums">{entry.avgRating.toFixed(1)}</span>

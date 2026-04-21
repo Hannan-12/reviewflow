@@ -1,9 +1,11 @@
+'use client'
 import { useState, useEffect } from 'react';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Card } from '@/components/ui/card';
 import { toast } from 'sonner';
+import { useDashboardLang } from './lang-context';
 
 interface NotificationSettings {
   emailEnabled: boolean;
@@ -25,6 +27,7 @@ export function NotificationPreferences({
   profileId,
   onSaved,
 }: NotificationPreferencesProps) {
+  const { t } = useDashboardLang()
   const [settings, setSettings] = useState<NotificationSettings>({
     emailEnabled: true,
     emailOnAllReviews: true,
@@ -120,7 +123,7 @@ export function NotificationPreferences({
     <div className="space-y-6">
       {/* Email Notifications */}
       <Card className="p-4">
-        <h3 className="font-semibold mb-4">Email Notifications</h3>
+        <h3 className="font-semibold mb-4">{t.notif_email_title}</h3>
 
         <div className="space-y-4">
           <div className="flex items-center gap-3">
@@ -134,7 +137,7 @@ export function NotificationPreferences({
               className="w-4 h-4"
             />
             <Label htmlFor="emailEnabled" className="cursor-pointer">
-              Enable email notifications
+              {t.notif_email_enable}
             </Label>
           </div>
 
@@ -154,14 +157,14 @@ export function NotificationPreferences({
                   className="w-4 h-4"
                 />
                 <Label htmlFor="emailOnAll" className="cursor-pointer text-sm">
-                  Notify for all reviews
+                  {t.notif_all_reviews}
                 </Label>
               </div>
 
               {!settings.emailOnAllReviews && (
                 <div className="ml-6">
                   <Label htmlFor="minRating" className="text-sm">
-                    Only notify for reviews with rating ≤
+                    {t.notif_min_rating}
                   </Label>
                   <select
                     id="minRating"
@@ -185,7 +188,7 @@ export function NotificationPreferences({
 
               <div>
                 <Label htmlFor="frequency" className="text-sm">
-                  Notification frequency
+                  {t.notif_frequency}
                 </Label>
                 <select
                   id="frequency"
@@ -201,9 +204,9 @@ export function NotificationPreferences({
                   }
                   className="mt-1 p-2 border rounded w-full"
                 >
-                  <option value="instant">Instant</option>
-                  <option value="daily">Daily digest</option>
-                  <option value="weekly">Weekly digest</option>
+                  <option value="instant">{t.notif_instant}</option>
+                  <option value="daily">{t.notif_daily}</option>
+                  <option value="weekly">{t.notif_weekly}</option>
                 </select>
               </div>
             </>
@@ -213,7 +216,7 @@ export function NotificationPreferences({
 
       {/* Slack Notifications */}
       <Card className="p-4">
-        <h3 className="font-semibold mb-4">Slack Notifications</h3>
+        <h3 className="font-semibold mb-4">{t.notif_slack_title}</h3>
 
         <div className="space-y-4">
           <div className="flex items-center gap-3">
@@ -227,7 +230,7 @@ export function NotificationPreferences({
               className="w-4 h-4"
             />
             <Label htmlFor="slackEnabled" className="cursor-pointer">
-              Enable Slack notifications
+              {t.notif_slack_enable}
             </Label>
           </div>
 
@@ -235,7 +238,7 @@ export function NotificationPreferences({
             <>
               <div>
                 <Label htmlFor="webhookUrl" className="text-sm">
-                  Slack Webhook URL
+                  {t.notif_slack_url}
                 </Label>
                 <Input
                   id="webhookUrl"
@@ -248,7 +251,7 @@ export function NotificationPreferences({
                   className="mt-1"
                 />
                 <p className="text-xs text-gray-500 mt-1">
-                  Get this from Slack's Incoming Webhooks settings
+                  {t.notif_slack_hint}
                 </p>
               </div>
 
@@ -258,7 +261,7 @@ export function NotificationPreferences({
                   disabled={loading}
                   size="sm"
                 >
-                  Save Webhook
+                  {t.notif_save_webhook}
                 </Button>
               </div>
 
@@ -276,14 +279,14 @@ export function NotificationPreferences({
                   className="w-4 h-4"
                 />
                 <Label htmlFor="slackOnAll" className="cursor-pointer text-sm">
-                  Notify for all reviews
+                  {t.notif_all_reviews}
                 </Label>
               </div>
 
               {!settings.slackOnAllReviews && (
                 <div>
                   <Label htmlFor="slackMinRating" className="text-sm">
-                    Only notify for reviews with rating ≤
+                    {t.notif_min_rating}
                   </Label>
                   <select
                     id="slackMinRating"
@@ -311,7 +314,7 @@ export function NotificationPreferences({
 
       {/* Save Button */}
       <Button onClick={handleSave} disabled={loading} className="w-full">
-        Save All Preferences
+        {t.notif_save_all}
       </Button>
     </div>
   );

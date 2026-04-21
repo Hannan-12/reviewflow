@@ -4,6 +4,7 @@ import { useState } from 'react'
 import { useRouter, usePathname } from 'next/navigation'
 import { Star, MessageSquare, RefreshCw, Filter, Reply, Download } from 'lucide-react'
 import { Button } from '@/components/ui/button'
+import { useDashboardLang } from './lang-context'
 
 interface Review {
   id: string
@@ -46,6 +47,7 @@ export function ReviewsTable({ reviews, profiles, currentRating, currentProfile,
   const pathname = usePathname()
   const [syncing, setSyncing] = useState(false)
   const [exporting, setExporting] = useState(false)
+  const { t } = useDashboardLang()
 
   const exportCsv = async () => {
     setExporting(true)
@@ -95,7 +97,7 @@ export function ReviewsTable({ reviews, profiles, currentRating, currentProfile,
                   : 'bg-muted text-muted-foreground hover:text-foreground hover:bg-muted/80'
               }`}
             >
-              {r ? `${r}★` : 'All'}
+              {r ? `${r}★` : t.rev_all}
             </button>
           ))}
         </div>
@@ -107,7 +109,7 @@ export function ReviewsTable({ reviews, profiles, currentRating, currentProfile,
             onChange={e => setFilter('profile', e.target.value || null)}
             className="text-xs bg-muted border-0 rounded-lg px-2.5 py-1 text-muted-foreground focus:ring-0 focus:outline-none"
           >
-            <option value="">All profiles</option>
+            <option value="">{t.rev_all_profiles}</option>
             {profiles.map(p => (
               <option key={p.id} value={p.id}>{p.business_name}</option>
             ))}
@@ -117,11 +119,11 @@ export function ReviewsTable({ reviews, profiles, currentRating, currentProfile,
         <div className="ml-auto flex gap-2">
           <Button size="sm" variant="outline" className="h-7 text-xs gap-1.5" disabled={exporting} onClick={exportCsv}>
             <Download className="w-3 h-3" />
-            {exporting ? 'Exporting…' : 'Export CSV'}
+            {exporting ? t.rev_exporting : t.rev_export}
           </Button>
           <Button size="sm" variant="outline" className="h-7 text-xs gap-1.5" disabled={syncing} onClick={syncAll}>
             <RefreshCw className={`w-3 h-3 ${syncing ? 'animate-spin' : ''}`} />
-            {syncing ? 'Syncing…' : 'Sync all'}
+            {syncing ? t.rev_syncing : t.rev_sync}
           </Button>
         </div>
       </div>
@@ -130,8 +132,8 @@ export function ReviewsTable({ reviews, profiles, currentRating, currentProfile,
       {reviews.length === 0 ? (
         <div className="rounded-2xl border border-dashed border-border bg-card flex flex-col items-center justify-center py-12 text-center gap-2">
           <MessageSquare className="w-8 h-8 text-muted-foreground/30" />
-          <p className="text-sm font-medium text-muted-foreground">No reviews found</p>
-          <p className="text-xs text-muted-foreground">Try syncing or adjusting your filters.</p>
+          <p className="text-sm font-medium text-muted-foreground">{t.rev_empty_title}</p>
+          <p className="text-xs text-muted-foreground">{t.rev_empty_desc}</p>
         </div>
       ) : (
         <div className="space-y-3">
@@ -148,7 +150,7 @@ export function ReviewsTable({ reviews, profiles, currentRating, currentProfile,
                     </div>
                   )}
                   <div>
-                    <p className="text-sm font-semibold">{review.reviewer_name ?? 'Anonymous'}</p>
+                    <p className="text-sm font-semibold">{review.reviewer_name ?? t.rev_anonymous}</p>
                     <p className="text-[10px] text-muted-foreground">{review.business_name}</p>
                   </div>
                 </div>
@@ -168,7 +170,7 @@ export function ReviewsTable({ reviews, profiles, currentRating, currentProfile,
 
               {review.reply && (
                 <div className="ml-4 pl-3 border-l-2 border-primary/20">
-                  <p className="text-[10px] font-semibold text-primary mb-0.5">Owner reply</p>
+                  <p className="text-[10px] font-semibold text-primary mb-0.5">{t.rev_owner_reply}</p>
                   <p className="text-xs text-muted-foreground leading-relaxed">{review.reply}</p>
                 </div>
               )}
@@ -182,7 +184,7 @@ export function ReviewsTable({ reviews, profiles, currentRating, currentProfile,
                   className="w-full text-xs gap-1.5"
                 >
                   <Reply className="w-3.5 h-3.5" />
-                  {review.reply ? 'View Reply' : 'Reply to Review'}
+                  {review.reply ? t.rev_view_reply : t.rev_reply_to}
                 </Button>
               </div>
             </div>

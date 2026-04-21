@@ -4,6 +4,7 @@ import { useState } from 'react'
 import { useRouter } from 'next/navigation'
 import { Star, CheckCircle2, Clock, ChevronDown, Sparkles } from 'lucide-react'
 import { ReviewDetailModal } from '@/components/dashboard/review-detail-modal'
+import { useDashboardLang } from './lang-context'
 
 interface Reply {
   id: string
@@ -39,6 +40,7 @@ export function RepliesPageClient({
   currentStatus,
 }: RepliesPageClientProps) {
   const router = useRouter()
+  const { t } = useDashboardLang()
   const [selectedReview, setSelectedReview] = useState<Reply | null>(null)
   const [isModalOpen, setIsModalOpen] = useState(false)
 
@@ -71,7 +73,7 @@ export function RepliesPageClient({
             onChange={(e) => updateParam('profile', e.target.value || null)}
             className="h-8 text-sm rounded-lg border border-border bg-card px-3 pr-8 focus:outline-none focus:ring-1 focus:ring-primary appearance-none"
           >
-            <option value="">All profiles</option>
+            <option value="">{t.rpl_all_profiles}</option>
             {profiles.map((p) => (
               <option key={p.id} value={p.id}>{p.business_name}</option>
             ))}
@@ -82,10 +84,10 @@ export function RepliesPageClient({
         {/* Status filter */}
         <div className="flex items-center gap-1 bg-muted rounded-lg p-1">
           {[
-            { label: 'All', value: null },
-            { label: 'AI-Assisted', value: 'ai' },
-            { label: 'Manual', value: 'manual' },
-            { label: 'Synced', value: 'synced' },
+            { label: t.rpl_all, value: null },
+            { label: t.rpl_ai, value: 'ai' },
+            { label: t.rpl_manual, value: 'manual' },
+            { label: t.rpl_synced, value: 'synced' },
           ].map((opt) => (
             <button
               key={opt.label}
@@ -105,7 +107,7 @@ export function RepliesPageClient({
       {/* Replies list */}
       {replies.length === 0 ? (
         <div className="bg-card border border-border rounded-2xl p-8 text-center text-sm text-muted-foreground">
-          No replies match the current filters.
+          {t.rpl_no_matches}
         </div>
       ) : (
         <div className="space-y-3">
@@ -130,7 +132,7 @@ export function RepliesPageClient({
                   {/* Top row */}
                   <div className="flex items-center justify-between gap-2 flex-wrap">
                     <div className="flex items-center gap-2">
-                      <span className="text-sm font-semibold">{reply.reviewer_name ?? 'Anonymous'}</span>
+                      <span className="text-sm font-semibold">{reply.reviewer_name ?? t.rpl_anonymous}</span>
                       <span className="text-[10px] text-muted-foreground bg-muted px-2 py-0.5 rounded-full">
                         {reply.business_name}
                       </span>
@@ -138,16 +140,16 @@ export function RepliesPageClient({
                     <div className="flex items-center gap-2">
                       {reply.user_accepted_ai && (
                         <span className="flex items-center gap-1 text-[10px] font-medium text-primary bg-primary/10 px-2 py-0.5 rounded-full">
-                          <Sparkles className="w-3 h-3" /> AI
+                          <Sparkles className="w-3 h-3" /> {t.rpl_ai_badge}
                         </span>
                       )}
                       {reply.reply_synced_to_gbp ? (
                         <span className="flex items-center gap-1 text-[10px] font-medium text-green-600 bg-green-50 dark:bg-green-950/30 px-2 py-0.5 rounded-full">
-                          <CheckCircle2 className="w-3 h-3" /> Synced
+                          <CheckCircle2 className="w-3 h-3" /> {t.rpl_synced_badge}
                         </span>
                       ) : (
                         <span className="flex items-center gap-1 text-[10px] font-medium text-amber-600 bg-amber-50 dark:bg-amber-950/30 px-2 py-0.5 rounded-full">
-                          <Clock className="w-3 h-3" /> Pending sync
+                          <Clock className="w-3 h-3" /> {t.rpl_pending_badge}
                         </span>
                       )}
                     </div>
@@ -170,7 +172,7 @@ export function RepliesPageClient({
 
                   {/* Reply */}
                   <div className="mt-2.5 pl-3 border-l-2 border-primary/30">
-                    <p className="text-[10px] font-bold text-primary uppercase tracking-wide mb-0.5">Your reply</p>
+                    <p className="text-[10px] font-bold text-primary uppercase tracking-wide mb-0.5">{t.rpl_your_reply}</p>
                     <p className="text-sm line-clamp-2">{reply.reply}</p>
                     {reply.replied_at && (
                       <p className="text-[10px] text-muted-foreground mt-0.5">

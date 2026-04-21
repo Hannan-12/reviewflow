@@ -20,12 +20,16 @@ export function DashboardLangProvider({ children }: { children: React.ReactNode 
 
   useEffect(() => {
     const saved = localStorage.getItem('app_lang') as DashboardLang | null
-    if (saved && saved in dashboardT) setLangState(saved)
+    if (saved && saved in dashboardT) {
+      setLangState(saved)
+      document.cookie = `app_lang=${saved}; path=/; max-age=31536000; SameSite=Lax`
+    }
   }, [])
 
   const setLang = (l: DashboardLang) => {
     setLangState(l)
     localStorage.setItem('app_lang', l)
+    document.cookie = `app_lang=${l}; path=/; max-age=31536000; SameSite=Lax`
   }
 
   return (

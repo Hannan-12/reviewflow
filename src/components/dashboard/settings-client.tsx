@@ -9,6 +9,7 @@ import { toast } from 'sonner'
 import { User, Lock, CreditCard, Trash2 } from 'lucide-react'
 import Link from 'next/link'
 import { useRouter } from 'next/navigation'
+import { useDashboardLang } from './lang-context'
 
 interface SettingsClientProps {
   email: string
@@ -21,6 +22,7 @@ interface SettingsClientProps {
 export function SettingsClient({ email, fullName, planName, subscriptionStatus, isGoogleUser }: SettingsClientProps) {
   const router = useRouter()
   const supabase = createClient()
+  const { t } = useDashboardLang()
 
   // Account info
   const [name, setName] = useState(fullName ?? '')
@@ -85,26 +87,26 @@ export function SettingsClient({ email, fullName, planName, subscriptionStatus, 
       <section className="bg-card border border-border rounded-2xl overflow-hidden">
         <div className="px-5 py-3.5 border-b border-border flex items-center gap-2.5">
           <User className="w-4 h-4 text-muted-foreground" />
-          <h2 className="text-sm font-semibold">Account Information</h2>
+          <h2 className="text-sm font-semibold">{t.set_account_title}</h2>
         </div>
         <div className="p-5 space-y-4">
           <div className="space-y-1.5">
-            <Label htmlFor="email" className="text-xs font-medium text-muted-foreground">Email address</Label>
+            <Label htmlFor="email" className="text-xs font-medium text-muted-foreground">{t.set_email_label}</Label>
             <Input id="email" value={email} disabled className="bg-muted text-muted-foreground text-sm h-9" />
-            <p className="text-[11px] text-muted-foreground">Email cannot be changed here. Contact support if needed.</p>
+            <p className="text-[11px] text-muted-foreground">{t.set_email_hint}</p>
           </div>
           <div className="space-y-1.5">
-            <Label htmlFor="name" className="text-xs font-medium">Full name</Label>
+            <Label htmlFor="name" className="text-xs font-medium">{t.set_name_label}</Label>
             <div className="flex gap-2">
               <Input
                 id="name"
                 value={name}
                 onChange={(e) => setName(e.target.value)}
-                placeholder="Your name"
+                placeholder={t.set_name_placeholder}
                 className="text-sm h-9 flex-1"
               />
               <Button size="sm" onClick={handleSaveName} disabled={savingName} className="h-9 font-semibold">
-                {savingName ? 'Saving…' : 'Save'}
+                {savingName ? t.set_saving : t.set_save}
               </Button>
             </div>
           </div>
@@ -115,33 +117,33 @@ export function SettingsClient({ email, fullName, planName, subscriptionStatus, 
       {!isGoogleUser && <section className="bg-card border border-border rounded-2xl overflow-hidden">
         <div className="px-5 py-3.5 border-b border-border flex items-center gap-2.5">
           <Lock className="w-4 h-4 text-muted-foreground" />
-          <h2 className="text-sm font-semibold">Change Password</h2>
+          <h2 className="text-sm font-semibold">{t.set_password_title}</h2>
         </div>
         <div className="p-5 space-y-3">
           <div className="space-y-1.5">
-            <Label htmlFor="new-password" className="text-xs font-medium">New password</Label>
+            <Label htmlFor="new-password" className="text-xs font-medium">{t.set_new_password}</Label>
             <Input
               id="new-password"
               type="password"
               value={newPassword}
               onChange={(e) => setNewPassword(e.target.value)}
-              placeholder="Min. 8 characters"
+              placeholder={t.set_min_chars}
               className="text-sm h-9"
             />
           </div>
           <div className="space-y-1.5">
-            <Label htmlFor="confirm-password" className="text-xs font-medium">Confirm new password</Label>
+            <Label htmlFor="confirm-password" className="text-xs font-medium">{t.set_confirm_password}</Label>
             <Input
               id="confirm-password"
               type="password"
               value={confirmPassword}
               onChange={(e) => setConfirmPassword(e.target.value)}
-              placeholder="Repeat new password"
+              placeholder={t.set_repeat_password}
               className="text-sm h-9"
             />
           </div>
           <Button size="sm" onClick={handleChangePassword} disabled={savingPassword} className="font-semibold">
-            {savingPassword ? 'Updating…' : 'Update password'}
+            {savingPassword ? t.set_updating : t.set_update_password}
           </Button>
         </div>
       </section>}
@@ -150,7 +152,7 @@ export function SettingsClient({ email, fullName, planName, subscriptionStatus, 
       <section className="bg-card border border-border rounded-2xl overflow-hidden">
         <div className="px-5 py-3.5 border-b border-border flex items-center gap-2.5">
           <CreditCard className="w-4 h-4 text-muted-foreground" />
-          <h2 className="text-sm font-semibold">Plan & Billing</h2>
+          <h2 className="text-sm font-semibold">{t.set_plan_title}</h2>
         </div>
         <div className="p-5 flex items-center justify-between gap-4">
           <div>
@@ -158,21 +160,21 @@ export function SettingsClient({ email, fullName, planName, subscriptionStatus, 
               {planLabel} Plan
               {isActive && (
                 <span className="ml-2 text-[10px] font-semibold text-green-600 bg-green-50 dark:bg-green-950/30 px-2 py-0.5 rounded-full">
-                  {subscriptionStatus === 'trialing' ? 'Trial' : 'Active'}
+                  {subscriptionStatus === 'trialing' ? t.set_trial_badge : t.set_active_badge}
                 </span>
               )}
             </p>
             <p className="text-xs text-muted-foreground mt-0.5">
               {subscriptionStatus === 'trialing'
-                ? 'You are currently on a free trial.'
+                ? t.set_on_trial
                 : isActive
-                ? 'Your subscription is active.'
-                : 'No active subscription.'}
+                ? t.set_sub_active
+                : t.set_no_sub}
             </p>
           </div>
           <Link href="/billing">
             <Button size="sm" variant="outline" className="font-semibold text-xs h-8">
-              Manage plan
+              {t.set_manage_plan}
             </Button>
           </Link>
         </div>
@@ -182,18 +184,17 @@ export function SettingsClient({ email, fullName, planName, subscriptionStatus, 
       <section className="bg-card border border-destructive/30 rounded-2xl overflow-hidden">
         <div className="px-5 py-3.5 border-b border-destructive/30 flex items-center gap-2.5">
           <Trash2 className="w-4 h-4 text-destructive" />
-          <h2 className="text-sm font-semibold text-destructive">Danger Zone</h2>
+          <h2 className="text-sm font-semibold text-destructive">{t.set_danger_title}</h2>
         </div>
         <div className="p-5 space-y-3">
           <p className="text-xs text-muted-foreground">
-            To delete your account, type <span className="font-mono font-bold">DELETE</span> below and confirm.
-            This action cannot be undone.
+            {t.set_danger_desc} <span className="font-mono font-bold">DELETE</span> {t.set_danger_desc2}
           </p>
           <div className="flex gap-2">
             <Input
               value={deleteConfirm}
               onChange={(e) => setDeleteConfirm(e.target.value)}
-              placeholder="Type DELETE to confirm"
+              placeholder={t.set_type_delete}
               className="text-sm h-9 flex-1 font-mono"
             />
             <Button
@@ -203,7 +204,7 @@ export function SettingsClient({ email, fullName, planName, subscriptionStatus, 
               disabled={deleting || deleteConfirm !== 'DELETE'}
               className="h-9 font-semibold"
             >
-              {deleting ? 'Deleting…' : 'Delete account'}
+              {deleting ? t.set_deleting : t.set_delete_account}
             </Button>
           </div>
         </div>

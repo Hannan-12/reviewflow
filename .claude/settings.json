@@ -10,7 +10,13 @@
       "Bash(sort -k5 -hr)",
       "Bash(xargs sed:*)",
       "Bash(npm list *)",
-      "Bash(find src *)"
+      "Bash(find src *)",
+      "Bash(git restore *)",
+      "Bash(grep -v \"^'[a-z0-9-]*'$\")",
+      "Bash(cat)",
+      "Bash(bash /tmp/count_strings.sh)",
+      "Bash(awk '{ depth = gsub\\(/\\\\//, \"/\"\\); printf \"%*s%s\\\\n\", \\(depth-7\\)*2, \"\", substr\\($0, match\\($0, /[^/]*$/\\)\\) }')",
+      "Bash(awk '{print $NF}')"
     ]
   }
 }

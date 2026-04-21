@@ -2,6 +2,7 @@ import { useState, useRef } from 'react';
 import { Button } from '@/components/ui/button';
 import { Loader, Sparkles, RotateCcw } from 'lucide-react';
 import { TemplatePicker } from './template-picker';
+import { useDashboardLang } from './lang-context';
 
 interface ReplyPanelProps {
   reviewId: string;
@@ -20,6 +21,7 @@ export function ReplyPanel({
   comment,
   onReplySubmitted,
 }: ReplyPanelProps) {
+  const { t } = useDashboardLang();
   const [replyText, setReplyText] = useState('');
   const [aiSuggestion, setAiSuggestion] = useState<string | null>(null);
   const [loading, setLoading] = useState(false);
@@ -88,7 +90,7 @@ export function ReplyPanel({
       {/* Header */}
       <div>
         <p className="text-xs font-semibold text-muted-foreground uppercase tracking-wide mb-1">
-          Reply to {reviewerName}
+          {t.reply_to} {reviewerName}
         </p>
         <p className="text-xs text-muted-foreground leading-relaxed line-clamp-2">
           {rating}★ &ldquo;{comment}&rdquo;
@@ -108,12 +110,12 @@ export function ReplyPanel({
             {loading ? (
               <>
                 <Loader className="w-3.5 h-3.5 mr-2 animate-spin" />
-                Generating…
+                {t.reply_generating}
               </>
             ) : (
               <>
                 <Sparkles className="w-3.5 h-3.5 mr-2" />
-                Get AI Suggestion
+                {t.reply_get_ai}
               </>
             )}
           </Button>
@@ -122,7 +124,7 @@ export function ReplyPanel({
             <p className="text-sm text-foreground leading-relaxed">{aiSuggestion}</p>
             <div className="flex gap-2">
               <Button onClick={handleAcceptSuggestion} size="sm" className="flex-1 h-7 text-xs">
-                Use this
+                {t.reply_use_this}
               </Button>
               <Button
                 onClick={() => setShowSuggestion(false)}
@@ -131,7 +133,7 @@ export function ReplyPanel({
                 className="flex-1 h-7 text-xs"
               >
                 <RotateCcw className="w-3 h-3 mr-1" />
-                Rewrite
+                {t.reply_rewrite}
               </Button>
             </div>
           </div>
@@ -147,7 +149,7 @@ export function ReplyPanel({
           ref={textAreaRef}
           value={replyText}
           onChange={(e) => setReplyText(e.target.value)}
-          placeholder="Write your reply here…"
+          placeholder={t.reply_placeholder}
           rows={4}
           className="w-full rounded-lg border border-border bg-background text-foreground placeholder:text-muted-foreground text-sm p-3 resize-none focus:outline-none focus:ring-2 focus:ring-primary/40 focus:border-primary/50 transition-colors"
         />
@@ -160,7 +162,7 @@ export function ReplyPanel({
 
       {/* Error / Success */}
       {error && <p className="text-xs text-destructive">{error}</p>}
-      {success && <p className="text-xs text-emerald-500">Reply posted successfully!</p>}
+      {success && <p className="text-xs text-emerald-500">{t.reply_success}</p>}
 
       {/* Actions */}
       <div className="flex gap-2">
@@ -173,9 +175,9 @@ export function ReplyPanel({
           {submitting ? (
             <>
               <Loader className="w-3.5 h-3.5 mr-2 animate-spin" />
-              Posting…
+              {t.reply_posting}
             </>
-          ) : 'Post Reply'}
+          ) : t.reply_post}
         </Button>
         <Button
           onClick={() => setReplyText('')}
@@ -183,7 +185,7 @@ export function ReplyPanel({
           size="sm"
           className="flex-1"
         >
-          Clear
+          {t.reply_clear}
         </Button>
       </div>
     </div>
