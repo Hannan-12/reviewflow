@@ -1,6 +1,7 @@
 'use client'
 
 import { createContext, useContext, useEffect, useState } from 'react'
+import { useRouter } from 'next/navigation'
 import { dashboardT, type DashboardLang, type DashboardT } from '@/lib/i18n/dashboard'
 
 interface LangContextValue {
@@ -17,6 +18,7 @@ const LangContext = createContext<LangContextValue>({
 
 export function DashboardLangProvider({ children }: { children: React.ReactNode }) {
   const [lang, setLangState] = useState<DashboardLang>('de')
+  const router = useRouter()
 
   useEffect(() => {
     const saved = localStorage.getItem('app_lang') as DashboardLang | null
@@ -30,6 +32,7 @@ export function DashboardLangProvider({ children }: { children: React.ReactNode 
     setLangState(l)
     localStorage.setItem('app_lang', l)
     document.cookie = `app_lang=${l}; path=/; max-age=31536000; SameSite=Lax`
+    router.refresh()
   }
 
   return (
