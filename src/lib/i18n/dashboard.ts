@@ -65,4 +65,10 @@ export const dashboardT = {
 } as const
 
 export type DashboardLang = keyof typeof dashboardT
-export type DashboardT = typeof dashboardT.en
+export type DashboardT = {
+  nav_dashboard: string; nav_profiles: string; nav_reviews: string
+  nav_notifications: string; nav_reports: string; nav_replies: string
+  nav_widget: string; nav_collect: string; nav_billing: string
+  nav_settings: string; nav_main: string; nav_account: string
+  nav_theme: string; nav_signout: string; trial_left: string; plan_badge: string
+}
