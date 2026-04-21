@@ -29,7 +29,7 @@ export function DashboardLangProvider({ children }: { children: React.ReactNode 
   }
 
   return (
-    <LangContext.Provider value={{ lang, t: dashboardT[lang], setLang }}>
+    <LangContext.Provider value={{ lang, t: dashboardT[lang] as DashboardT, setLang }}>
       {children}
     </LangContext.Provider>
   )
