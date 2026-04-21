@@ -539,16 +539,18 @@ function LanguageSwitcher({ lang, onSelect }: { lang: LangCode; onSelect: (code:
 // ─── Main page ──────────────────────────────────────────────
 export default function HomePage() {
   const [annual, setAnnual] = useState(false)
-  const [lang, setLang] = useState<LangCode>('de')
-
-  useEffect(() => {
-    const saved = localStorage.getItem('app_lang') as LangCode | null
-    if (saved && saved in T) setLang(saved)
-  }, [])
+  const [lang, setLang] = useState<LangCode>(() => {
+    if (typeof window !== 'undefined') {
+      const saved = localStorage.getItem('app_lang') as LangCode | null
+      if (saved && saved in T) return saved
+    }
+    return 'de'
+  })
 
   const handleSetLang = (code: LangCode) => {
     setLang(code)
     localStorage.setItem('app_lang', code)
+    document.cookie = `app_lang=${code}; path=/; max-age=31536000; SameSite=Lax`
   }
 
   const t = T[lang]
