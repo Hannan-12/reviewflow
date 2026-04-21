@@ -540,6 +540,17 @@ function LanguageSwitcher({ lang, onSelect }: { lang: LangCode; onSelect: (code:
 export default function HomePage() {
   const [annual, setAnnual] = useState(false)
   const [lang, setLang] = useState<LangCode>('de')
+
+  useEffect(() => {
+    const saved = localStorage.getItem('app_lang') as LangCode | null
+    if (saved && saved in T) setLang(saved)
+  }, [])
+
+  const handleSetLang = (code: LangCode) => {
+    setLang(code)
+    localStorage.setItem('app_lang', code)
+  }
+
   const t = T[lang]
   const isRtl = languages.find((l) => l.code === lang)?.rtl ?? false
 
@@ -571,7 +582,7 @@ export default function HomePage() {
             <Link href="/demo" className="font-semibold transition-colors hover:opacity-80" style={{ color: Y }}>{t.nav_demo}</Link>
           </div>
           <div className="flex items-center gap-2">
-            <LanguageSwitcher lang={lang} onSelect={setLang} />
+            <LanguageSwitcher lang={lang} onSelect={handleSetLang} />
             <Link href="/login">
               <button className="px-3 py-1.5 text-sm font-medium text-gray-300 hover:text-white transition-colors">{t.nav_signin}</button>
             </Link>

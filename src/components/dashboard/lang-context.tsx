@@ -19,13 +19,13 @@ export function DashboardLangProvider({ children }: { children: React.ReactNode 
   const [lang, setLangState] = useState<DashboardLang>('en')
 
   useEffect(() => {
-    const saved = localStorage.getItem('dashboard_lang') as DashboardLang | null
+    const saved = localStorage.getItem('app_lang') as DashboardLang | null
     if (saved && saved in dashboardT) setLangState(saved)
   }, [])
 
   const setLang = (l: DashboardLang) => {
     setLangState(l)
-    localStorage.setItem('dashboard_lang', l)
+    localStorage.setItem('app_lang', l)
   }
 
   return (
