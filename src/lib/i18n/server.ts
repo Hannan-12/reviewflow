@@ -5,5 +5,5 @@ export async function getServerT(): Promise<DashboardT> {
   const cookieStore = await cookies()
   const lang = cookieStore.get('app_lang')?.value as DashboardLang | undefined
   if (lang && lang in dashboardT) return dashboardT[lang] as DashboardT
-  return dashboardT.en as DashboardT
+  return dashboardT.de as DashboardT
 }

@@ -10,13 +10,13 @@ interface LangContextValue {
 }
 
 const LangContext = createContext<LangContextValue>({
-  lang: 'en',
-  t: dashboardT.en,
+  lang: 'de',
+  t: dashboardT.de as DashboardT,
   setLang: () => {},
 })
 
 export function DashboardLangProvider({ children }: { children: React.ReactNode }) {
-  const [lang, setLangState] = useState<DashboardLang>('en')
+  const [lang, setLangState] = useState<DashboardLang>('de')
 
   useEffect(() => {
     const saved = localStorage.getItem('app_lang') as DashboardLang | null
