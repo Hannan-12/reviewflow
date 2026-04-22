@@ -110,9 +110,9 @@ export default async function ReviewsPage({
                     <p className="text-[10px] font-bold text-muted-foreground uppercase tracking-wide mb-1.5">{t.dash_stat_total}</p>
                     <p className="text-2xl font-bold tabular-nums">
                       {totalCount}
-                      {planName !== 'agency' && (
-                        <span className="text-base font-normal text-muted-foreground"> / {reviewLimit}</span>
-                      )}
+                      <span className="text-base font-normal text-muted-foreground">
+                        {planName === 'agency' ? ' / ∞' : ` / ${reviewLimit}`}
+                      </span>
                     </p>
                   </div>
                   <div className="bg-card border border-border rounded-2xl p-4">

@@ -565,7 +565,7 @@ export default function HomePage() {
   ]
 
   return (
-    <div style={{ background: BG, color: '#fff', minHeight: '100vh' }} dir={isRtl ? 'rtl' : 'ltr'}>
+    <div style={{ background: BG, color: '#fff', minHeight: '100vh', overflowX: 'hidden' }} dir={isRtl ? 'rtl' : 'ltr'}>
 
       {/* Nav */}
       <nav className="sticky top-0 z-50" style={{ background: 'rgba(26,26,26,0.95)', borderBottom: `1px solid ${BORDER}`, backdropFilter: 'blur(12px)' }}>
@@ -670,7 +670,7 @@ export default function HomePage() {
       </section>
 
       {/* Features */}
-      <section id="features" className="max-w-6xl mx-auto px-6 py-24">
+      <section id="features" className="relative overflow-hidden max-w-6xl mx-auto px-6 py-24">
         <div className="text-center mb-14">
           <h2 className="text-3xl md:text-4xl font-bold tracking-tight mb-4 text-white">{t.feat_h2}</h2>
           <p className="text-lg text-gray-400 max-w-xl mx-auto">{t.feat_sub}</p>
@@ -692,7 +692,7 @@ export default function HomePage() {
       </section>
 
       {/* Testimonials */}
-      <section id="testimonials" className="py-24" style={{ borderTop: `1px solid ${BORDER}`, borderBottom: `1px solid ${BORDER}` }}>
+      <section id="testimonials" className="relative overflow-hidden py-24" style={{ borderTop: `1px solid ${BORDER}`, borderBottom: `1px solid ${BORDER}` }}>
         <div className="max-w-6xl mx-auto px-6">
           <div className="text-center mb-14">
             <h2 className="text-3xl md:text-4xl font-bold tracking-tight mb-4 text-white">{t.test_h2}</h2>
@@ -718,7 +718,7 @@ export default function HomePage() {
       </section>
 
       {/* Pricing */}
-      <section id="pricing" className="max-w-6xl mx-auto px-6 py-24">
+      <section id="pricing" className="relative overflow-hidden max-w-6xl mx-auto px-6 py-24">
         <div className="text-center mb-10">
           <h2 className="text-3xl md:text-4xl font-bold tracking-tight mb-4 text-white">{t.pricing_h2}</h2>
           <p className="text-lg text-gray-400 mb-8">{t.pricing_sub}</p>
@@ -796,7 +796,7 @@ export default function HomePage() {
       </section>
 
       {/* FAQ */}
-      <section id="faq" className="py-24" style={{ borderTop: `1px solid ${BORDER}` }}>
+      <section id="faq" className="relative overflow-hidden py-24" style={{ borderTop: `1px solid ${BORDER}` }}>
         <div className="max-w-3xl mx-auto px-6">
           <div className="text-center mb-12">
             <h2 className="text-3xl md:text-4xl font-bold tracking-tight mb-4 text-white">{t.faq_h2}</h2>
