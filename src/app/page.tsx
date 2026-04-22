@@ -5,7 +5,7 @@ import Image from 'next/image'
 import { useState, useEffect } from 'react'
 import {
   Star, Bell, BarChart3, MessageSquare, Zap, Shield,
-  ArrowRight, CheckCircle2, ChevronDown, Play, Globe,
+  ArrowRight, CheckCircle2, ChevronDown, Play, Globe, Menu, X,
 } from 'lucide-react'
 
 // ─── Brand colors ──────────────────────────────────────────
@@ -539,6 +539,7 @@ function LanguageSwitcher({ lang, onSelect }: { lang: LangCode; onSelect: (code:
 // ─── Main page ──────────────────────────────────────────────
 export default function HomePage() {
   const [annual, setAnnual] = useState(false)
+  const [menuOpen, setMenuOpen] = useState(false)
   const [lang, setLang] = useState<LangCode>(() => {
     if (typeof window !== 'undefined') {
       const saved = localStorage.getItem('app_lang') as LangCode | null
@@ -585,17 +586,93 @@ export default function HomePage() {
           </div>
           <div className="flex items-center gap-2">
             <LanguageSwitcher lang={lang} onSelect={handleSetLang} />
-            <Link href="/login">
+            {/* Desktop: sign in + sign up */}
+            <Link href="/login" className="hidden md:block">
               <button className="px-3 py-1.5 text-sm font-medium text-gray-300 hover:text-white transition-colors">{t.nav_signin}</button>
             </Link>
-            <Link href="/signup">
+            <Link href="/signup" className="hidden md:block">
               <button className="px-4 py-2 rounded-lg text-sm font-bold transition-colors hover:opacity-90" style={{ background: Y, color: BG }}>
                 {t.nav_trial}
               </button>
             </Link>
+            {/* Mobile: hamburger */}
+            <button
+              onClick={() => setMenuOpen(true)}
+              className="md:hidden flex items-center justify-center w-9 h-9 rounded-lg transition-colors"
+              style={{ color: '#d1d5db' }}
+              aria-label="Open menu"
+            >
+              <Menu className="w-5 h-5" />
+            </button>
           </div>
         </div>
       </nav>
+
+      {/* Mobile drawer */}
+      {menuOpen && (
+        <>
+          {/* Backdrop */}
+          <div
+            className="fixed inset-0 z-50 md:hidden"
+            style={{ background: 'rgba(0,0,0,0.6)', backdropFilter: 'blur(4px)' }}
+            onClick={() => setMenuOpen(false)}
+          />
+          {/* Drawer */}
+          <div
+            className="fixed top-0 right-0 h-full w-72 z-50 flex flex-col md:hidden"
+            style={{ background: '#1e1e1e', borderLeft: `1px solid ${BORDER}` }}
+          >
+            {/* Drawer header */}
+            <div className="flex items-center justify-between px-5 h-14" style={{ borderBottom: `1px solid ${BORDER}` }}>
+              <span className="font-bold text-sm text-white">Menu</span>
+              <button
+                onClick={() => setMenuOpen(false)}
+                className="flex items-center justify-center w-8 h-8 rounded-lg"
+                style={{ color: '#9ca3af' }}
+                aria-label="Close menu"
+              >
+                <X className="w-4 h-4" />
+              </button>
+            </div>
+            {/* Nav links */}
+            <div className="flex flex-col gap-1 px-3 py-4 flex-1">
+              {[
+                { href: '#features', label: t.nav_features },
+                { href: '#testimonials', label: t.nav_reviews },
+                { href: '#pricing', label: t.nav_pricing },
+                { href: '#faq', label: t.nav_faq },
+              ].map(({ href, label }) => (
+                <a
+                  key={href}
+                  href={href}
+                  onClick={() => setMenuOpen(false)}
+                  className="px-3 py-3 rounded-xl text-sm font-medium text-gray-300 hover:text-white hover:bg-white/5 transition-colors"
+                >
+                  {label}
+                </a>
+              ))}
+              <Link href="/demo" onClick={() => setMenuOpen(false)}>
+                <span className="block px-3 py-3 rounded-xl text-sm font-semibold hover:bg-white/5 transition-colors" style={{ color: Y }}>
+                  {t.nav_demo}
+                </span>
+              </Link>
+            </div>
+            {/* Auth buttons */}
+            <div className="px-4 pb-6 flex flex-col gap-3">
+              <Link href="/login" onClick={() => setMenuOpen(false)}>
+                <button className="w-full py-2.5 rounded-xl text-sm font-medium text-gray-300 border border-gray-700 hover:border-gray-500 transition-colors">
+                  {t.nav_signin}
+                </button>
+              </Link>
+              <Link href="/signup" onClick={() => setMenuOpen(false)}>
+                <button className="w-full py-3 rounded-xl text-sm font-bold transition-colors hover:opacity-90" style={{ background: Y, color: BG }}>
+                  {t.nav_trial}
+                </button>
+              </Link>
+            </div>
+          </div>
+        </>
+      )}
 
       {/* Hero */}
       <section className="relative overflow-hidden">
