@@ -57,12 +57,12 @@ export default function PrivacyPage() {
 
           <section>
             <h2 className="text-xl font-bold mb-3">5. AI Processing</h2>
-            <p className="text-muted-foreground leading-relaxed">We use Anthropic Claude AI to generate reply suggestions and perform sentiment analysis on your reviews. Review content is sent to Anthropic's API for processing. Anthropic's privacy policy governs the handling of this data. We do not use your review data to train AI models.</p>
+            <p className="text-muted-foreground leading-relaxed">We use AI to generate reply suggestions and perform sentiment analysis on your reviews. Review content is processed by our AI provider for this purpose. We do not use your review data to train AI models.</p>
           </section>
 
           <section>
             <h2 className="text-xl font-bold mb-3">6. Third-Party Services</h2>
-            <p className="text-muted-foreground leading-relaxed">We use the following third-party services: Stripe (payments), Resend (email delivery), Supabase (database and auth), and Anthropic (AI processing). Each service has its own privacy policy governing data they receive.</p>
+            <p className="text-muted-foreground leading-relaxed">We use the following third-party services: Stripe (payments), Resend (email delivery), Supabase (database and auth), and an AI processing provider (reply suggestions and sentiment analysis). Each service has its own privacy policy governing data they receive.</p>
           </section>
 
           <section>

@@ -4,6 +4,7 @@ import { ChevronRight } from 'lucide-react'
 import { NotificationBell } from './notification-bell'
 import { DashboardLangSwitcher } from './lang-switcher'
 import { getServerT } from '@/lib/i18n/server'
+import { MobileMenuButton } from './mobile-menu-button'
 
 interface HeaderProps {
   title: string
@@ -31,8 +32,9 @@ export async function Header({ title, breadcrumbs }: HeaderProps) {
 
   return (
     <header className="h-14 border-b border-border bg-background/80 backdrop-blur-sm px-5 flex items-center justify-between shrink-0 sticky top-0 z-10">
-      {/* Left: breadcrumbs */}
+      {/* Left: mobile hamburger + breadcrumbs */}
       <div className="flex items-center gap-1.5 text-sm min-w-0">
+        <MobileMenuButton />
         {breadcrumbs && breadcrumbs.length > 0 ? (
           <>
             {breadcrumbs.map((crumb, i) => (

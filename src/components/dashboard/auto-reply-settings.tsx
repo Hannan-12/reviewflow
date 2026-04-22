@@ -3,16 +3,21 @@
 import { useState, useEffect } from 'react'
 import { Button } from '@/components/ui/button'
 import { toast } from 'sonner'
-import { Zap } from 'lucide-react'
+import { Star, Zap, Lock } from 'lucide-react'
+import { useDashboardLang } from './lang-context'
 
 interface AutoReplySettingsProps {
   profileId: string
+  planName: string
 }
 
-export function AutoReplySettings({ profileId }: AutoReplySettingsProps) {
+const ALL_RATINGS = [1, 2, 3, 4, 5]
+
+export function AutoReplySettings({ profileId, planName }: AutoReplySettingsProps) {
+  const { t } = useDashboardLang()
+  const canUseAutoReply = planName === 'pro' || planName === 'agency'
   const [enabled, setEnabled] = useState(false)
-  const [minRating, setMinRating] = useState<string>('')
-  const [maxRating, setMaxRating] = useState<string>('')
+  const [selectedRatings, setSelectedRatings] = useState<number[]>([])
   const [customInstructions, setCustomInstructions] = useState('')
   const [loading, setLoading] = useState(true)
   const [saving, setSaving] = useState(false)
@@ -22,13 +27,29 @@ export function AutoReplySettings({ profileId }: AutoReplySettingsProps) {
       .then(r => r.json())
       .then(d => {
         setEnabled(d.enabled ?? false)
-        setMinRating(d.min_rating != null ? String(d.min_rating) : '')
-        setMaxRating(d.max_rating != null ? String(d.max_rating) : '')
+        if (d.reply_to_ratings?.length) {
+          setSelectedRatings(d.reply_to_ratings)
+        } else if (d.min_rating != null || d.max_rating != null) {
+          // Migrate legacy min/max to explicit list
+          const min = d.min_rating ?? 1
+          const max = d.max_rating ?? 5
+          setSelectedRatings(ALL_RATINGS.filter(r => r >= min && r <= max))
+        } else {
+          setSelectedRatings([])
+        }
         setCustomInstructions(d.custom_instructions ?? '')
         setLoading(false)
       })
       .catch(() => setLoading(false))
   }, [profileId])
+
+  const toggleRating = (r: number) => {
+    setSelectedRatings(prev =>
+      prev.includes(r) ? prev.filter(x => x !== r) : [...prev, r].sort()
+    )
+  }
+
+  const allSelected = selectedRatings.length === 0
 
   const handleSave = async () => {
     setSaving(true)
@@ -38,8 +59,7 @@ export function AutoReplySettings({ profileId }: AutoReplySettingsProps) {
       body: JSON.stringify({
         profileId,
         enabled,
-        minRating: minRating ? parseInt(minRating) : null,
-        maxRating: maxRating ? parseInt(maxRating) : null,
+        replyToRatings: selectedRatings.length ? selectedRatings : null,
         customInstructions,
       }),
     })
@@ -47,6 +67,21 @@ export function AutoReplySettings({ profileId }: AutoReplySettingsProps) {
     else toast.error('Failed to save settings')
     setSaving(false)
   }
+
+  if (!canUseAutoReply) return (
+    <div className="flex flex-col items-center gap-3 py-5 px-4 rounded-xl bg-muted/50 border border-border text-center">
+      <Lock className="w-5 h-5 text-muted-foreground" />
+      <div>
+        <p className="text-sm font-semibold">{t.auto_reply_pro_title}</p>
+        <p className="text-xs text-muted-foreground mt-1 max-w-xs">{t.auto_reply_pro_desc}</p>
+      </div>
+      <a href="/billing">
+        <Button size="sm" className="font-bold gap-1.5" style={{ backgroundColor: '#F5C518', color: '#000' }}>
+          {t.auto_reply_upgrade}
+        </Button>
+      </a>
+    </div>
+  )
 
   if (loading) return (
     <div className="h-16 rounded-xl bg-muted animate-pulse" />
@@ -79,57 +114,64 @@ export function AutoReplySettings({ profileId }: AutoReplySettingsProps) {
       </div>
 
       {enabled && (
-        <div className="space-y-3 pl-12">
-          {/* Rating filter */}
-          <div className="grid grid-cols-2 gap-3">
-            <div>
-              <label className="text-xs font-medium text-muted-foreground block mb-1">
-                Min rating (optional)
-              </label>
-              <select
-                value={minRating}
-                onChange={e => setMinRating(e.target.value)}
-                className="w-full h-8 text-sm rounded-lg border border-border bg-card px-2 focus:outline-none focus:ring-1 focus:ring-primary"
+        <div className="space-y-4 pl-12">
+          {/* Star rating checkboxes */}
+          <div>
+            <p className="text-xs font-medium text-muted-foreground mb-2">Reply to these star ratings</p>
+            <div className="flex flex-wrap gap-2">
+              {/* All button */}
+              <button
+                onClick={() => setSelectedRatings([])}
+                className={`flex items-center gap-1 px-3 py-1.5 rounded-lg text-xs font-semibold border transition-colors ${
+                  allSelected
+                    ? 'bg-primary text-primary-foreground border-primary'
+                    : 'bg-muted text-muted-foreground border-border hover:border-primary/40'
+                }`}
               >
-                <option value="">Any</option>
-                {[1,2,3,4,5].map(r => <option key={r} value={r}>{r}★</option>)}
-              </select>
-              <p className="text-[10px] text-muted-foreground mt-0.5">Only auto-reply if rating ≥ this</p>
+                All
+              </button>
+              {ALL_RATINGS.map(r => {
+                const active = selectedRatings.includes(r)
+                return (
+                  <button
+                    key={r}
+                    onClick={() => toggleRating(r)}
+                    className={`flex items-center gap-1 px-2.5 py-1.5 rounded-lg text-xs font-semibold border transition-colors ${
+                      active
+                        ? 'bg-amber-400/20 text-amber-700 dark:text-amber-400 border-amber-400/60'
+                        : 'bg-muted text-muted-foreground border-border hover:border-amber-400/40'
+                    }`}
+                  >
+                    {r}
+                    <Star className={`w-3 h-3 ${active ? 'fill-amber-400 text-amber-400' : ''}`} />
+                  </button>
+                )
+              })}
             </div>
-            <div>
-              <label className="text-xs font-medium text-muted-foreground block mb-1">
-                Max rating (optional)
-              </label>
-              <select
-                value={maxRating}
-                onChange={e => setMaxRating(e.target.value)}
-                className="w-full h-8 text-sm rounded-lg border border-border bg-card px-2 focus:outline-none focus:ring-1 focus:ring-primary"
-              >
-                <option value="">Any</option>
-                {[1,2,3,4,5].map(r => <option key={r} value={r}>{r}★</option>)}
-              </select>
-              <p className="text-[10px] text-muted-foreground mt-0.5">Only auto-reply if rating ≤ this</p>
-            </div>
+            <p className="text-[10px] text-muted-foreground mt-1.5">
+              {allSelected ? 'Replying to all new reviews' : `Replying to ${selectedRatings.join('★, ')}★ reviews only`}
+            </p>
           </div>
 
-          {/* Custom instructions */}
+          {/* Custom AI prompt */}
           <div>
             <label className="text-xs font-medium text-muted-foreground block mb-1">
-              Custom instructions (optional)
+              Custom AI instructions (optional)
             </label>
             <textarea
               value={customInstructions}
               onChange={e => setCustomInstructions(e.target.value)}
-              placeholder="e.g. Always mention our loyalty programme. Keep tone friendly and informal."
+              placeholder="e.g. Always mention our loyalty programme. Keep tone friendly and informal. Sign off with the owner's first name."
               rows={3}
               className="w-full text-sm border border-border rounded-lg px-3 py-2 bg-background focus:outline-none focus:ring-1 focus:ring-primary resize-none"
             />
+            <p className="text-[10px] text-muted-foreground mt-1">These instructions are appended to every AI-generated reply for this profile.</p>
           </div>
 
           <div className="flex items-start gap-2 bg-amber-500/8 border border-amber-500/20 rounded-lg px-3 py-2">
             <Zap className="w-3.5 h-3.5 text-amber-500 mt-0.5 shrink-0" />
             <p className="text-xs text-muted-foreground">
-              Auto-replies are posted during the hourly sync. You can edit or delete any auto-posted reply from the Reviews page.
+              Auto-replies are posted during the hourly sync and when you manually refresh. You can edit or delete any auto-posted reply from the Reviews page.
             </p>
           </div>
         </div>

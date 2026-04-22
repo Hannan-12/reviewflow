@@ -16,17 +16,19 @@ const LangContext = createContext<LangContextValue>({
   setLang: () => {},
 })
 
-export function DashboardLangProvider({ children }: { children: React.ReactNode }) {
-  const [lang, setLangState] = useState<DashboardLang>('de')
+interface ProviderProps {
+  children: React.ReactNode
+  initialLang?: DashboardLang
+}
+
+export function DashboardLangProvider({ children, initialLang = 'de' }: ProviderProps) {
+  const [lang, setLangState] = useState<DashboardLang>(initialLang)
   const router = useRouter()
 
   useEffect(() => {
-    const saved = localStorage.getItem('app_lang') as DashboardLang | null
-    if (saved && saved in dashboardT) {
-      setLangState(saved)
-      document.cookie = `app_lang=${saved}; path=/; max-age=31536000; SameSite=Lax`
-    }
-  }, [])
+    document.documentElement.dir = lang === 'ar' ? 'rtl' : 'ltr'
+    document.documentElement.lang = lang
+  }, [lang])
 
   const setLang = (l: DashboardLang) => {
     setLangState(l)

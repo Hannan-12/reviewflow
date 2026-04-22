@@ -91,7 +91,7 @@ export function PlanCard({ name, price, annual, description, features, priceId, 
       className={cn(
         'relative flex flex-col rounded-2xl border p-6 transition-all',
         isPopular
-          ? 'border-primary bg-primary text-white shadow-xl shadow-primary/25 scale-[1.02]'
+          ? 'border-primary bg-primary text-white shadow-xl shadow-primary/25 sm:scale-[1.02]'
           : 'border-border bg-card hover:border-primary/30 hover:shadow-md hover:shadow-primary/5',
         isCurrentPlan && !isPopular && 'border-primary/50 ring-1 ring-primary/20'
       )}
@@ -119,7 +119,7 @@ export function PlanCard({ name, price, annual, description, features, priceId, 
         <p className={cn('font-bold text-base mb-3', isPopular ? 'text-white' : '')}>{name}</p>
         {isAgency ? (
           <div className="mb-1.5">
-            <span className={cn('text-3xl font-bold tracking-tight', isPopular ? 'text-white' : '')}>Auf Anfrage</span>
+            <span className={cn('text-3xl font-bold tracking-tight', isPopular ? 'text-white' : '')}>Custom quote</span>
           </div>
         ) : (
           <div className="flex items-end gap-1 mb-1.5">

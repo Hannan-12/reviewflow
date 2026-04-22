@@ -13,7 +13,7 @@ export default async function CollectPage() {
 
   const { data: profiles } = await supabase
     .from('profiles')
-    .select('id, business_name')
+    .select('id, business_name, place_id, new_review_uri')
     .eq('user_id', user?.id ?? '')
     .order('created_at', { ascending: true })
 

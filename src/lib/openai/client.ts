@@ -56,6 +56,7 @@ export interface ReplyContext {
   comment: string
   businessName: string
   businessType?: string
+  customInstructions?: string
 }
 
 export async function generateReplyFromAI(context: ReplyContext): Promise<string> {
@@ -99,7 +100,7 @@ SPECIAL CASES — handle these exactly as described:
 - Aggressive or inappropriate tone from reviewer: Remain calm and professional. Do not mirror their tone. Acknowledge their frustration and offer a resolution.
 - Review praising a specific staff member: Mention that person by name and pass on the kind words.
 
-Always end with a forward-looking line (e.g. hope to see them again, commitment to improvement, or invitation to reach out).`
+Always end with a forward-looking line (e.g. hope to see them again, commitment to improvement, or invitation to reach out).${context.customInstructions ? `\n\nADDITIONAL INSTRUCTIONS FROM BUSINESS OWNER:\n${context.customInstructions}` : ''}`
 
   try {
     return await generateText(prompt, Number(process.env.AI_REPLY_MAX_TOKENS) || 1200)

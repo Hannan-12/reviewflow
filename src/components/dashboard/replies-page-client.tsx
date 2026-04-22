@@ -2,9 +2,10 @@
 
 import { useState } from 'react'
 import { useRouter } from 'next/navigation'
-import { Star, CheckCircle2, Clock, ChevronDown, Sparkles } from 'lucide-react'
+import { Star, CheckCircle2, Clock, Sparkles } from 'lucide-react'
 import { ReviewDetailModal } from '@/components/dashboard/review-detail-modal'
 import { useDashboardLang } from './lang-context'
+import { ProfileSwitcher } from './profile-switcher'
 
 interface Reply {
   id: string
@@ -64,23 +65,16 @@ export function RepliesPageClient({
 
   return (
     <>
+      {/* Profile switcher */}
+      <ProfileSwitcher
+        profiles={profiles}
+        currentProfile={currentProfile}
+        allLabel={t.rpl_all_profiles}
+        onSelect={(id) => updateParam('profile', id)}
+      />
+
       {/* Filters */}
       <div className="flex flex-wrap items-center gap-3">
-        {/* Profile filter */}
-        <div className="relative">
-          <select
-            value={currentProfile ?? ''}
-            onChange={(e) => updateParam('profile', e.target.value || null)}
-            className="h-8 text-sm rounded-lg border border-border bg-card px-3 pr-8 focus:outline-none focus:ring-1 focus:ring-primary appearance-none"
-          >
-            <option value="">{t.rpl_all_profiles}</option>
-            {profiles.map((p) => (
-              <option key={p.id} value={p.id}>{p.business_name}</option>
-            ))}
-          </select>
-          <ChevronDown className="absolute right-2 top-1/2 -translate-y-1/2 w-3.5 h-3.5 text-muted-foreground pointer-events-none" />
-        </div>
-
         {/* Status filter */}
         <div className="flex items-center gap-1 bg-muted rounded-lg p-1">
           {[
@@ -137,7 +131,7 @@ export function RepliesPageClient({
                         {reply.business_name}
                       </span>
                     </div>
-                    <div className="flex items-center gap-2">
+                    <div className="flex items-center gap-1 sm:gap-2 flex-wrap">
                       {reply.user_accepted_ai && (
                         <span className="flex items-center gap-1 text-[10px] font-medium text-primary bg-primary/10 px-2 py-0.5 rounded-full">
                           <Sparkles className="w-3 h-3" /> {t.rpl_ai_badge}

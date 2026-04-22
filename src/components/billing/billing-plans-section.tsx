@@ -4,6 +4,7 @@ import { useState, useEffect } from 'react'
 import { useRouter } from 'next/navigation'
 import { PlanCard } from './plan-card'
 import { BillingToggle } from './billing-toggle'
+import { QuickCheckoutSection } from './quick-checkout-section'
 
 export interface PlanData {
   key: string
@@ -58,7 +59,9 @@ export function BillingPlansSection({ plans, currentPlanKey, isSubscribed, autoC
         </p>
       )}
 
-      <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+      <QuickCheckoutSection plans={plans} annual={annual} />
+
+      <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4">
         {plans.map((plan) => (
           <PlanCard
             key={plan.key}

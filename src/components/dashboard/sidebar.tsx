@@ -59,35 +59,23 @@ export function Sidebar({ planName }: { planName?: string }) {
 
   const planColor = PLAN_COLORS[planName ?? 'free'] ?? PLAN_COLORS.free
 
+  const { mobileOpen, closeMobile } = useSidebar()
+
   if (!mounted) return (
-    <aside className="w-[220px] border-r border-border bg-sidebar shrink-0 h-screen" />
+    <aside className="hidden lg:block w-55 border-r border-border bg-sidebar shrink-0 h-screen" />
   )
 
-  return (
-    <aside
-      className={cn(
-        'sidebar-gradient flex flex-col border-r border-border h-screen sticky top-0 shrink-0 transition-all duration-300 ease-in-out overflow-hidden',
-        collapsed ? 'w-[60px]' : 'w-[220px]'
-      )}
-    >
+  const navContent = (isMobile: boolean) => (
+    <>
       {/* Logo + collapse button */}
-      <div className={cn('h-14 flex items-center border-b border-border shrink-0 transition-all', collapsed ? 'px-3 justify-center' : 'px-4 justify-between')}>
-        {!collapsed && (
-          <Link href="/dashboard" className="flex items-center gap-2">
-            <div className="w-7 h-7 bg-primary rounded-lg flex items-center justify-center shadow-sm shrink-0">
-              <Star className="w-3.5 h-3.5 text-white fill-white" />
-            </div>
-            <span className="font-bold text-sm tracking-tight">GoHighReview</span>
-          </Link>
-        )}
-        {collapsed && (
-          <Link href="/dashboard">
-            <div className="w-7 h-7 bg-primary rounded-lg flex items-center justify-center shadow-sm">
-              <Star className="w-3.5 h-3.5 text-white fill-white" />
-            </div>
-          </Link>
-        )}
-        {!collapsed && (
+      <div className={cn('h-14 flex items-center border-b border-border shrink-0 transition-all', isMobile ? 'px-4 justify-between' : collapsed ? 'px-3 justify-center' : 'px-4 justify-between')}>
+        <Link href="/dashboard" className="flex items-center gap-2" onClick={isMobile ? closeMobile : undefined}>
+          <div className="w-7 h-7 bg-primary rounded-lg flex items-center justify-center shadow-sm shrink-0">
+            <Star className="w-3.5 h-3.5 text-white fill-white" />
+          </div>
+          {(!collapsed || isMobile) && <span className="font-bold text-sm tracking-tight">GoHighReview</span>}
+        </Link>
+        {(!collapsed || isMobile) && !isMobile && (
           <button
             onClick={toggle}
             className="w-6 h-6 rounded-md flex items-center justify-center text-muted-foreground hover:text-foreground hover:bg-muted transition-all"
@@ -99,7 +87,7 @@ export function Sidebar({ planName }: { planName?: string }) {
 
       {/* Nav */}
       <nav className="flex-1 px-2 py-3 space-y-0.5 overflow-y-auto overflow-x-hidden">
-        {!collapsed && (
+        {(!collapsed || isMobile) && (
           <p className="text-[9px] font-bold text-muted-foreground uppercase tracking-widest px-2 pb-1.5">
             {t.nav_main}
           </p>
@@ -108,16 +96,16 @@ export function Sidebar({ planName }: { planName?: string }) {
           const Icon = item.icon
           const active = isActive(item.href)
           return (
-            <Link key={item.href} href={item.href} title={collapsed ? item.label : undefined}>
+            <Link key={item.href} href={item.href} title={(collapsed && !isMobile) ? item.label : undefined} onClick={isMobile ? closeMobile : undefined}>
               <span className={cn(
                 'flex items-center gap-2.5 rounded-lg text-sm font-medium transition-all cursor-pointer group relative',
-                collapsed ? 'justify-center p-2' : 'px-2.5 py-2',
+                (collapsed && !isMobile) ? 'justify-center p-2' : 'px-2.5 py-2',
                 active
                   ? 'bg-primary text-primary-foreground shadow-sm shadow-primary/20'
                   : 'text-muted-foreground hover:text-foreground hover:bg-muted'
               )}>
                 <Icon className="w-4 h-4 shrink-0" />
-                {!collapsed && (
+                {(!collapsed || isMobile) && (
                   <>
                     <span className="flex-1">{item.label}</span>
                     <span className="text-[9px] text-muted-foreground/50 font-mono hidden group-hover:block">
@@ -130,8 +118,8 @@ export function Sidebar({ planName }: { planName?: string }) {
           )
         })}
 
-        <div className={cn('pt-3', !collapsed && 'mt-1')}>
-          {!collapsed && (
+        <div className={cn('pt-3', (!collapsed || isMobile) && 'mt-1')}>
+          {(!collapsed || isMobile) && (
             <p className="text-[9px] font-bold text-muted-foreground uppercase tracking-widest px-2 pb-1.5">
               {t.nav_account}
             </p>
@@ -140,16 +128,16 @@ export function Sidebar({ planName }: { planName?: string }) {
             const Icon = item.icon
             const active = isActive(item.href)
             return (
-              <Link key={item.href} href={item.href} title={collapsed ? item.label : undefined}>
+              <Link key={item.href} href={item.href} title={(collapsed && !isMobile) ? item.label : undefined} onClick={isMobile ? closeMobile : undefined}>
                 <span className={cn(
                   'flex items-center gap-2.5 rounded-lg text-sm font-medium transition-all cursor-pointer group',
-                  collapsed ? 'justify-center p-2' : 'px-2.5 py-2',
+                  (collapsed && !isMobile) ? 'justify-center p-2' : 'px-2.5 py-2',
                   active
                     ? 'bg-primary text-primary-foreground shadow-sm shadow-primary/20'
                     : 'text-muted-foreground hover:text-foreground hover:bg-muted'
                 )}>
                   <Icon className="w-4 h-4 shrink-0" />
-                  {!collapsed && (
+                  {(!collapsed || isMobile) && (
                     <>
                       <span className="flex-1">{item.label}</span>
                       <span className="text-[9px] text-muted-foreground/50 font-mono hidden group-hover:block">
@@ -166,20 +154,17 @@ export function Sidebar({ planName }: { planName?: string }) {
 
       {/* Bottom */}
       <div className="px-2 py-2 border-t border-border space-y-0.5 shrink-0">
-        {/* Plan badge */}
-        {!collapsed && planName && planName !== 'free' && (
+        {(!collapsed || isMobile) && planName && planName !== 'free' && (
           <div className={cn('flex items-center gap-2 px-2.5 py-1.5 rounded-lg mb-1', planColor)}>
             <Star className="w-3 h-3 shrink-0" />
             <span className="text-xs font-bold capitalize">{planName} {t.plan_badge}</span>
           </div>
         )}
-
-        {/* Theme + Expand */}
-        <div className={cn('flex items-center', collapsed ? 'justify-center' : 'justify-between px-1')}>
-          {!collapsed && <span className="text-xs text-muted-foreground font-medium ml-1.5">{t.nav_theme}</span>}
+        <div className={cn('flex items-center', (collapsed && !isMobile) ? 'justify-center' : 'justify-between px-1')}>
+          {(!collapsed || isMobile) && <span className="text-xs text-muted-foreground font-medium ml-1.5">{t.nav_theme}</span>}
           <div className="flex items-center gap-1">
             <ThemeToggle />
-            {collapsed && (
+            {(collapsed && !isMobile) && (
               <button
                 onClick={toggle}
                 className="w-8 h-8 rounded-lg flex items-center justify-center text-muted-foreground hover:text-foreground hover:bg-muted transition-all"
@@ -189,19 +174,45 @@ export function Sidebar({ planName }: { planName?: string }) {
             )}
           </div>
         </div>
-
         <button
           onClick={handleSignOut}
-          title={collapsed ? 'Sign out' : undefined}
+          title={(collapsed && !isMobile) ? 'Sign out' : undefined}
           className={cn(
             'flex items-center gap-2.5 rounded-lg text-sm font-medium text-muted-foreground hover:text-destructive hover:bg-destructive/8 transition-all w-full',
-            collapsed ? 'justify-center p-2' : 'px-2.5 py-2'
+            (collapsed && !isMobile) ? 'justify-center p-2' : 'px-2.5 py-2'
           )}
         >
           <LogOut className="w-4 h-4 shrink-0" />
-          {!collapsed && t.nav_signout}
+          {(!collapsed || isMobile) && t.nav_signout}
         </button>
       </div>
-    </aside>
+    </>
+  )
+
+  return (
+    <>
+      {/* Mobile overlay + drawer */}
+      {mobileOpen && (
+        <>
+          <div
+            className="fixed inset-0 bg-black/50 z-40 lg:hidden"
+            onClick={closeMobile}
+          />
+          <div className="fixed inset-y-0 left-0 w-72 sidebar-gradient flex flex-col border-r border-border z-50 lg:hidden overflow-hidden">
+            {navContent(true)}
+          </div>
+        </>
+      )}
+
+      {/* Desktop sidebar — hidden on mobile */}
+      <aside
+        className={cn(
+          'sidebar-gradient hidden lg:flex flex-col border-r border-border h-screen sticky top-0 shrink-0 transition-all duration-300 ease-in-out overflow-hidden',
+          collapsed ? 'w-15' : 'w-55'
+        )}
+      >
+        {navContent(false)}
+      </aside>
+    </>
   )
 }

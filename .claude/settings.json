@@ -16,7 +16,13 @@
       "Bash(cat)",
       "Bash(bash /tmp/count_strings.sh)",
       "Bash(awk '{ depth = gsub\\(/\\\\//, \"/\"\\); printf \"%*s%s\\\\n\", \\(depth-7\\)*2, \"\", substr\\($0, match\\($0, /[^/]*$/\\)\\) }')",
-      "Bash(awk '{print $NF}')"
+      "Bash(awk '{print $NF}')",
+      "Bash(chmod +x /tmp/check_i18n.sh)",
+      "Bash(/tmp/check_i18n.sh)",
+      "Bash(chmod +x /tmp/check_i18n_detailed.sh)",
+      "Bash(/tmp/check_i18n_detailed.sh)",
+      "Bash(grep -E \"pricing|[0-9]{2,}\" /Users/muhammadhannanhafeez/Mohsin/Reviewflow/src/app/page.tsx)",
+      "Bash(grep -v \"^--$\")"
     ]
   }
 }

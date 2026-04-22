@@ -17,15 +17,14 @@ function buildPlans(): Record<PlanKey, PlanConfig> {
       name: 'Lite',
       priceId: process.env.STRIPE_PRICE_LITE_MONTHLY ?? '',
       priceIdAnnual: process.env.STRIPE_PRICE_LITE_YEARLY ?? '',
-      price: 19.9,
-      priceAnnual: 15.83, // EUR 190/year ÷ 12
+      price: 29.9,
+      priceAnnual: 23.92, // EUR 287.04/year ÷ 12
       profileLimit: 3,
       description: 'For solo businesses',
       features: [
         '1–3 Google Business Profiles',
         'Email alerts',
         'AI reply suggestions',
-        'AI auto-reply agents',
         'Basic reports',
         'CSV export',
       ],
@@ -35,7 +34,7 @@ function buildPlans(): Record<PlanKey, PlanConfig> {
       priceId: process.env.STRIPE_PRICE_PRO_MONTHLY ?? '',
       priceIdAnnual: process.env.STRIPE_PRICE_PRO_YEARLY ?? '',
       price: 59,
-      priceAnnual: 47.17, // EUR 566/year ÷ 12
+      priceAnnual: 47.2, // EUR 566.40/year ÷ 12
       profileLimit: 10,
       description: 'For teams & small chains',
       features: [

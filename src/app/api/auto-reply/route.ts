@@ -23,6 +23,7 @@ export async function GET(request: NextRequest) {
     enabled: false,
     min_rating: null,
     max_rating: null,
+    reply_to_ratings: null,
     custom_instructions: null,
   })
 }
@@ -34,9 +35,22 @@ export async function POST(request: NextRequest) {
   if (!user) return NextResponse.json({ error: 'Unauthorized' }, { status: 401 })
 
   const body = await request.json()
-  const { profileId, enabled, minRating, maxRating, customInstructions } = body
+  const { profileId, enabled, replyToRatings, customInstructions } = body
 
   if (!profileId) return NextResponse.json({ error: 'profileId is required' }, { status: 400 })
+
+  // Block Lite/free users from enabling auto-reply
+  if (enabled) {
+    const { data: userData } = await supabase
+      .from('users')
+      .select('plan_name')
+      .eq('id', user.id)
+      .single()
+    const plan = userData?.plan_name ?? 'free'
+    if (plan !== 'pro' && plan !== 'agency') {
+      return NextResponse.json({ error: 'Auto-Reply requires a Pro or Agency plan.' }, { status: 403 })
+    }
+  }
 
   const { data: existing } = await supabase
     .from('auto_reply_rules')
@@ -49,8 +63,7 @@ export async function POST(request: NextRequest) {
     user_id: user.id,
     profile_id: profileId,
     enabled: enabled ?? false,
-    min_rating: minRating ?? null,
-    max_rating: maxRating ?? null,
+    reply_to_ratings: Array.isArray(replyToRatings) && replyToRatings.length ? replyToRatings : null,
     custom_instructions: customInstructions?.trim() || null,
   }
 

@@ -80,6 +80,7 @@ export interface GBPLocation {
   storefrontAddress?: { addressLines?: string[]; locality?: string; regionCode?: string }
   phoneNumbers?: { primaryPhone?: string }
   websiteUri?: string
+  metadata?: { placeId?: string; newReviewUri?: string; mapsUri?: string }
 }
 
 export interface GBPReview {
@@ -109,7 +110,7 @@ export async function listAccounts(token: string): Promise<GBPAccount[]> {
 
 /** List all locations for a given account */
 export async function listLocations(accountName: string, token: string): Promise<GBPLocation[]> {
-  const readMask = 'name,title,storefrontAddress,phoneNumbers,websiteUri'
+  const readMask = 'name,title,storefrontAddress,phoneNumbers,websiteUri,metadata'
   const url = `${BUSINESS_INFO_URL}/${accountName}/locations?readMask=${encodeURIComponent(readMask)}&pageSize=100`
   const data = await gbpFetch(url, token)
   return data.locations ?? []

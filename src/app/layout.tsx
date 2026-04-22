@@ -1,5 +1,7 @@
+export const dynamic = 'force-dynamic'
 import type { Metadata } from 'next'
 import { Geist } from 'next/font/google'
+import { cookies } from 'next/headers'
 import './globals.css'
 import { Toaster } from '@/components/ui/sonner'
 import { ThemeProvider } from '@/components/theme-provider'
@@ -18,13 +20,19 @@ export const metadata: Metadata = {
     'Monitor, respond to, and manage your Google Business Profile reviews with AI-powered tools.',
 }
 
-export default function RootLayout({
+const RTL_LANGS = new Set(['ar'])
+
+export default async function RootLayout({
   children,
 }: Readonly<{
   children: React.ReactNode
 }>) {
+  const cookieStore = await cookies()
+  const lang = cookieStore.get('app_lang')?.value ?? 'de'
+  const dir = RTL_LANGS.has(lang) ? 'rtl' : 'ltr'
+
   return (
-    <html lang="en" suppressHydrationWarning>
+    <html lang={lang} dir={dir} suppressHydrationWarning>
       <body className={`${geistSans.variable} antialiased font-sans`} suppressHydrationWarning>
         <ThemeProvider>
           <NextTopLoader color="#F5C518" showSpinner={false} height={3} />

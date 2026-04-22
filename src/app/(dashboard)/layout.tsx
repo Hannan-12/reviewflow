@@ -1,14 +1,20 @@
 export const dynamic = 'force-dynamic'
 import { redirect } from 'next/navigation'
+import { cookies } from 'next/headers'
 import { createClient } from '@/lib/supabase/server'
 import { Sidebar } from '@/components/dashboard/sidebar'
 import { SidebarProvider } from '@/components/dashboard/sidebar-context'
 import { DashboardLangProvider } from '@/components/dashboard/lang-context'
+import { dashboardT, type DashboardLang } from '@/lib/i18n/dashboard'
 
 export default async function DashboardLayout({ children }: { children: React.ReactNode }) {
   const supabase = await createClient()
   const { data: { user } } = await supabase.auth.getUser()
   if (!user) redirect('/login')
+
+  const cookieStore = await cookies()
+  const cookieLang = cookieStore.get('app_lang')?.value as DashboardLang | undefined
+  const initialLang: DashboardLang = (cookieLang && cookieLang in dashboardT) ? cookieLang : 'de'
 
   const { data: userData } = await supabase
     .from('users')
@@ -39,7 +45,7 @@ export default async function DashboardLayout({ children }: { children: React.Re
   }
 
   return (
-    <DashboardLangProvider>
+    <DashboardLangProvider initialLang={initialLang}>
       <SidebarProvider>
         <div className="flex h-screen overflow-hidden bg-muted/20">
           <Sidebar planName={userData?.plan_name ?? 'free'} />

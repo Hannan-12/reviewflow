@@ -43,7 +43,7 @@ function Stars({ rating }: { rating: number }) {
   )
 }
 
-export function ReviewsTable({ reviews, profiles, currentRating, currentProfile, lastSyncedAt, onReviewClick }: Props) {
+export function ReviewsTable({ reviews, currentRating, currentProfile, lastSyncedAt, onReviewClick }: Props) {
   const router  = useRouter()
   const pathname = usePathname()
   const [syncing, setSyncing] = useState(false)
@@ -92,7 +92,7 @@ export function ReviewsTable({ reviews, profiles, currentRating, currentProfile,
             <button
               key={r ?? 'all'}
               onClick={() => setFilter('rating', r)}
-              className={`px-2.5 py-1 rounded-lg text-xs font-medium transition-colors ${
+              className={`px-1.5 sm:px-2.5 py-1 rounded-lg text-xs font-medium transition-colors ${
                 currentRating === r
                   ? 'bg-primary text-white'
                   : 'bg-muted text-muted-foreground hover:text-foreground hover:bg-muted/80'
@@ -102,20 +102,6 @@ export function ReviewsTable({ reviews, profiles, currentRating, currentProfile,
             </button>
           ))}
         </div>
-
-        {/* Profile filter */}
-        {profiles.length > 1 && (
-          <select
-            value={currentProfile ?? ''}
-            onChange={e => setFilter('profile', e.target.value || null)}
-            className="text-xs bg-muted border-0 rounded-lg px-2.5 py-1 text-muted-foreground focus:ring-0 focus:outline-none"
-          >
-            <option value="">{t.rev_all_profiles}</option>
-            {profiles.map(p => (
-              <option key={p.id} value={p.id}>{p.business_name}</option>
-            ))}
-          </select>
-        )}
 
         <div className="ml-auto flex items-center gap-2">
           {lastSyncedAt && (

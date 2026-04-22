@@ -29,6 +29,9 @@ export default async function ReviewsPage({
     .eq('id', user.id)
     .single()
 
+  const planName = userData?.plan_name ?? 'free'
+  const reviewLimit = planName === 'agency' ? 10000 : planName === 'pro' ? 500 : 50
+
   const { data: profiles } = await supabase
     .from('profiles')
     .select('id, business_name, last_synced_at')
@@ -45,7 +48,7 @@ export default async function ReviewsPage({
     `)
     .eq('user_id', user.id)
     .order('review_date', { ascending: false })
-    .limit(100)
+    .limit(reviewLimit)
 
   if (rating) reviewsQuery = reviewsQuery.eq('rating', parseInt(rating))
   if (profileFilter) reviewsQuery = reviewsQuery.eq('profile_id', profileFilter)
@@ -69,6 +72,7 @@ export default async function ReviewsPage({
   }))
 
   const hasProfiles = (profiles?.length ?? 0) > 0
+  const isLimitedByPlan = (planName === 'lite' || planName === 'free') && totalCount > reviewLimit
   const lastSyncedAt = profiles
     ?.map(p => (p as unknown as { last_synced_at: string | null }).last_synced_at)
     .filter(Boolean)
@@ -101,10 +105,15 @@ export default async function ReviewsPage({
             ) : (
               <>
                 {/* Rating stats */}
-                <div className="grid grid-cols-2 sm:grid-cols-4 gap-3">
+                <div className="grid grid-cols-2 sm:grid-cols-4 gap-3 [&>*:last-child]:col-span-2 [&>*:last-child]:sm:col-span-2">
                   <div className="bg-card border border-border rounded-2xl p-4">
                     <p className="text-[10px] font-bold text-muted-foreground uppercase tracking-wide mb-1.5">{t.dash_stat_total}</p>
-                    <p className="text-2xl font-bold tabular-nums">{totalCount}</p>
+                    <p className="text-2xl font-bold tabular-nums">
+                      {totalCount}
+                      {(planName === 'lite' || planName === 'free') && (
+                        <span className="text-base font-normal text-muted-foreground"> / {reviewLimit}</span>
+                      )}
+                    </p>
                   </div>
                   <div className="bg-card border border-border rounded-2xl p-4">
                     <p className="text-[10px] font-bold text-muted-foreground uppercase tracking-wide mb-1.5">{t.dash_stat_avg}</p>
@@ -151,6 +160,7 @@ export default async function ReviewsPage({
                   currentRating={rating ?? null}
                   currentProfile={profileFilter ?? null}
                   lastSyncedAt={lastSyncedAt}
+                  isLimitedByPlan={isLimitedByPlan}
                 />
               </>
             )}

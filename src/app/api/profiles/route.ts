@@ -34,7 +34,7 @@ export async function POST(request: NextRequest) {
   if (!user) return NextResponse.json({ error: 'Unauthorized' }, { status: 401 })
 
   const body = await request.json()
-  const { location_name, account_id, business_name, address, phone, website } = body
+  const { location_name, account_id, business_name, address, phone, website, place_id, new_review_uri } = body
 
   if (!location_name || !business_name) {
     return NextResponse.json({ error: 'location_name and business_name are required' }, { status: 400 })
@@ -72,9 +72,11 @@ export async function POST(request: NextRequest) {
       location_name,
       account_id,
       business_name,
-      address:  address ?? null,
-      phone:    phone   ?? null,
-      website:  website ?? null,
+      address:        address        ?? null,
+      phone:          phone          ?? null,
+      website:        website        ?? null,
+      place_id:       place_id       ?? null,
+      new_review_uri: new_review_uri ?? null,
       is_active: true,
     })
     .select()

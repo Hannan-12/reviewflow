@@ -10,7 +10,9 @@ interface ReplyPanelProps {
   reviewerName: string;
   rating: number;
   comment: string;
+  existingReply?: string;
   onReplySubmitted?: () => void;
+  onCancel?: () => void;
 }
 
 export function ReplyPanel({
@@ -19,10 +21,12 @@ export function ReplyPanel({
   reviewerName,
   rating,
   comment,
+  existingReply,
   onReplySubmitted,
+  onCancel,
 }: ReplyPanelProps) {
   const { t } = useDashboardLang();
-  const [replyText, setReplyText] = useState('');
+  const [replyText, setReplyText] = useState(existingReply ?? '');
   const [aiSuggestion, setAiSuggestion] = useState<string | null>(null);
   const [loading, setLoading] = useState(false);
   const [submitting, setSubmitting] = useState(false);
@@ -177,16 +181,17 @@ export function ReplyPanel({
               <Loader className="w-3.5 h-3.5 mr-2 animate-spin" />
               {t.reply_posting}
             </>
-          ) : t.reply_post}
+          ) : existingReply ? 'Update Reply' : t.reply_post}
         </Button>
-        <Button
-          onClick={() => setReplyText('')}
-          variant="outline"
-          size="sm"
-          className="flex-1"
-        >
-          {t.reply_clear}
-        </Button>
+        {onCancel ? (
+          <Button onClick={onCancel} variant="outline" size="sm" className="flex-1">
+            Cancel
+          </Button>
+        ) : (
+          <Button onClick={() => setReplyText('')} variant="outline" size="sm" className="flex-1">
+            {t.reply_clear}
+          </Button>
+        )}
       </div>
     </div>
   );

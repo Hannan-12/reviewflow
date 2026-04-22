@@ -9,6 +9,8 @@ import { useDashboardLang } from '@/components/dashboard/lang-context'
 interface Profile {
   id: string
   business_name: string
+  place_id?: string | null
+  new_review_uri?: string | null
 }
 
 interface CollectionLink {
@@ -36,11 +38,18 @@ export function CollectionLinksManager({ profiles, appUrl }: CollectionLinksMana
   const [showForm, setShowForm] = useState(false)
   const [qrLink, setQrLink] = useState<string | null>(null)
 
+  const getReviewUrl = (profileId: string) => {
+    const p = profiles.find(x => x.id === profileId)
+    if (p?.new_review_uri) return p.new_review_uri
+    if (p?.place_id) return `https://search.google.com/local/writereview?placeid=${p.place_id}`
+    return ''
+  }
+
   const [form, setForm] = useState({
     profileId:        profiles[0]?.id ?? '',
     title:            t.col_default_title,
     message:          t.col_default_message,
-    googleReviewUrl:  '',
+    googleReviewUrl:  getReviewUrl(profiles[0]?.id ?? ''),
   })
 
   const fetchLinks = useCallback(async () => {
@@ -117,7 +126,10 @@ export function CollectionLinksManager({ profiles, appUrl }: CollectionLinksMana
             <label className="text-xs font-medium text-muted-foreground">{t.wgt_profile_label}</label>
             <select
               value={form.profileId}
-              onChange={e => setForm(f => ({ ...f, profileId: e.target.value }))}
+              onChange={e => {
+                const id = e.target.value
+                setForm(f => ({ ...f, profileId: id, googleReviewUrl: f.googleReviewUrl || getReviewUrl(id) }))
+              }}
               className="w-full h-9 text-sm rounded-lg border border-border bg-card px-2 focus:outline-none focus:ring-1 focus:ring-primary"
             >
               {profiles.map(p => <option key={p.id} value={p.id}>{p.business_name}</option>)}

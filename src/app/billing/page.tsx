@@ -28,7 +28,7 @@ const comparisonFeatures = [
   { label: 'Review dashboard', lite: true, pro: true, agency: true },
   { label: 'Email alerts', lite: true, pro: true, agency: true },
   { label: 'AI reply suggestions', lite: true, pro: true, agency: true },
-  { label: 'AI auto-reply agents', lite: true, pro: true, agency: true },
+  { label: 'AI auto-reply agents', lite: false, pro: true, agency: true },
   { label: 'Basic reports', lite: true, pro: true, agency: true },
   { label: 'CSV export', lite: true, pro: true, agency: true },
   { label: 'Slack notifications', lite: false, pro: true, agency: true },
@@ -244,11 +244,11 @@ export default async function BillingPage({
               <div className="bg-card border border-border rounded-2xl overflow-hidden">
                 {/* Header */}
                 <div className="grid grid-cols-4 border-b border-border">
-                  <div className="p-4 text-sm font-semibold text-muted-foreground">Feature</div>
+                  <div className="p-2.5 sm:p-4 text-xs sm:text-sm font-semibold text-muted-foreground">Feature</div>
                   {['Lite', 'Pro', 'Agency'].map((p) => (
-                    <div key={p} className={`p-4 text-center text-sm font-bold ${p === 'Pro' ? 'bg-primary/5 text-primary' : ''}`}>
+                    <div key={p} className={`p-2.5 sm:p-4 text-center text-xs sm:text-sm font-bold ${p === 'Pro' ? 'bg-primary/5 text-primary' : ''}`}>
                       {p}
-                      {p === 'Pro' && <span className="ml-1 text-[9px] bg-primary text-primary-foreground rounded-full px-1.5 py-0.5 font-bold">Popular</span>}
+                      {p === 'Pro' && <span className="hidden sm:inline ml-1 text-[9px] bg-primary text-primary-foreground rounded-full px-1.5 py-0.5 font-bold">Popular</span>}
                     </div>
                   ))}
                 </div>
@@ -257,10 +257,10 @@ export default async function BillingPage({
                     key={row.label}
                     className={`grid grid-cols-4 border-b border-border last:border-0 ${i % 2 === 0 ? '' : 'bg-muted/30'}`}
                   >
-                    <div className="p-3.5 text-sm text-muted-foreground">{row.label}</div>
-                    <div className="p-3.5 text-center"><FeatureValue val={row.lite} /></div>
-                    <div className="p-3.5 text-center bg-primary/3"><FeatureValue val={row.pro} /></div>
-                    <div className="p-3.5 text-center"><FeatureValue val={row.agency} /></div>
+                    <div className="p-2.5 sm:p-3.5 text-xs sm:text-sm text-muted-foreground leading-tight">{row.label}</div>
+                    <div className="p-2.5 sm:p-3.5 text-center"><FeatureValue val={row.lite} /></div>
+                    <div className="p-2.5 sm:p-3.5 text-center bg-primary/3"><FeatureValue val={row.pro} /></div>
+                    <div className="p-2.5 sm:p-3.5 text-center"><FeatureValue val={row.agency} /></div>
                   </div>
                 ))}
               </div>

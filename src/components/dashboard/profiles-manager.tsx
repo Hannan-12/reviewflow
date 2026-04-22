@@ -22,6 +22,7 @@ interface GBPLocation {
   storefrontAddress?: { addressLines?: string[]; locality?: string; regionCode?: string }
   phoneNumbers?: { primaryPhone?: string }
   websiteUri?: string
+  metadata?: { placeId?: string; newReviewUri?: string }
 }
 
 interface Props {
@@ -33,7 +34,7 @@ interface Props {
   googleError: string | null
 }
 
-export function ProfilesManager({ profiles: initial, isGoogleConnected, profileLimit, connected, googleError }: Props) {
+export function ProfilesManager({ profiles: initial, isGoogleConnected, profileLimit, planName, connected, googleError }: Props) {
   const { t } = useDashboardLang()
   const [profiles, setProfiles]         = useState(initial)
   const [locations, setLocations]       = useState<GBPLocation[]>([])
@@ -73,12 +74,14 @@ export function ProfilesManager({ profiles: initial, isGoogleConnected, profileL
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({
-        location_name: loc.name,
-        account_id:    loc.accountName,
-        business_name: loc.title,
-        address:       address || null,
-        phone:         loc.phoneNumbers?.primaryPhone ?? null,
-        website:       loc.websiteUri ?? null,
+        location_name:   loc.name,
+        account_id:      loc.accountName,
+        business_name:   loc.title,
+        address:         address || null,
+        phone:           loc.phoneNumbers?.primaryPhone ?? null,
+        website:         loc.websiteUri ?? null,
+        place_id:        loc.metadata?.placeId ?? null,
+        new_review_uri:  loc.metadata?.newReviewUri ?? null,
       }),
     })
     const data = await res.json()
@@ -191,7 +194,7 @@ export function ProfilesManager({ profiles: initial, isGoogleConnected, profileL
         ) : atLimit ? (
           <a href={profileLimit === 3 ? '/billing' : '/agency'}>
             <Button
-              className="font-bold text-sm h-10 px-5 gap-2"
+              className="font-bold text-xs sm:text-sm h-9 sm:h-10 px-3 sm:px-5 gap-1.5 sm:gap-2"
               style={{ backgroundColor: '#F5C518', color: '#000' }}
             >
               <Plus className="w-4 h-4" />
@@ -339,7 +342,7 @@ export function ProfilesManager({ profiles: initial, isGoogleConnected, profileL
                 </button>
                 {expandedAutoReply === profile.id && (
                   <div className="mt-3">
-                    <AutoReplySettings profileId={profile.id} />
+                    <AutoReplySettings profileId={profile.id} planName={planName} />
                   </div>
                 )}
               </div>

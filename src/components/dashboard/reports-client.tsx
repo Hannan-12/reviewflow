@@ -7,6 +7,7 @@ import {
 } from 'recharts'
 import { Star, MessageSquare, BarChart3, TrendingUp, Trophy, Smile, Meh, Frown } from 'lucide-react'
 import { useDashboardLang } from './lang-context'
+import { ProfileSwitcher } from './profile-switcher'
 
 interface Profile { id: string; business_name: string }
 
@@ -70,18 +71,14 @@ export function ReportsClient({ profiles }: { profiles: Profile[] }) {
   return (
     <div className="space-y-5">
       {/* Filters */}
-      <div className="flex flex-wrap items-center gap-3">
-        <select
-          value={profileId}
-          onChange={(e) => setProfileId(e.target.value)}
-          className="h-8 text-sm rounded-lg border border-border bg-card px-3 pr-8 focus:outline-none focus:ring-1 focus:ring-primary"
-        >
-          <option value="">{t.rep_all_profiles}</option>
-          {profiles.map((p) => (
-            <option key={p.id} value={p.id}>{p.business_name}</option>
-          ))}
-        </select>
+      <ProfileSwitcher
+        profiles={profiles}
+        currentProfile={profileId || null}
+        allLabel={t.rep_all_profiles}
+        onSelect={(id) => setProfileId(id ?? '')}
+      />
 
+      <div className="flex flex-wrap items-center gap-3">
         <div className="flex items-center gap-1 bg-muted rounded-lg p-1">
           {RANGES.map((r) => (
             <button
@@ -256,7 +253,7 @@ export function ReportsClient({ profiles }: { profiles: Profile[] }) {
                   const pct = sentimentPct(count)
                   return (
                     <div key={key} className="flex items-center gap-3">
-                      <div className={`flex items-center gap-1 w-20 shrink-0 ${text}`}>
+                      <div className={`flex items-center gap-1 w-16 sm:w-20 shrink-0 ${text}`}>
                         {icon}
                         <span className="text-xs font-medium">{label}</span>
                       </div>

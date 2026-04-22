@@ -90,7 +90,7 @@ export async function POST(request: NextRequest) {
     const session = await getStripe().checkout.sessions.create({
       customer: customerId,
       mode: 'subscription',
-      payment_method_types: ['card'],
+      payment_method_types: ['card', 'link'],
       line_items: [{ price: priceId, quantity: Math.max(1, quantity) }],
       subscription_data: {
         ...(useTrialEnd ? { trial_end: useTrialEnd } : {}),

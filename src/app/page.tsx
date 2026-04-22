@@ -40,7 +40,7 @@ const T = {
     pricing_sub: 'All plans include a 14-day free trial. No credit card required.',
     pricing_monthly: 'Monthly', pricing_annual: 'Annual', pricing_popular: 'Most popular', pricing_start: 'Start free trial',
     plans: [
-      { name: 'Lite', profiles: '1–3 profiles', desc: 'For solo businesses', features: ['1–3 Google Business Profiles', 'Email alerts', 'AI reply suggestions', 'AI auto-reply agents', 'Basic reports', 'CSV export'] },
+      { name: 'Lite', profiles: '1–3 profiles', desc: 'For solo businesses', features: ['1–3 Google Business Profiles', 'Email alerts', 'AI reply suggestions', 'Basic reports', 'CSV export'] },
       { name: 'Pro', profiles: '4–10 profiles', desc: 'For teams & small chains', features: ['Everything in Lite', '4–10 Google Business Profiles', 'Email + Slack alerts', 'Advanced reports', 'Review widgets', 'Review auto-tagging'] },
       { name: 'Agency', profiles: '11+ profiles', desc: 'For agencies & franchises', features: ['Everything in Pro', 'Unlimited profiles', 'Custom AI prompts', 'Sentiment analysis', 'Magic review links', 'Priority support', 'Dedicated account manager'] },
     ],
@@ -52,7 +52,7 @@ const T = {
       { q: 'What is GoHighReview?', a: 'GoHighReview is a tool for managing your Google reviews. You can see all reviews across your locations in one dashboard, get instant notifications when a new review arrives, and respond quickly and professionally with AI support.' },
       { q: 'Who is GoHighReview for?', a: 'GoHighReview is suitable for solo business owners with one location as well as agencies managing reviews for dozens of clients. Whether you run a restaurant, trade business, medical practice, or franchise — if you have Google reviews, GoHighReview can help.' },
       { q: 'How long does setup take?', a: "Setup takes less than 5 minutes. Connect your Google Business Profile, choose your plan, and you're ready to go. No technical knowledge required." },
-      { q: 'Which Google profiles can I connect?', a: 'You can connect any Google Business Profile for which you have admin access. Depending on your plan, you can manage 3 profiles (Lite), 15 profiles (Pro), or unlimited profiles (Agency).' },
+      { q: 'Which Google profiles can I connect?', a: 'You can connect any Google Business Profile for which you have admin access. Depending on your plan, you can manage 3 profiles (Lite), 10 profiles (Pro), or unlimited profiles (Agency).' },
       { q: 'How does the AI reply feature work?', a: 'GoHighReview analyzes every new review and automatically suggests a fitting reply — tailored to the tone, language, and content of the review. You can accept, edit, or reject the suggestion with one click. On Pro and Agency plans, you can also set the AI to reply automatically.' },
       { q: 'Can I try GoHighReview for free?', a: 'Yes. All plans include a 14-day free trial. No credit card required. Cancel anytime.' },
       { q: 'What happens after the free trial?', a: 'After 14 days, you will be asked if you want to activate a plan. If not, your account will be automatically deactivated — you will not be charged automatically.' },
@@ -96,7 +96,7 @@ const T = {
     pricing_sub: 'Alle Pläne beinhalten eine 14-tägige kostenlose Testversion. Keine Kreditkarte erforderlich.',
     pricing_monthly: 'Monatlich', pricing_annual: 'Jährlich', pricing_popular: 'Beliebteste', pricing_start: 'Kostenlos testen',
     plans: [
-      { name: 'Lite', profiles: '1–3 Profile', desc: 'Für Solo-Unternehmen', features: ['1–3 Google Business Profile', 'E-Mail-Benachrichtigungen', 'KI-Antwortvorschläge', 'KI-Autoantwort-Agenten', 'Grundberichte', 'CSV-Export'] },
+      { name: 'Lite', profiles: '1–3 Profile', desc: 'Für Solo-Unternehmen', features: ['1–3 Google Business Profile', 'E-Mail-Benachrichtigungen', 'KI-Antwortvorschläge', 'Grundberichte', 'CSV-Export'] },
       { name: 'Pro', profiles: '4–10 Profile', desc: 'Für Teams & kleine Ketten', features: ['Alles aus Lite', '4–10 Google Business Profile', 'E-Mail + Slack', 'Erweiterte Berichte', 'Bewertungs-Widgets', 'Automatisches Tagging'] },
       { name: 'Agency', profiles: 'ab 11 Profile', desc: 'Für Agenturen & Franchises', features: ['Alles aus Pro', 'Unbegrenzte Profile', 'Benutzerdefinierte KI-Prompts', 'Stimmungsanalyse', 'Magic Review Links', 'Prioritätssupport', 'Dedizierter Account-Manager'] },
     ],
@@ -108,7 +108,7 @@ const T = {
       { q: 'Was ist GoHighReview?', a: 'GoHighReview ist ein Tool zur Verwaltung deiner Google-Bewertungen. Du kannst alle Bewertungen deiner Standorte in einem Dashboard sehen und mit KI-Unterstützung schnell und professionell antworten.' },
       { q: 'Für wen ist GoHighReview geeignet?', a: 'GoHighReview eignet sich für Solo-Unternehmer mit einem Standort ebenso wie für Agenturen, die Bewertungen für dutzende Kunden verwalten. Ob Restaurant, Handwerksbetrieb, Arztpraxis oder Franchise — wenn du Google-Bewertungen hast, kann GoHighReview helfen.' },
       { q: 'Wie lange dauert die Einrichtung?', a: 'Die Einrichtung dauert weniger als 5 Minuten. Verbinde dein Google Business Profile, wähle deinen Plan und du bist startklar. Keine technischen Kenntnisse erforderlich.' },
-      { q: 'Welche Google-Profile kann ich verbinden?', a: 'Du kannst jedes Google Business Profile verbinden, für das du Admin-Zugriff hast. Je nach Plan kannst du 3 Profile (Lite), 15 Profile (Pro) oder unbegrenzte Profile (Agency) verwalten.' },
+      { q: 'Welche Google-Profile kann ich verbinden?', a: 'Du kannst jedes Google Business Profile verbinden, für das du Admin-Zugriff hast. Je nach Plan kannst du 3 Profile (Lite), 10 Profile (Pro) oder unbegrenzte Profile (Agency) verwalten.' },
       { q: 'Wie funktioniert die KI-Antwortfunktion?', a: 'GoHighReview analysiert jede neue Bewertung und schlägt automatisch eine passende Antwort vor. Du kannst den Vorschlag mit einem Klick akzeptieren, bearbeiten oder ablehnen.' },
       { q: 'Kann ich GoHighReview kostenlos testen?', a: 'Ja. Alle Pläne beinhalten eine 14-tägige kostenlose Testversion. Keine Kreditkarte erforderlich. Jederzeit kündbar.' },
       { q: 'Was passiert nach der kostenlosen Testversion?', a: 'Nach 14 Tagen wirst du gefragt, ob du einen Plan aktivieren möchtest. Falls nicht, wird dein Konto automatisch deaktiviert — du wirst nicht automatisch belastet.' },
@@ -152,7 +152,7 @@ const T = {
     pricing_sub: 'Todos los planes incluyen 14 días de prueba gratuita. Sin tarjeta de crédito.',
     pricing_monthly: 'Mensual', pricing_annual: 'Anual', pricing_popular: 'Más popular', pricing_start: 'Empezar gratis',
     plans: [
-      { name: 'Lite', profiles: '1–3 perfiles', desc: 'Para negocios individuales', features: ['1–3 Google Business Profiles', 'Alertas por email', 'Sugerencias de respuesta IA', 'Agentes de respuesta automática', 'Informes básicos', 'Exportación CSV'] },
+      { name: 'Lite', profiles: '1–3 perfiles', desc: 'Para negocios individuales', features: ['1–3 Google Business Profiles', 'Alertas por email', 'Sugerencias de respuesta IA', 'Informes básicos', 'Exportación CSV'] },
       { name: 'Pro', profiles: '4–10 perfiles', desc: 'Para equipos y pequeñas cadenas', features: ['Todo de Lite', '4–10 Google Business Profiles', 'Email + Slack', 'Informes avanzados', 'Widgets de reseñas', 'Etiquetado automático'] },
       { name: 'Agency', profiles: '11+ perfiles', desc: 'Para agencias y franquicias', features: ['Todo de Pro', 'Perfiles ilimitados', 'Prompts IA personalizados', 'Análisis de sentimiento', 'Magic review links', 'Soporte prioritario', 'Gestor de cuenta dedicado'] },
     ],
@@ -164,7 +164,7 @@ const T = {
       { q: '¿Qué es GoHighReview?', a: 'GoHighReview es una herramienta para gestionar tus reseñas de Google. Puedes ver todas las reseñas de tus ubicaciones en un panel y responder rápida y profesionalmente con soporte de IA.' },
       { q: '¿Para quién es GoHighReview?', a: 'GoHighReview es adecuado para propietarios individuales con una ubicación, así como para agencias que gestionan reseñas para decenas de clientes.' },
       { q: '¿Cuánto tarda la configuración?', a: 'La configuración tarda menos de 5 minutos. Conecta tu Google Business Profile, elige tu plan y estás listo. Sin conocimientos técnicos.' },
-      { q: '¿Qué perfiles de Google puedo conectar?', a: 'Puedes conectar cualquier Google Business Profile con acceso de administrador. Según tu plan: 3 perfiles (Lite), 15 (Pro) o ilimitados (Agency).' },
+      { q: '¿Qué perfiles de Google puedo conectar?', a: 'Puedes conectar cualquier Google Business Profile con acceso de administrador. Según tu plan: 3 perfiles (Lite), 10 (Pro) o ilimitados (Agency).' },
       { q: '¿Cómo funciona la función de respuesta IA?', a: 'GoHighReview analiza cada nueva reseña y sugiere automáticamente una respuesta adecuada. Puedes aceptar, editar o rechazar la sugerencia con un clic.' },
       { q: '¿Puedo probar GoHighReview gratis?', a: 'Sí. Todos los planes incluyen 14 días de prueba gratuita. Sin tarjeta de crédito. Cancela cuando quieras.' },
       { q: '¿Qué pasa después de la prueba gratuita?', a: 'Después de 14 días, se te preguntará si quieres activar un plan. Si no, tu cuenta se desactivará automáticamente sin cargo.' },
@@ -208,7 +208,7 @@ const T = {
     pricing_sub: 'Tutti i piani includono 14 giorni di prova gratuita. Nessuna carta di credito.',
     pricing_monthly: 'Mensile', pricing_annual: 'Annuale', pricing_popular: 'Più popolare', pricing_start: 'Inizia gratis',
     plans: [
-      { name: 'Lite', profiles: '1–3 profili', desc: 'Per attività individuali', features: ['1–3 Google Business Profile', 'Avvisi email', 'Suggerimenti di risposta IA', 'Agenti di risposta automatica', 'Report di base', 'Esportazione CSV'] },
+      { name: 'Lite', profiles: '1–3 profili', desc: 'Per attività individuali', features: ['1–3 Google Business Profile', 'Avvisi email', 'Suggerimenti di risposta IA', 'Report di base', 'Esportazione CSV'] },
       { name: 'Pro', profiles: '4–10 profili', desc: 'Per team e piccole catene', features: ['Tutto di Lite', '4–10 Google Business Profile', 'Email + Slack', 'Report avanzati', 'Widget recensioni', 'Tagging automatico'] },
       { name: 'Agency', profiles: '11+ profili', desc: 'Per agenzie e franchise', features: ['Tutto di Pro', 'Profili illimitati', 'Prompt IA personalizzati', 'Analisi del sentiment', 'Magic review links', 'Supporto prioritario', 'Account manager dedicato'] },
     ],
@@ -220,7 +220,7 @@ const T = {
       { q: "Cos'è GoHighReview?", a: 'GoHighReview è uno strumento per gestire le tue recensioni Google. Puoi vedere tutte le recensioni in un pannello e rispondere rapidamente con il supporto IA.' },
       { q: 'Per chi è adatto GoHighReview?', a: 'GoHighReview è adatto sia per i titolari di un singolo locale che per le agenzie che gestiscono le recensioni per decine di clienti.' },
       { q: 'Quanto tempo richiede la configurazione?', a: 'La configurazione richiede meno di 5 minuti. Connetti il tuo Google Business Profile, scegli il piano e sei pronto.' },
-      { q: 'Quali profili Google posso collegare?', a: 'Puoi collegare qualsiasi Google Business Profile con accesso amministratore. A seconda del piano: 3 profili (Lite), 15 (Pro) o illimitati (Agency).' },
+      { q: 'Quali profili Google posso collegare?', a: 'Puoi collegare qualsiasi Google Business Profile con accesso amministratore. A seconda del piano: 3 profili (Lite), 10 (Pro) o illimitati (Agency).' },
       { q: 'Come funziona la risposta IA?', a: 'GoHighReview analizza ogni nuova recensione e suggerisce automaticamente una risposta adatta. Puoi accettare, modificare o rifiutare il suggerimento con un clic.' },
       { q: 'Posso provare GoHighReview gratuitamente?', a: 'Sì. Tutti i piani includono 14 giorni di prova gratuita. Nessuna carta di credito. Annulla quando vuoi.' },
       { q: 'Cosa succede dopo la prova gratuita?', a: 'Dopo 14 giorni ti verrà chiesto se vuoi attivare un piano. Altrimenti il tuo account verrà disattivato automaticamente.' },
@@ -264,7 +264,7 @@ const T = {
     pricing_sub: 'تشمل جميع الخطط تجربة مجانية لمدة 14 يوماً. لا بطاقة ائتمان مطلوبة.',
     pricing_monthly: 'شهري', pricing_annual: 'سنوي', pricing_popular: 'الأكثر شيوعاً', pricing_start: 'ابدأ مجاناً',
     plans: [
-      { name: 'Lite', profiles: '1–3 ملفات', desc: 'للأعمال الفردية', features: ['1–3 ملفات Google Business', 'تنبيهات البريد الإلكتروني', 'اقتراحات الرد بالذكاء الاصطناعي', 'وكلاء الرد التلقائي', 'تقارير أساسية', 'تصدير CSV'] },
+      { name: 'Lite', profiles: '1–3 ملفات', desc: 'للأعمال الفردية', features: ['1–3 ملفات Google Business', 'تنبيهات البريد الإلكتروني', 'اقتراحات الرد بالذكاء الاصطناعي', 'تقارير أساسية', 'تصدير CSV'] },
       { name: 'Pro', profiles: '4–10 ملفات', desc: 'للفرق والسلاسل الصغيرة', features: ['كل ميزات Lite', '4–10 ملفات Google Business', 'البريد + Slack', 'تقارير متقدمة', 'أدوات التقييم', 'وضع العلامات التلقائي'] },
       { name: 'Agency', profiles: '11+ ملفاً', desc: 'للوكالات والامتيازات', features: ['كل ميزات Pro', 'ملفات غير محدودة', 'مطالبات AI مخصصة', 'تحليل المشاعر', 'روابط التقييم السحرية', 'دعم ذو أولوية', 'مدير حساب مخصص'] },
     ],
@@ -276,7 +276,7 @@ const T = {
       { q: 'ما هو GoHighReview؟', a: 'GoHighReview هو أداة لإدارة تقييمات Google. يمكنك رؤية جميع التقييمات في لوحة تحكم واحدة والرد بشكل سريع ومهني بدعم الذكاء الاصطناعي.' },
       { q: 'لمن GoHighReview مناسب؟', a: 'GoHighReview مناسب لأصحاب الأعمال الفرديين ذوي موقع واحد، وكذلك للوكالات التي تدير التقييمات لعشرات العملاء.' },
       { q: 'كم يستغرق الإعداد؟', a: 'الإعداد يستغرق أقل من 5 دقائق. قم بتوصيل ملف Google Business Profile الخاص بك، واختر خطتك، وستكون جاهزاً.' },
-      { q: 'ما هي ملفات Google التي يمكنني توصيلها؟', a: 'يمكنك توصيل أي ملف Google Business Profile لديك وصول مسؤول إليه. بحسب خطتك: 3 ملفات (Lite)، 15 (Pro)، أو غير محدودة (Agency).' },
+      { q: 'ما هي ملفات Google التي يمكنني توصيلها؟', a: 'يمكنك توصيل أي ملف Google Business Profile لديك وصول مسؤول إليه. بحسب خطتك: 3 ملفات (Lite)، 10 (Pro)، أو غير محدودة (Agency).' },
       { q: 'كيف تعمل ميزة الرد بالذكاء الاصطناعي؟', a: 'يحلل GoHighReview كل تقييم جديد ويقترح تلقائياً رداً مناسباً. يمكنك قبول الاقتراح أو تعديله أو رفضه بنقرة واحدة.' },
       { q: 'هل يمكنني تجربة GoHighReview مجاناً؟', a: 'نعم. تشمل جميع الخطط تجربة مجانية لمدة 14 يوماً. لا بطاقة ائتمان. إلغاء في أي وقت.' },
       { q: 'ماذا يحدث بعد التجربة المجانية؟', a: 'بعد 14 يوماً، سيُطلب منك تفعيل خطة. إذا لم تفعل ذلك، سيتم إلغاء تنشيط حسابك تلقائياً.' },
@@ -320,7 +320,7 @@ const T = {
     pricing_sub: '所有方案均包含14天免费试用。无需信用卡。',
     pricing_monthly: '月付', pricing_annual: '年付', pricing_popular: '最受欢迎', pricing_start: '免费开始',
     plans: [
-      { name: 'Lite', profiles: '1–3个主页', desc: '适合个体企业', features: ['1–3个Google商家主页', '电子邮件提醒', 'AI回复建议', 'AI自动回复代理', '基础报告', 'CSV导出'] },
+      { name: 'Lite', profiles: '1–3个主页', desc: '适合个体企业', features: ['1–3个Google商家主页', '电子邮件提醒', 'AI回复建议', '基础报告', 'CSV导出'] },
       { name: 'Pro', profiles: '4–10个主页', desc: '适合团队和小型连锁', features: ['包含Lite所有功能', '4–10个Google商家主页', '邮件 + Slack提醒', '高级报告', '评价小工具', '自动标签'] },
       { name: 'Agency', profiles: '11+个主页', desc: '适合代理机构和特许经营', features: ['包含Pro所有功能', '无限主页', '自定义AI提示', '情感分析', '神奇评价链接', '优先支持', '专属客户经理'] },
     ],
@@ -332,7 +332,7 @@ const T = {
       { q: '什么是GoHighReview？', a: 'GoHighReview是管理您Google评价的工具。您可以在一个仪表板中查看所有地点的评价，并借助AI快速专业地回复。' },
       { q: 'GoHighReview适合哪些用户？', a: 'GoHighReview适合拥有一个地点的个体业主，以及为数十位客户管理评价的代理机构。' },
       { q: '设置需要多长时间？', a: '设置不超过5分钟。连接您的Google商家主页，选择方案，即可开始使用。无需技术知识。' },
-      { q: '我可以连接哪些Google主页？', a: '您可以连接任何您有管理员权限的Google商家主页。根据方案：3个主页（Lite）、15个（Pro）或无限主页（Agency）。' },
+      { q: '我可以连接哪些Google主页？', a: '您可以连接任何您有管理员权限的Google商家主页。根据方案：3个主页（Lite）、10个（Pro）或无限主页（Agency）。' },
       { q: 'AI回复功能如何工作？', a: 'GoHighReview分析每条新评价并自动建议合适的回复。您可以一键接受、编辑或拒绝建议。' },
       { q: '我可以免费试用GoHighReview吗？', a: '是的。所有方案均包含14天免费试用。无需信用卡。随时取消。' },
       { q: '免费试用结束后会怎样？', a: '14天后，系统会询问您是否要激活方案。如果不激活，您的账户将自动停用，不会自动收费。' },
@@ -376,7 +376,7 @@ const T = {
     pricing_sub: 'सभी प्लान में 14 दिन की मुफ्त ट्रायल शामिल है। क्रेडिट कार्ड की जरूरत नहीं।',
     pricing_monthly: 'मासिक', pricing_annual: 'वार्षिक', pricing_popular: 'सबसे लोकप्रिय', pricing_start: 'मुफ्त शुरू करें',
     plans: [
-      { name: 'Lite', profiles: '1–3 प्रोफाइल', desc: 'एकल व्यवसायों के लिए', features: ['1–3 Google Business Profiles', 'ईमेल अलर्ट', 'AI उत्तर सुझाव', 'AI ऑटो-रिप्लाई एजेंट', 'बेसिक रिपोर्ट', 'CSV एक्सपोर्ट'] },
+      { name: 'Lite', profiles: '1–3 प्रोफाइल', desc: 'एकल व्यवसायों के लिए', features: ['1–3 Google Business Profiles', 'ईमेल अलर्ट', 'AI उत्तर सुझाव', 'बेसिक रिपोर्ट', 'CSV एक्सपोर्ट'] },
       { name: 'Pro', profiles: '4–10 प्रोफाइल', desc: 'टीम और छोटी चेन के लिए', features: ['Lite की सभी सुविधाएं', '4–10 Google Business Profiles', 'Email + Slack अलर्ट', 'उन्नत रिपोर्ट', 'रिव्यू विजेट', 'ऑटो-टैगिंग'] },
       { name: 'Agency', profiles: '11+ प्रोफाइल', desc: 'एजेंसी और फ्रेंचाइज़ के लिए', features: ['Pro की सभी सुविधाएं', 'असीमित प्रोफाइल', 'कस्टम AI प्रॉम्प्ट', 'सेंटीमेंट विश्लेषण', 'मैजिक रिव्यू लिंक', 'प्राथमिकता सहायता', 'समर्पित खाता प्रबंधक'] },
     ],
@@ -388,7 +388,7 @@ const T = {
       { q: 'GoHighReview क्या है?', a: 'GoHighReview आपकी Google समीक्षाओं को प्रबंधित करने का एक टूल है। आप एक डैशबोर्ड में सभी समीक्षाएं देख सकते हैं और AI सहायता से जल्दी और पेशेवर तरीके से उत्तर दे सकते हैं।' },
       { q: 'GoHighReview किसके लिए उपयुक्त है?', a: 'GoHighReview एक स्थान वाले एकल व्यवसाय स्वामियों के साथ-साथ दर्जनों ग्राहकों के लिए समीक्षाओं का प्रबंधन करने वाली एजेंसियों के लिए उपयुक्त है।' },
       { q: 'सेटअप में कितना समय लगता है?', a: 'सेटअप में 5 मिनट से कम समय लगता है। अपना Google Business Profile कनेक्ट करें, अपना प्लान चुनें और शुरू हो जाएं।' },
-      { q: 'मैं कौन से Google प्रोफाइल कनेक्ट कर सकता हूं?', a: 'आप कोई भी Google Business Profile कनेक्ट कर सकते हैं जिसका आपके पास एडमिन एक्सेस है। प्लान के अनुसार: 3 (Lite), 15 (Pro) या असीमित (Agency)।' },
+      { q: 'मैं कौन से Google प्रोफाइल कनेक्ट कर सकता हूं?', a: 'आप कोई भी Google Business Profile कनेक्ट कर सकते हैं जिसका आपके पास एडमिन एक्सेस है। प्लान के अनुसार: 3 (Lite), 10 (Pro) या असीमित (Agency)।' },
       { q: 'AI उत्तर फीचर कैसे काम करता है?', a: 'GoHighReview हर नई समीक्षा का विश्लेषण करता है और स्वचालित रूप से एक उपयुक्त उत्तर सुझाता है। आप एक क्लिक से सुझाव स्वीकार, संपादित या अस्वीकार कर सकते हैं।' },
       { q: 'क्या मैं GoHighReview मुफ्त में आजमा सकता हूं?', a: 'हाँ। सभी प्लान में 14 दिन की मुफ्त ट्रायल शामिल है। कोई क्रेडिट कार्ड नहीं। कभी भी रद्द करें।' },
       { q: 'मुफ्त ट्रायल के बाद क्या होता है?', a: '14 दिनों के बाद आपसे पूछा जाएगा कि क्या आप कोई प्लान सक्रिय करना चाहते हैं। नहीं तो आपका अकाउंट अपने आप निष्क्रिय हो जाएगा।' },
@@ -559,8 +559,8 @@ export default function HomePage() {
   const fmtPrice = (n: number) => n === Math.floor(n) ? String(n) : n.toFixed(2).replace('.', ',')
 
   const plans = [
-    { ...t.plans[0], price: annual ? 15.83 : 19.9, highlight: false, agency: false },
-    { ...t.plans[1], price: annual ? 47.17 : 59, highlight: true, agency: false },
+    { ...t.plans[0], price: annual ? 23.92 : 29.9, highlight: false, agency: false },
+    { ...t.plans[1], price: annual ? 47.2 : 59, highlight: true, agency: false },
     { ...t.plans[2], price: 0, highlight: false, agency: true },
   ]
 
@@ -733,7 +733,9 @@ export default function HomePage() {
               </button>
             </div>
             {annual && (
-              <p className="text-sm font-semibold" style={{ color: Y }}>Save 20% with annual billing</p>
+              <p className="text-sm font-semibold" style={{ color: Y }}>
+                Lite: EUR 287,04/year (save EUR 71,76) · Pro: EUR 566,40/year (save EUR 141,60)
+              </p>
             )}
           </div>
         </div>
@@ -751,11 +753,18 @@ export default function HomePage() {
                   <span className="font-bold" style={{ fontSize: '1.875rem', color: '#fff' }}>{(t as typeof t & { pricing_agency_label: string }).pricing_agency_label}</span>
                 </div>
               ) : (
-                <div className="flex items-end gap-1 mb-1">
-                  <span className="font-bold" style={{ fontSize: '2.25rem', color: p.highlight ? BG : '#fff' }}>
-                    EUR {fmtPrice(p.price)}
-                  </span>
-                  <span className="text-sm mb-1.5" style={{ color: p.highlight ? `${BG}99` : '#6b7280' }}>/mo</span>
+                <div className="mb-1">
+                  <div className="flex items-end gap-1">
+                    <span className="font-bold" style={{ fontSize: '2.25rem', color: p.highlight ? BG : '#fff' }}>
+                      EUR {fmtPrice(p.price)}
+                    </span>
+                    <span className="text-sm mb-1.5" style={{ color: p.highlight ? `${BG}99` : '#6b7280' }}>/mo</span>
+                  </div>
+                  {annual && (
+                    <p className="text-xs font-medium" style={{ color: p.highlight ? `${BG}80` : '#6b7280' }}>
+                      EUR {fmtPrice(p.price * 12)}/year
+                    </p>
+                  )}
                 </div>
               )}
               <p className="text-xs mb-1 font-medium" style={{ color: p.highlight ? `${BG}cc` : '#9ca3af' }}>{p.profiles}</p>
@@ -798,7 +807,7 @@ export default function HomePage() {
 
       {/* CTA */}
       <section className="max-w-6xl mx-auto px-6 pb-24">
-        <div className="relative overflow-hidden rounded-3xl px-10 py-16 text-center" style={{ background: Y }}>
+        <div className="relative overflow-hidden rounded-3xl px-6 sm:px-10 py-12 sm:py-16 text-center" style={{ background: Y }}>
           <div className="absolute top-0 right-0 w-72 h-72 rounded-full bg-black/5 -translate-y-1/2 translate-x-1/2" />
           <div className="absolute bottom-0 left-0 w-48 h-48 rounded-full bg-black/5 translate-y-1/2 -translate-x-1/2" />
           <div className="relative">
@@ -817,7 +826,7 @@ export default function HomePage() {
       {/* Footer */}
       <footer style={{ borderTop: `1px solid ${BORDER}` }}>
         <div className="max-w-6xl mx-auto px-6 py-10">
-          <div className="grid grid-cols-1 md:grid-cols-4 gap-8 mb-8">
+          <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-4 sm:gap-8 mb-8">
             <div>
               <div className="flex items-center gap-2 mb-3">
                 <div className="w-6 h-6 rounded-md flex items-center justify-center" style={{ background: Y }}>

@@ -24,22 +24,28 @@ async function runAutoReply(
 ) {
   const { data: rule } = await admin
     .from('auto_reply_rules')
-    .select('enabled, min_rating, max_rating, custom_instructions')
+    .select('enabled, min_rating, max_rating, reply_to_ratings, custom_instructions')
     .eq('user_id', userId)
     .eq('profile_id', profile.id)
     .single()
 
   if (!rule?.enabled) return
-  if (rule.min_rating != null && review.rating < rule.min_rating) return
-  if (rule.max_rating != null && review.rating > rule.max_rating) return
   if (!review.google_review_name) return
+
+  // Check against explicit rating list first (new), then fall back to min/max range
+  if (rule.reply_to_ratings?.length) {
+    if (!rule.reply_to_ratings.includes(review.rating)) return
+  } else {
+    if (rule.min_rating != null && review.rating < rule.min_rating) return
+    if (rule.max_rating != null && review.rating > rule.max_rating) return
+  }
 
   const aiReply = await generateReplyFromAI({
     reviewerName: review.reviewer_name || 'Anonymous',
     rating: review.rating,
     comment: review.comment || '',
     businessName: profile.business_name,
-    businessType: rule.custom_instructions ?? undefined,
+    customInstructions: rule.custom_instructions ?? undefined,
   })
 
   await replyToReview(review.google_review_name, aiReply, token)
@@ -312,7 +318,7 @@ export async function POST(request: NextRequest) {
         if (newReviewGoogleIds.length > 0) {
           const { data: newReviews } = await admin
             .from('reviews')
-            .select('id, google_review_id, reviewer_name, rating, comment, review_date, reviewer_photo_url')
+            .select('id, google_review_id, google_review_name, reviewer_name, rating, comment, review_date, reviewer_photo_url')
             .eq('profile_id', profile.id)
             .in('google_review_id', newReviewGoogleIds)
 
@@ -331,18 +337,17 @@ export async function POST(request: NextRequest) {
                 }
               )
             } catch (notificationError) {
-              console.error(
-                `[sync] notification error for review ${newReview.id}:`,
-                notificationError
-              )
+              console.error(`[sync] notification error for review ${newReview.id}:`, notificationError)
+            }
+            try {
+              await runAutoReply(newReview, profile, user.id, token, admin)
+            } catch (autoReplyError) {
+              console.error(`[sync] auto-reply error for review ${newReview.id}:`, autoReplyError)
             }
             try {
               await runSentimentAndAutoTag(newReview, user.id, admin)
             } catch (sentimentError) {
-              console.error(
-                `[sync] sentiment error for review ${newReview.id}:`,
-                sentimentError
-              )
+              console.error(`[sync] sentiment error for review ${newReview.id}:`, sentimentError)
             }
           }
         }
