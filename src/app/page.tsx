@@ -612,7 +612,7 @@ export default function HomePage() {
           </div>
 
           {/* Headline */}
-          <h1 className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-bold tracking-tight leading-[1.1] mb-6 text-white">
+          <h1 className="text-3xl sm:text-5xl md:text-6xl lg:text-7xl font-bold tracking-tight leading-[1.15] mb-6 text-white wrap-break-word [hyphens:auto]" lang="de">
             {t.hero_h1a}<br />
             <span style={{ color: Y }}>{t.hero_h1b}</span>
           </h1>

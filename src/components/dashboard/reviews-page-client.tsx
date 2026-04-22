@@ -32,6 +32,7 @@ interface ReviewsPageClientProps {
   currentProfile: string | null
   lastSyncedAt: string | null
   isLimitedByPlan?: boolean
+  planName?: string
 }
 
 export function ReviewsPageClient({
@@ -41,6 +42,7 @@ export function ReviewsPageClient({
   currentProfile,
   lastSyncedAt,
   isLimitedByPlan = false,
+  planName = 'free',
 }: ReviewsPageClientProps) {
   const [selectedReview, setSelectedReview] = useState<Review | null>(null)
   const [isModalOpen, setIsModalOpen] = useState(false)
@@ -75,11 +77,11 @@ export function ReviewsPageClient({
       />
 
       {isLimitedByPlan && (
-        <a href="/billing" className="block">
+        <a href={planName === 'pro' ? '/agency' : '/billing'} className="block">
           <div className="flex items-center gap-3 px-4 py-3 rounded-xl border text-sm font-medium transition-opacity hover:opacity-90"
             style={{ backgroundColor: '#F5C51820', borderColor: '#F5C51860', color: '#92710a' }}>
             <span className="w-2 h-2 rounded-full shrink-0" style={{ backgroundColor: '#F5C518' }} />
-            {t.rev_limit_banner}
+            {planName === 'pro' ? t.rev_limit_banner_pro : t.rev_limit_banner}
           </div>
         </a>
       )}

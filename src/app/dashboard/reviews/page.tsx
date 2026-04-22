@@ -72,7 +72,7 @@ export default async function ReviewsPage({
   }))
 
   const hasProfiles = (profiles?.length ?? 0) > 0
-  const isLimitedByPlan = (planName === 'lite' || planName === 'free') && totalCount > reviewLimit
+  const isLimitedByPlan = planName !== 'agency' && totalCount > reviewLimit
   const lastSyncedAt = profiles
     ?.map(p => (p as unknown as { last_synced_at: string | null }).last_synced_at)
     .filter(Boolean)
@@ -110,7 +110,7 @@ export default async function ReviewsPage({
                     <p className="text-[10px] font-bold text-muted-foreground uppercase tracking-wide mb-1.5">{t.dash_stat_total}</p>
                     <p className="text-2xl font-bold tabular-nums">
                       {totalCount}
-                      {(planName === 'lite' || planName === 'free') && (
+                      {planName !== 'agency' && (
                         <span className="text-base font-normal text-muted-foreground"> / {reviewLimit}</span>
                       )}
                     </p>
@@ -161,6 +161,7 @@ export default async function ReviewsPage({
                   currentProfile={profileFilter ?? null}
                   lastSyncedAt={lastSyncedAt}
                   isLimitedByPlan={isLimitedByPlan}
+                  planName={planName}
                 />
               </>
             )}
