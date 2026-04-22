@@ -25,12 +25,15 @@ export default async function ReviewsPage({
 
   const { data: userData } = await supabase
     .from('users')
-    .select('plan_name')
+    .select('plan_name, review_limit')
     .eq('id', user.id)
     .single()
 
   const planName = userData?.plan_name ?? 'free'
-  const reviewLimit = planName === 'agency' ? 10000 : planName === 'pro' ? 500 : 50
+  const customLimit = (userData as unknown as { review_limit?: number | null })?.review_limit ?? null
+  const reviewLimit = planName === 'agency'
+    ? (customLimit ?? 10000)
+    : planName === 'pro' ? 500 : 50
 
   const { data: profiles } = await supabase
     .from('profiles')
@@ -72,7 +75,9 @@ export default async function ReviewsPage({
   }))
 
   const hasProfiles = (profiles?.length ?? 0) > 0
-  const isLimitedByPlan = planName !== 'agency' && totalCount > reviewLimit
+  // Agency without a custom limit set yet: don't show limit warning
+  const agencyHasCustomLimit = planName === 'agency' && customLimit != null
+  const isLimitedByPlan = (planName !== 'agency' || agencyHasCustomLimit) && totalCount > reviewLimit
   const lastSyncedAt = profiles
     ?.map(p => (p as unknown as { last_synced_at: string | null }).last_synced_at)
     .filter(Boolean)
@@ -110,9 +115,11 @@ export default async function ReviewsPage({
                     <p className="text-[10px] font-bold text-muted-foreground uppercase tracking-wide mb-1.5">{t.dash_stat_total}</p>
                     <p className="text-2xl font-bold tabular-nums">
                       {totalCount}
-                      <span className="text-base font-normal text-muted-foreground">
-                        {planName === 'agency' ? ' / ∞' : ` / ${reviewLimit}`}
-                      </span>
+                      {(planName !== 'agency' || agencyHasCustomLimit) && (
+                        <span className="text-base font-normal text-muted-foreground">
+                          {` / ${reviewLimit}`}
+                        </span>
+                      )}
                     </p>
                   </div>
                   <div className="bg-card border border-border rounded-2xl p-4">

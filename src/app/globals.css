@@ -231,3 +231,152 @@
 main > * {
   animation: page-in 0.2s ease forwards;
 }
+
+/* ─── Landing page responsive overrides ─────────────────── */
+
+/* Tablet: ≤768px — stack sections, hide nav links */
+@media (max-width: 768px) {
+  /* Nav */
+  .lp-nav-links {
+    display: none !important;
+  }
+  .lp-nav {
+    padding-left: 1rem;
+    padding-right: 1rem;
+  }
+
+  /* Hero */
+  .lp-hero {
+    padding-top: clamp(2.5rem, 8vw, 5rem);
+    padding-bottom: clamp(2.5rem, 8vw, 5rem);
+    padding-left: 1rem;
+    padding-right: 1rem;
+  }
+  .lp-hero-h1 {
+    font-size: clamp(1.75rem, 6vw, 3rem);
+    line-height: 1.2;
+  }
+  .lp-hero-sub {
+    font-size: clamp(0.9rem, 3vw, 1.125rem);
+  }
+  .lp-hero-ctas {
+    flex-direction: column;
+    align-items: stretch;
+  }
+  .lp-hero-ctas a,
+  .lp-hero-ctas button {
+    width: 100%;
+    justify-content: center;
+  }
+
+  /* Features grid: 1 col */
+  .lp-feat-grid {
+    grid-template-columns: 1fr !important;
+  }
+
+  /* Testimonials: stack */
+  .lp-test-grid {
+    grid-template-columns: 1fr !important;
+  }
+
+  /* Pricing: stack */
+  .lp-price-grid {
+    grid-template-columns: 1fr !important;
+    max-width: 400px;
+    margin-left: auto;
+    margin-right: auto;
+  }
+  .lp-price-grid > div[style*="scale"] {
+    transform: none !important;
+  }
+
+  /* Section padding */
+  .lp-section {
+    padding-top: clamp(3rem, 8vw, 6rem);
+    padding-bottom: clamp(3rem, 8vw, 6rem);
+    padding-left: 1rem;
+    padding-right: 1rem;
+  }
+
+  /* Section headings */
+  .lp-h2 {
+    font-size: clamp(1.5rem, 5vw, 2.25rem);
+  }
+
+  /* Footer: stack */
+  .lp-footer-grid {
+    grid-template-columns: 1fr 1fr !important;
+  }
+
+  /* CTA section padding */
+  .lp-cta-inner {
+    padding-left: 1.5rem !important;
+    padding-right: 1.5rem !important;
+    padding-top: 2.5rem !important;
+    padding-bottom: 2.5rem !important;
+  }
+  .lp-cta-btn {
+    width: 100%;
+    justify-content: center;
+  }
+
+  /* Pricing toggle */
+  .lp-billing-toggle {
+    width: 100%;
+    justify-content: center;
+  }
+
+  /* Dashboard screenshot: limit height */
+  .lp-dashboard-img {
+    max-height: 280px;
+    object-fit: cover;
+    object-position: top;
+  }
+}
+
+/* Mobile: ≤480px — reduce padding further */
+@media (max-width: 480px) {
+  .lp-nav {
+    padding-left: 0.75rem;
+    padding-right: 0.75rem;
+  }
+
+  .lp-hero {
+    padding-top: clamp(2rem, 6vw, 3rem);
+    padding-bottom: clamp(2rem, 6vw, 3rem);
+    padding-left: 0.75rem;
+    padding-right: 0.75rem;
+  }
+  .lp-hero-h1 {
+    font-size: clamp(1.5rem, 7vw, 2rem);
+  }
+  .lp-hero-sub {
+    font-size: clamp(0.85rem, 3.5vw, 1rem);
+  }
+
+  .lp-section {
+    padding-top: clamp(2rem, 6vw, 3rem);
+    padding-bottom: clamp(2rem, 6vw, 3rem);
+    padding-left: 0.75rem;
+    padding-right: 0.75rem;
+  }
+
+  .lp-h2 {
+    font-size: clamp(1.25rem, 6vw, 1.75rem);
+  }
+
+  .lp-footer-grid {
+    grid-template-columns: 1fr !important;
+  }
+
+  .lp-price-grid {
+    max-width: 100%;
+  }
+
+  /* Make billing toggle buttons smaller */
+  .lp-billing-btn {
+    padding-left: 1rem !important;
+    padding-right: 1rem !important;
+    font-size: 0.875rem !important;
+  }
+}

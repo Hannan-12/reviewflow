@@ -569,14 +569,14 @@ export default function HomePage() {
 
       {/* Nav */}
       <nav className="sticky top-0 z-50" style={{ background: 'rgba(26,26,26,0.95)', borderBottom: `1px solid ${BORDER}`, backdropFilter: 'blur(12px)' }}>
-        <div className="max-w-6xl mx-auto px-6 h-14 flex items-center justify-between">
+        <div className="lp-nav max-w-6xl mx-auto px-6 h-14 flex items-center justify-between">
           <Link href="/" className="flex items-center gap-2">
             <div className="w-7 h-7 rounded-lg flex items-center justify-center" style={{ background: Y }}>
               <Star className="w-3.5 h-3.5" style={{ color: BG, fill: BG }} />
             </div>
             <span className="font-bold text-sm tracking-tight text-white">GoHighReview</span>
           </Link>
-          <div className="hidden md:flex items-center gap-6 text-sm font-medium text-gray-400">
+          <div className="lp-nav-links hidden md:flex items-center gap-6 text-sm font-medium text-gray-400">
             <a href="#features" className="hover:text-white transition-colors">{t.nav_features}</a>
             <a href="#testimonials" className="hover:text-white transition-colors">{t.nav_reviews}</a>
             <a href="#pricing" className="hover:text-white transition-colors">{t.nav_pricing}</a>
@@ -603,7 +603,7 @@ export default function HomePage() {
         <div className="absolute inset-0 pointer-events-none" style={{ background: `radial-gradient(ellipse 70% 40% at 50% 0%, ${Y}22 0%, transparent 65%)` }} />
         <div className="absolute top-0 left-1/2 -translate-x-1/2 w-px h-48 pointer-events-none" style={{ background: `linear-gradient(to bottom, ${Y}60, transparent)` }} />
 
-        <div className="relative max-w-6xl mx-auto px-6 pt-20 pb-24 text-center">
+        <div className="lp-hero relative max-w-6xl mx-auto px-6 pt-20 pb-24 text-center">
           {/* Badge */}
           <div className="inline-flex items-center gap-2 rounded-full px-4 py-1.5 text-xs font-semibold mb-8 border" style={{ background: `${Y}12`, color: Y, borderColor: `${Y}35` }}>
             <Zap className="w-3 h-3" />
@@ -612,16 +612,16 @@ export default function HomePage() {
           </div>
 
           {/* Headline */}
-          <h1 className="text-3xl sm:text-5xl md:text-6xl lg:text-7xl font-bold tracking-tight leading-[1.15] mb-6 text-white wrap-break-word [hyphens:auto]" lang="de">
+          <h1 className="lp-hero-h1 text-3xl sm:text-5xl md:text-6xl lg:text-7xl font-bold tracking-tight leading-[1.15] mb-6 text-white wrap-break-word [hyphens:auto]" lang="de">
             {t.hero_h1a}<br />
             <span style={{ color: Y }}>{t.hero_h1b}</span>
           </h1>
 
           {/* Subtext */}
-          <p className="text-lg md:text-xl text-gray-400 leading-relaxed mb-10 max-w-2xl mx-auto">{t.hero_sub}</p>
+          <p className="lp-hero-sub text-lg md:text-xl text-gray-400 leading-relaxed mb-10 max-w-2xl mx-auto">{t.hero_sub}</p>
 
           {/* CTAs */}
-          <div className="flex flex-col sm:flex-row items-center justify-center gap-3 mb-5">
+          <div className="lp-hero-ctas flex flex-col sm:flex-row items-center justify-center gap-3 mb-5">
             <Link href="/signup">
               <button className="h-12 px-8 text-base font-bold rounded-xl flex items-center gap-2 transition-all hover:opacity-90" style={{ background: Y, color: BG, boxShadow: `0 8px 32px ${Y}40` }}>
                 {t.hero_cta} <ArrowRight className="w-4 h-4" />
@@ -661,7 +661,7 @@ export default function HomePage() {
                 alt="GoHighReview dashboard"
                 width={1600}
                 height={900}
-                className="w-full h-auto block"
+                className="lp-dashboard-img w-full h-auto block"
                 priority
               />
             </div>
@@ -670,12 +670,12 @@ export default function HomePage() {
       </section>
 
       {/* Features */}
-      <section id="features" className="relative overflow-hidden max-w-6xl mx-auto px-6 py-24">
+      <section id="features" className="lp-section relative overflow-hidden max-w-6xl mx-auto px-6 py-24">
         <div className="text-center mb-14">
-          <h2 className="text-3xl md:text-4xl font-bold tracking-tight mb-4 text-white">{t.feat_h2}</h2>
+          <h2 className="lp-h2 text-3xl md:text-4xl font-bold tracking-tight mb-4 text-white">{t.feat_h2}</h2>
           <p className="text-lg text-gray-400 max-w-xl mx-auto">{t.feat_sub}</p>
         </div>
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+        <div className="lp-feat-grid grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
           {t.feat.map((f, i) => {
             const Icon = featIcons[i]
             return (
@@ -692,15 +692,15 @@ export default function HomePage() {
       </section>
 
       {/* Testimonials */}
-      <section id="testimonials" className="relative overflow-hidden py-24" style={{ borderTop: `1px solid ${BORDER}`, borderBottom: `1px solid ${BORDER}` }}>
+      <section id="testimonials" className="lp-section relative overflow-hidden py-24" style={{ borderTop: `1px solid ${BORDER}`, borderBottom: `1px solid ${BORDER}` }}>
         <div className="max-w-6xl mx-auto px-6">
           <div className="text-center mb-14">
-            <h2 className="text-3xl md:text-4xl font-bold tracking-tight mb-4 text-white">{t.test_h2}</h2>
+            <h2 className="lp-h2 text-3xl md:text-4xl font-bold tracking-tight mb-4 text-white">{t.test_h2}</h2>
             <div className="flex items-center justify-center gap-1">
               {Array.from({ length: 5 }).map((_, i) => <Star key={i} className="w-4 h-4" style={{ fill: Y, color: Y }} />)}
             </div>
           </div>
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+          <div className="lp-test-grid grid grid-cols-1 md:grid-cols-3 gap-4">
             {testimonials.map((t) => (
               <div key={t.author} className="rounded-2xl p-6" style={{ background: CARD, border: `1px solid ${BORDER}` }}>
                 <div className="flex gap-0.5 mb-4">
@@ -718,16 +718,16 @@ export default function HomePage() {
       </section>
 
       {/* Pricing */}
-      <section id="pricing" className="relative overflow-hidden max-w-6xl mx-auto px-6 py-24">
+      <section id="pricing" className="lp-section relative overflow-hidden max-w-6xl mx-auto px-6 py-24">
         <div className="text-center mb-10">
-          <h2 className="text-3xl md:text-4xl font-bold tracking-tight mb-4 text-white">{t.pricing_h2}</h2>
+          <h2 className="lp-h2 text-3xl md:text-4xl font-bold tracking-tight mb-4 text-white">{t.pricing_h2}</h2>
           <p className="text-lg text-gray-400 mb-8">{t.pricing_sub}</p>
-          <div className="flex flex-col items-center gap-2">
+          <div className="lp-billing-toggle flex flex-col items-center gap-2">
             <div className="inline-flex items-center gap-1 rounded-2xl p-1.5" style={{ background: CARD, border: `2px solid ${BORDER}` }}>
-              <button onClick={() => setAnnual(false)} className="px-6 py-3 rounded-xl text-base font-bold transition-all" style={!annual ? { background: Y, color: BG, boxShadow: `0 4px 12px ${Y}40` } : { color: '#9ca3af' }}>
+              <button onClick={() => setAnnual(false)} className="lp-billing-btn px-6 py-3 rounded-xl text-base font-bold transition-all" style={!annual ? { background: Y, color: BG, boxShadow: `0 4px 12px ${Y}40` } : { color: '#9ca3af' }}>
                 {t.pricing_monthly}
               </button>
-              <button onClick={() => setAnnual(true)} className="px-6 py-3 rounded-xl text-base font-bold transition-all flex items-center gap-2.5" style={annual ? { background: Y, color: BG, boxShadow: `0 4px 12px ${Y}40` } : { color: '#9ca3af' }}>
+              <button onClick={() => setAnnual(true)} className="lp-billing-btn px-6 py-3 rounded-xl text-base font-bold transition-all flex items-center gap-2.5" style={annual ? { background: Y, color: BG, boxShadow: `0 4px 12px ${Y}40` } : { color: '#9ca3af' }}>
                 {t.pricing_annual}
                 <span className="text-xs font-extrabold px-2 py-0.5 rounded-full" style={annual ? { background: `${BG}30`, color: BG } : { background: `${Y}25`, color: Y }}>–20%</span>
               </button>
@@ -739,7 +739,7 @@ export default function HomePage() {
             )}
           </div>
         </div>
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-4 max-w-4xl mx-auto">
+        <div className="lp-price-grid grid grid-cols-1 md:grid-cols-3 gap-4 max-w-4xl mx-auto">
           {plans.map((p) => (
             <div key={p.name} className="relative rounded-2xl p-7 flex flex-col" style={{ background: p.highlight ? Y : CARD, border: `1px solid ${p.highlight ? Y : BORDER}`, transform: p.highlight ? 'scale(1.02)' : undefined }}>
               {p.highlight && (
@@ -796,10 +796,10 @@ export default function HomePage() {
       </section>
 
       {/* FAQ */}
-      <section id="faq" className="relative overflow-hidden py-24" style={{ borderTop: `1px solid ${BORDER}` }}>
+      <section id="faq" className="lp-section relative overflow-hidden py-24" style={{ borderTop: `1px solid ${BORDER}` }}>
         <div className="max-w-3xl mx-auto px-6">
           <div className="text-center mb-12">
-            <h2 className="text-3xl md:text-4xl font-bold tracking-tight mb-4 text-white">{t.faq_h2}</h2>
+            <h2 className="lp-h2 text-3xl md:text-4xl font-bold tracking-tight mb-4 text-white">{t.faq_h2}</h2>
           </div>
           {t.faq.map((item, i) => <FAQItem key={i} q={item.q} a={item.a} />)}
         </div>
@@ -807,14 +807,14 @@ export default function HomePage() {
 
       {/* CTA */}
       <section className="max-w-6xl mx-auto px-6 pb-24">
-        <div className="relative overflow-hidden rounded-3xl px-6 sm:px-10 py-12 sm:py-16 text-center" style={{ background: Y }}>
+        <div className="lp-cta-inner relative overflow-hidden rounded-3xl px-6 sm:px-10 py-12 sm:py-16 text-center" style={{ background: Y }}>
           <div className="absolute top-0 right-0 w-72 h-72 rounded-full bg-black/5 -translate-y-1/2 translate-x-1/2" />
           <div className="absolute bottom-0 left-0 w-48 h-48 rounded-full bg-black/5 translate-y-1/2 -translate-x-1/2" />
           <div className="relative">
             <h2 className="text-3xl md:text-4xl font-bold mb-4" style={{ color: BG }}>{t.cta_h2}</h2>
             <p className="text-lg mb-8 max-w-xl mx-auto" style={{ color: `${BG}99` }}>{t.cta_sub}</p>
             <Link href="/signup">
-              <button className="px-8 h-12 text-base font-bold rounded-xl flex items-center gap-2 mx-auto transition-all hover:opacity-90" style={{ background: BG, color: Y }}>
+              <button className="lp-cta-btn px-8 h-12 text-base font-bold rounded-xl flex items-center gap-2 mx-auto transition-all hover:opacity-90" style={{ background: BG, color: Y }}>
                 {t.cta_btn} <ArrowRight className="w-4 h-4" />
               </button>
             </Link>
@@ -826,7 +826,7 @@ export default function HomePage() {
       {/* Footer */}
       <footer style={{ borderTop: `1px solid ${BORDER}` }}>
         <div className="max-w-6xl mx-auto px-6 py-10">
-          <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-4 sm:gap-8 mb-8">
+          <div className="lp-footer-grid grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-4 sm:gap-8 mb-8">
             <div>
               <div className="flex items-center gap-2 mb-3">
                 <div className="w-6 h-6 rounded-md flex items-center justify-center" style={{ background: Y }}>
