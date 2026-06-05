@@ -1,0 +1,39 @@
+name: Cron Jobs
+
+on:
+  schedule:
+    - cron: '0 * * * *'   # sync  — every hour
+    - cron: '0 8 * * *'   # digest — 08:00 UTC daily
+    - cron: '0 3 * * *'   # sentiment — 03:00 UTC daily
+  workflow_dispatch:       # allow manual trigger from GitHub UI
+
+jobs:
+  sync:
+    name: Hourly review sync
+    runs-on: ubuntu-latest
+    if: github.event_name == 'workflow_dispatch' || github.event.schedule == '0 * * * *'
+    steps:
+      - name: Trigger /api/sync
+        run: |
+          curl -sf -X GET "${{ secrets.APP_URL }}/api/sync" \
+            -H "Authorization: Bearer ${{ secrets.CRON_SECRET }}"
+
+  digest:
+    name: Daily digest emails
+    runs-on: ubuntu-latest
+    if: github.event_name == 'workflow_dispatch' || github.event.schedule == '0 8 * * *'
+    steps:
+      - name: Trigger /api/digest
+        run: |
+          curl -sf -X GET "${{ secrets.APP_URL }}/api/digest" \
+            -H "Authorization: Bearer ${{ secrets.CRON_SECRET }}"
+
+  sentiment:
+    name: Nightly sentiment analysis
+    runs-on: ubuntu-latest
+    if: github.event_name == 'workflow_dispatch' || github.event.schedule == '0 3 * * *'
+    steps:
+      - name: Trigger /api/sentiment
+        run: |
+          curl -sf -X GET "${{ secrets.APP_URL }}/api/sentiment" \
+            -H "Authorization: Bearer ${{ secrets.CRON_SECRET }}"
