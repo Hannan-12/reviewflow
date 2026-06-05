@@ -8,48 +8,6 @@ import { Button } from '@/components/ui/button'
 import { cn } from '@/lib/utils'
 import { useDashboardLang } from '@/components/dashboard/lang-context'
 
-function AgencyCalculator({ isPopular, onQuantityChange }: { isPopular?: boolean; onQuantityChange: (n: number) => void }) {
-  const [raw, setRaw] = useState('20')
-  const { t } = useDashboardLang()
-  const parsed = parseInt(raw) || 0
-  const hasError = raw !== '' && parsed < 16
-  const profiles = Math.max(16, parsed)
-  const price = profiles * 5
-  return (
-    <div className="mt-1 mb-4 p-3 rounded-xl border border-border bg-muted/40">
-      <p className={cn('text-[10px] font-bold uppercase tracking-widest mb-0.5', isPopular ? 'text-white/60' : 'text-muted-foreground')}>
-        {t.bill_num_profiles}
-      </p>
-      <p className={cn('text-[10px] mb-2', isPopular ? 'text-white/40' : 'text-muted-foreground/60')}>
-        {t.bill_min_profiles}
-      </p>
-      <div className="flex items-center gap-2">
-        <input
-          type="text"
-          inputMode="numeric"
-          value={raw}
-          onChange={(e) => { const v = e.target.value.replace(/[^0-9]/g, ''); setRaw(v); const n = parseInt(v) || 0; if (n >= 16) onQuantityChange(n) }}
-          onBlur={() => { const clamped = Math.max(16, parseInt(raw) || 16); setRaw(String(clamped)); onQuantityChange(clamped) }}
-          className={cn(
-            'w-20 px-2 py-1.5 rounded-lg text-sm font-bold text-center border outline-none focus:ring-1 focus:ring-primary transition-colors',
-            isPopular ? 'bg-white/15 text-white' : 'bg-background text-foreground',
-            hasError ? 'border-red-500' : isPopular ? 'border-white/30' : 'border-border'
-          )}
-        />
-        <span className={cn('font-bold text-sm', isPopular ? 'text-white' : 'text-foreground')}>
-          = €{price}/mo
-        </span>
-      </div>
-      {hasError
-        ? <p className="text-[10px] text-red-500 mt-1.5">{t.bill_min_required}</p>
-        : <p className={cn('text-[10px] mt-1.5', isPopular ? 'text-white/40' : 'text-muted-foreground/60')}>
-            20 = €100/mo · 50 = €250/mo
-          </p>
-      }
-    </div>
-  )
-}
-
 interface PlanCardProps {
   name: string
   price: number
@@ -66,7 +24,7 @@ export function PlanCard({ name, price, annual, description, features, priceId, 
   const router = useRouter()
   const { t } = useDashboardLang()
   const [loading, setLoading] = useState(false)
-  const [agencyQuantity, setAgencyQuantity] = useState(20)
+  const agencyQuantity = 20
 
   const handleSelect = async () => {
     setLoading(true)

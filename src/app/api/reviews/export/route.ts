@@ -35,7 +35,7 @@ export async function GET(request: NextRequest) {
 
   const header = ['Reviewer', 'Rating', 'Comment', 'Date', 'Reply', 'Replied At', 'Profile']
   const rows = (reviews ?? []).map((r) => {
-    const profile = r.profile as any
+    const profile = r.profile as unknown as { business_name: string | null } | null
     return [
       r.reviewer_name ?? 'Anonymous',
       r.rating,

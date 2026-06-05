@@ -29,7 +29,6 @@ export function SettingsClient({ email, fullName, planName, subscriptionStatus, 
   const [savingName, setSavingName] = useState(false)
 
   // Password change
-  const [currentPassword, setCurrentPassword] = useState('')
   const [newPassword, setNewPassword] = useState('')
   const [confirmPassword, setConfirmPassword] = useState('')
   const [savingPassword, setSavingPassword] = useState(false)
@@ -59,7 +58,6 @@ export function SettingsClient({ email, fullName, planName, subscriptionStatus, 
     if (error) toast.error(error.message)
     else {
       toast.success(t.set_pw_updated)
-      setCurrentPassword('')
       setNewPassword('')
       setConfirmPassword('')
     }

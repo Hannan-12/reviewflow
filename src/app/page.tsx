@@ -454,36 +454,6 @@ function FAQItem({ q, a, border, text, muted }: { q: string; a: string; border: 
   )
 }
 
-function AgencyCalculator({ label, bg, text, muted }: { label: string; bg: string; text: string; muted: string }) {
-  const [raw, setRaw] = useState('20')
-  const parsed = parseInt(raw) || 0
-  const hasError = raw !== '' && parsed < 16
-  const profiles = Math.max(16, parsed)
-  const price = profiles * 5
-  return (
-    <div className="mt-4">
-      <label className="text-xs font-semibold uppercase tracking-wide block mb-1" style={{ color: muted }}>{label}</label>
-      <p className="text-[11px] mb-2" style={{ color: muted }}>Minimum 16 profiles for an Agency account</p>
-      <div className="flex items-center gap-3">
-        <input
-          type="text"
-          inputMode="numeric"
-          value={raw}
-          onChange={(e) => setRaw(e.target.value.replace(/[^0-9]/g, ''))}
-          onBlur={() => setRaw(String(Math.max(16, parseInt(raw) || 16)))}
-          className="w-24 px-3 py-2 rounded-lg text-sm font-bold text-center border outline-none transition-colors"
-          style={{ background: bg, color: text, borderColor: hasError ? '#ef4444' : Y }}
-        />
-        <span className="font-bold text-lg" style={{ color: text }}>= EUR {price}/mo</span>
-      </div>
-      {hasError
-        ? <p className="text-xs text-red-400 mt-1.5">Minimum 16 profiles required</p>
-        : <p className="text-xs mt-2" style={{ color: muted }}>20 profiles = EUR 100/month · 50 profiles = EUR 250/month</p>
-      }
-    </div>
-  )
-}
-
 function CookieBanner({ text, privacy, decline, accept: acceptLabel }: { text: string; privacy: string; decline: string; accept: string }) {
   const { resolvedTheme } = useTheme()
   const isDark = resolvedTheme === 'dark'

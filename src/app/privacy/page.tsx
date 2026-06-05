@@ -52,7 +52,7 @@ export default function PrivacyPage() {
 
           <section>
             <h2 className="text-xl font-bold mb-3">4. Data Storage & Security</h2>
-            <p className="text-muted-foreground leading-relaxed">Your data is stored in Supabase (PostgreSQL) with row-level security enforced. All data in transit is encrypted with TLS. Review data is stored per user account with strict isolation — no user can access another user's data. Payment information is handled by Stripe and never stored on our servers.</p>
+            <p className="text-muted-foreground leading-relaxed">Your data is stored in Supabase (PostgreSQL) with row-level security enforced. All data in transit is encrypted with TLS. Review data is stored per user account with strict isolation — no user can access another user&apos;s data. Payment information is handled by Stripe and never stored on our servers.</p>
           </section>
 
           <section>

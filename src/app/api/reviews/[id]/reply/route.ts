@@ -81,8 +81,8 @@ export async function POST(
 
     // Send confirmation email (non-blocking)
     try {
-      const reviewUser = review.user as any
-      const profile = review.profile as any
+      const reviewUser = review.user as { email: string; full_name: string | null }
+      const profile = review.profile as { business_name: string }
       await sendReplyConfirmationEmail(
         reviewUser.email,
         reviewUser.full_name || 'User',

@@ -71,8 +71,8 @@ export async function GET(request: NextRequest) {
     }
 
     try {
-      const user = pref.user as any
-      const profile = pref.profile as any
+      const user = pref.user as unknown as { email: string; full_name: string | null }
+      const profile = pref.profile as unknown as { business_name: string }
 
       await sendDigestEmail({
         userEmail: user.email,

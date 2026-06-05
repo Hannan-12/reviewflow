@@ -1,9 +1,11 @@
 import axios from 'axios';
 
+type SlackBlock = Record<string, unknown>;
+
 interface SlackMessage {
   channel?: string;
   text?: string;
-  blocks?: Array<any>;
+  blocks?: SlackBlock[];
 }
 
 export async function sendSlackNotification(
@@ -19,7 +21,7 @@ export async function sendSlackNotification(
 ) {
   const color = data.rating >= 4 ? '#36a64f' : data.rating >= 3 ? '#fdb71a' : '#dc4e41';
 
-  const blocks: Array<any> = [
+  const blocks: SlackBlock[] = [
     {
       type: 'header',
       text: {

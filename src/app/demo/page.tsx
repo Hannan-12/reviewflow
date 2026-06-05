@@ -95,7 +95,7 @@ export default function DemoPage() {
                 </div>
                 <h2 className="text-xl font-bold mb-2">Request received!</h2>
                 <p className="text-muted-foreground text-sm mb-6">
-                  We'll be in touch within 1 business day to schedule your demo.
+                  We&apos;ll be in touch within 1 business day to schedule your demo.
                 </p>
                 <Link href="/">
                   <Button variant="outline" size="sm">Back to homepage</Button>
@@ -165,7 +165,7 @@ export default function DemoPage() {
                 </div>
 
                 <div className="space-y-1">
-                  <label className="text-xs font-medium text-muted-foreground">Anything specific you'd like to see?</label>
+                  <label className="text-xs font-medium text-muted-foreground">Anything specific you&apos;d like to see?</label>
                   <textarea
                     value={form.message}
                     onChange={e => setForm(f => ({ ...f, message: e.target.value }))}

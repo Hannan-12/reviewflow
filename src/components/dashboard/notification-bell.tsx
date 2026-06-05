@@ -68,8 +68,6 @@ export function NotificationBell() {
       .finally(() => setLoading(false))
   }, [open])
 
-  const hasUnread = notifications.length > 0 && !seen
-
   return (
     <div ref={ref} className="relative">
       <button

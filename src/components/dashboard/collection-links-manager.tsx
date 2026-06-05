@@ -234,6 +234,7 @@ export function CollectionLinksManager({ profiles, appUrl }: CollectionLinksMana
               {/* QR code */}
               {qrLink === link.slug && (
                 <div className="mt-3 pt-3 border-t border-border flex items-center gap-4">
+                  {/* eslint-disable-next-line @next/next/no-img-element -- QR image comes from an external generator URL; next/image adds no benefit here. */}
                   <img
                     src={qrUrl(link)}
                     alt="QR Code"

@@ -18,7 +18,8 @@ export async function GET(request: NextRequest) {
 
   if (error) return NextResponse.json({ error: error.message }, { status: 500 })
 
-  const tags = (data ?? []).map((row: any) => row.review_tags).filter(Boolean)
+  type TagRow = { review_tags: { id: string; name: string; color: string } | null }
+  const tags = (data ?? []).map((row) => (row as unknown as TagRow).review_tags).filter(Boolean)
   return NextResponse.json(tags)
 }
 

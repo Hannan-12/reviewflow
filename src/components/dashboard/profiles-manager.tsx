@@ -60,7 +60,7 @@ export function ProfilesManager({ profiles: initial, isGoogleConnected, profileL
       .then(d => setLocations(d.locations ?? []))
       .catch(() => showToast(t.prof_load_failed, 'error'))
       .finally(() => setLoadingLocs(false))
-  }, [showPicker, isGoogleConnected])
+  }, [showPicker, isGoogleConnected, t.prof_load_failed])
 
   const addProfile = async (loc: GBPLocation) => {
     setAdding(loc.name)

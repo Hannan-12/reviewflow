@@ -33,7 +33,7 @@ export default function OnboardingPage() {
           <span className="font-bold text-sm tracking-tight">GoHighReview</span>
         </div>
         <h1 className="text-2xl font-bold text-center mb-1">How many Google profiles do you manage?</h1>
-        <p className="text-sm text-muted-foreground text-center mb-7">We'll recommend the right plan for you.</p>
+        <p className="text-sm text-muted-foreground text-center mb-7">We&apos;ll recommend the right plan for you.</p>
         <div className="space-y-3">
           {OPTIONS.map((opt) => (
             <button

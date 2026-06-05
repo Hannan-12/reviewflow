@@ -29,7 +29,7 @@ export default function TermsPage() {
 
           <section>
             <h2 className="text-xl font-bold mb-3">1. Acceptance of Terms</h2>
-            <p className="text-muted-foreground leading-relaxed">By accessing or using GoHighReview ("the Service"), you agree to be bound by these Terms of Service. If you do not agree, do not use the Service.</p>
+            <p className="text-muted-foreground leading-relaxed">By accessing or using GoHighReview (&quot;the Service&quot;), you agree to be bound by these Terms of Service. If you do not agree, do not use the Service.</p>
           </section>
 
           <section>
@@ -49,7 +49,7 @@ export default function TermsPage() {
 
           <section>
             <h2 className="text-xl font-bold mb-3">5. Google Business Profile Integration</h2>
-            <p className="text-muted-foreground leading-relaxed">By connecting your Google Business Profile, you authorise GoHighReview to read your reviews and post replies on your behalf. You are responsible for ensuring that all replies posted through the Service comply with Google's policies and applicable laws. GoHighReview is not affiliated with Google.</p>
+            <p className="text-muted-foreground leading-relaxed">By connecting your Google Business Profile, you authorise GoHighReview to read your reviews and post replies on your behalf. You are responsible for ensuring that all replies posted through the Service comply with Google&apos;s policies and applicable laws. GoHighReview is not affiliated with Google.</p>
           </section>
 
           <section>

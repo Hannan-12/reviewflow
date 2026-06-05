@@ -65,7 +65,7 @@ export default function AgencyPage() {
               Get a custom quote for your agency
             </h1>
             <p className="text-lg text-muted-foreground leading-relaxed mb-8">
-              Managing 11 or more Google Business Profiles? We'll put together a tailored plan with pricing, onboarding support, and a dedicated account manager.
+              Managing 11 or more Google Business Profiles? We&apos;ll put together a tailored plan with pricing, onboarding support, and a dedicated account manager.
             </p>
 
             <div className="space-y-4 mb-10">
@@ -104,7 +104,7 @@ export default function AgencyPage() {
                 </div>
                 <h2 className="text-xl font-bold mb-2">Inquiry received!</h2>
                 <p className="text-muted-foreground text-sm mb-6">
-                  We'll get back to you within 1 business day with a custom quote.
+                  We&apos;ll get back to you within 1 business day with a custom quote.
                 </p>
                 <Link href="/">
                   <Button variant="outline" size="sm">Back to homepage</Button>

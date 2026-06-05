@@ -78,11 +78,6 @@ export function QuickCheckoutSection({ plans, annual }: QuickCheckoutSectionProp
     }
   }
 
-  const selected = checkoutPlans.find(p => p.key === selectedPlan)
-  const displayPrice = selected
-    ? (annual ? selected.priceAnnual : selected.price)
-    : null
-
   return (
     <div className="bg-card border border-border rounded-2xl overflow-hidden mb-5">
       <div className="px-5 pt-5 pb-4">

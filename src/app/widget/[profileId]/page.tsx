@@ -1,5 +1,4 @@
 import { createClient } from '@supabase/supabase-js'
-import { Star } from 'lucide-react'
 import { notFound } from 'next/navigation'
 
 export const dynamic = 'force-dynamic'
@@ -129,6 +128,7 @@ export default async function WidgetPage({ params }: WidgetPageProps) {
                   <div className="reviewer">
                     <div className="avatar">
                       {r.reviewer_photo_url
+                        // eslint-disable-next-line @next/next/no-img-element -- embeddable widget renders arbitrary external Google avatar URLs; next/image isn't usable here.
                         ? <img src={r.reviewer_photo_url} alt={r.reviewer_name ?? ''} />
                         : initials}
                     </div>
