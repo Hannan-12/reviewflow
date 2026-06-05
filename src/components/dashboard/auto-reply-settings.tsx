@@ -63,8 +63,8 @@ export function AutoReplySettings({ profileId, planName }: AutoReplySettingsProp
         customInstructions,
       }),
     })
-    if (res.ok) toast.success('Auto-reply settings saved')
-    else toast.error('Failed to save settings')
+    if (res.ok) toast.success(t.ar_saved)
+    else toast.error(t.ar_save_failed)
     setSaving(false)
   }
 
@@ -106,10 +106,8 @@ export function AutoReplySettings({ profileId, planName }: AutoReplySettingsProp
           />
         </button>
         <div>
-          <p className="text-sm font-medium">Enable AI Auto-Reply</p>
-          <p className="text-xs text-muted-foreground">
-            Automatically post AI-generated replies to new Google reviews
-          </p>
+          <p className="text-sm font-medium">{t.ar_enable_label}</p>
+          <p className="text-xs text-muted-foreground">{t.ar_enable_desc}</p>
         </div>
       </div>
 
@@ -117,7 +115,7 @@ export function AutoReplySettings({ profileId, planName }: AutoReplySettingsProp
         <div className="space-y-4 pl-12">
           {/* Star rating checkboxes */}
           <div>
-            <p className="text-xs font-medium text-muted-foreground mb-2">Reply to these star ratings</p>
+            <p className="text-xs font-medium text-muted-foreground mb-2">{t.ar_ratings_label}</p>
             <div className="flex flex-wrap gap-2">
               {/* All button */}
               <button
@@ -128,7 +126,7 @@ export function AutoReplySettings({ profileId, planName }: AutoReplySettingsProp
                     : 'bg-muted text-muted-foreground border-border hover:border-primary/40'
                 }`}
               >
-                All
+                {t.ar_all}
               </button>
               {ALL_RATINGS.map(r => {
                 const active = selectedRatings.includes(r)
@@ -149,36 +147,36 @@ export function AutoReplySettings({ profileId, planName }: AutoReplySettingsProp
               })}
             </div>
             <p className="text-[10px] text-muted-foreground mt-1.5">
-              {allSelected ? 'Replying to all new reviews' : `Replying to ${selectedRatings.join('★, ')}★ reviews only`}
+              {allSelected ? t.ar_replying_all : t.ar_replying_selected.replace('{ratings}', selectedRatings.join('★, '))}
             </p>
           </div>
 
           {/* Custom AI prompt */}
           <div>
             <label className="text-xs font-medium text-muted-foreground block mb-1">
-              Custom AI instructions (optional)
+              {t.ar_instructions_label}
             </label>
             <textarea
               value={customInstructions}
               onChange={e => setCustomInstructions(e.target.value)}
-              placeholder="e.g. Always mention our loyalty programme. Keep tone friendly and informal. Sign off with the owner's first name."
+              placeholder={t.ar_instructions_placeholder}
               rows={3}
               className="w-full text-sm border border-border rounded-lg px-3 py-2 bg-background focus:outline-none focus:ring-1 focus:ring-primary resize-none"
             />
-            <p className="text-[10px] text-muted-foreground mt-1">These instructions are appended to every AI-generated reply for this profile.</p>
+            <p className="text-[10px] text-muted-foreground mt-1">{t.ar_instructions_hint}</p>
           </div>
 
           <div className="flex items-start gap-2 bg-amber-500/8 border border-amber-500/20 rounded-lg px-3 py-2">
             <Zap className="w-3.5 h-3.5 text-amber-500 mt-0.5 shrink-0" />
             <p className="text-xs text-muted-foreground">
-              Auto-replies are posted during the hourly sync and when you manually refresh. You can edit or delete any auto-posted reply from the Reviews page.
+              {t.ar_info}
             </p>
           </div>
         </div>
       )}
 
       <Button size="sm" onClick={handleSave} disabled={saving} className="font-semibold">
-        Save auto-reply settings
+        {t.ar_save}
       </Button>
     </div>
   )

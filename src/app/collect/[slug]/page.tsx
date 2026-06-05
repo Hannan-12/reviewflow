@@ -2,6 +2,7 @@ import { createClient } from '@supabase/supabase-js'
 import { Star, ExternalLink } from 'lucide-react'
 import Link from 'next/link'
 import { notFound } from 'next/navigation'
+import { getServerT } from '@/lib/i18n/server'
 
 export const dynamic = 'force-dynamic'
 
@@ -44,9 +45,10 @@ export default async function CollectPage({ params }: CollectPageProps) {
     .order('review_date', { ascending: false })
     .limit(3)
 
+  const t = await getServerT()
   const businessName = (link.profiles as { business_name: string } | null)?.business_name ?? 'Us'
-  const title   = link.title   ?? `Leave us a review!`
-  const message = link.message ?? `Your feedback helps us improve and helps others find us. It only takes 30 seconds!`
+  const title   = link.title   ?? t.col_default_title
+  const message = link.message ?? t.col_default_message
 
   return (
     <div className="min-h-screen bg-linear-to-br from-slate-50 to-indigo-50 flex flex-col items-center justify-center p-4">
@@ -76,12 +78,12 @@ export default async function CollectPage({ params }: CollectPageProps) {
                 className="flex items-center justify-center gap-2 w-full bg-indigo-600 hover:bg-indigo-700 text-white font-semibold rounded-xl py-3.5 transition-colors"
               >
                 <Star className="w-4 h-4 fill-white" />
-                Leave a Google Review
+                {t.collect_cta}
                 <ExternalLink className="w-3.5 h-3.5 opacity-70" />
               </a>
             ) : (
               <div className="w-full bg-indigo-50 border border-indigo-100 text-indigo-600 font-semibold rounded-xl py-3.5 text-center text-sm">
-                Review link coming soon
+                {t.collect_coming_soon}
               </div>
             )}
 
@@ -89,7 +91,7 @@ export default async function CollectPage({ params }: CollectPageProps) {
             {reviews && reviews.length > 0 && (
               <div className="mt-7">
                 <p className="text-[10px] font-bold text-gray-400 uppercase tracking-widest text-center mb-3">
-                  What others say
+                  {t.collect_others_say}
                 </p>
                 <div className="space-y-3">
                   {reviews.map((r) => (
@@ -102,7 +104,7 @@ export default async function CollectPage({ params }: CollectPageProps) {
                       {r.comment && (
                         <p className="text-xs text-gray-600 line-clamp-2">{r.comment}</p>
                       )}
-                      <p className="text-[10px] text-gray-400 mt-1">{r.reviewer_name ?? 'Anonymous'}</p>
+                      <p className="text-[10px] text-gray-400 mt-1">{r.reviewer_name ?? t.collect_anonymous}</p>
                     </div>
                   ))}
                 </div>
@@ -112,7 +114,7 @@ export default async function CollectPage({ params }: CollectPageProps) {
         </div>
 
         <p className="text-center text-xs text-gray-400 mt-4">
-          Powered by{' '}
+          {t.collect_powered_by}{' '}
           <Link href="/" className="text-indigo-400 hover:text-indigo-600">GoHighReview</Link>
         </p>
       </div>

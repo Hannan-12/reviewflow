@@ -106,7 +106,7 @@ export function ReviewsTable({ reviews, currentRating, currentProfile, lastSynce
         <div className="ml-auto flex items-center gap-2">
           {lastSyncedAt && (
             <span className="text-[10px] text-muted-foreground hidden sm:block">
-              {t.prof_last_synced} {new Date(lastSyncedAt).toLocaleDateString('en-US', { month: 'short', day: 'numeric', hour: '2-digit', minute: '2-digit' })}
+              {t.prof_last_synced} {new Date(lastSyncedAt).toLocaleDateString(undefined, { month: 'short', day: 'numeric', hour: '2-digit', minute: '2-digit' })}
             </span>
           )}
           <Button size="sm" variant="outline" className="h-7 text-xs gap-1.5" disabled={exporting} onClick={exportCsv}>
@@ -149,7 +149,7 @@ export function ReviewsTable({ reviews, currentRating, currentProfile, lastSynce
                 <div className="flex flex-col items-end gap-1">
                   <Stars rating={review.rating} />
                   <p className="text-[10px] text-muted-foreground">
-                    {new Date(review.review_date).toLocaleDateString('en-US', {
+                    {new Date(review.review_date).toLocaleDateString(undefined, {
                       month: 'short', day: 'numeric', year: 'numeric',
                     })}
                   </p>

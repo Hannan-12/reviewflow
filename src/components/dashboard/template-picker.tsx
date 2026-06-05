@@ -4,6 +4,7 @@ import { useState, useEffect, useRef } from 'react'
 import { FileText, Plus, Trash2, X, Check } from 'lucide-react'
 import { Button } from '@/components/ui/button'
 import { toast } from 'sonner'
+import { useDashboardLang } from './lang-context'
 
 interface Template {
   id: string
@@ -16,6 +17,7 @@ interface TemplatePickerProps {
 }
 
 export function TemplatePicker({ onSelect }: TemplatePickerProps) {
+  const { t } = useDashboardLang()
   const [templates, setTemplates] = useState<Template[]>([])
   const [open, setOpen] = useState(false)
   const [creating, setCreating] = useState(false)
@@ -49,13 +51,13 @@ export function TemplatePicker({ onSelect }: TemplatePickerProps) {
       body: JSON.stringify({ name: newName, content: newContent }),
     })
     if (res.ok) {
-      toast.success('Template saved')
+      toast.success(t.tpl_saved)
       setNewName('')
       setNewContent('')
       setCreating(false)
       load()
     } else {
-      toast.error('Failed to save template')
+      toast.error(t.tpl_save_failed)
     }
     setSaving(false)
   }
@@ -64,7 +66,7 @@ export function TemplatePicker({ onSelect }: TemplatePickerProps) {
     e.stopPropagation()
     await fetch(`/api/templates?id=${id}`, { method: 'DELETE' })
     setTemplates(prev => prev.filter(t => t.id !== id))
-    toast.success('Template deleted')
+    toast.success(t.tpl_deleted)
   }
 
   return (
@@ -75,7 +77,7 @@ export function TemplatePicker({ onSelect }: TemplatePickerProps) {
         className="flex items-center gap-1.5 text-xs font-medium text-muted-foreground hover:text-foreground transition-colors"
       >
         <FileText className="w-3.5 h-3.5" />
-        Templates
+        {t.tpl_trigger}
       </button>
 
       {open && (
@@ -83,13 +85,13 @@ export function TemplatePicker({ onSelect }: TemplatePickerProps) {
           {!creating ? (
             <>
               <div className="flex items-center justify-between px-3 py-2 border-b border-border">
-                <p className="text-xs font-semibold">Reply templates</p>
+                <p className="text-xs font-semibold">{t.tpl_title}</p>
                 <div className="flex items-center gap-1">
                   <button
                     onClick={() => setCreating(true)}
                     className="flex items-center gap-1 text-xs text-primary hover:underline"
                   >
-                    <Plus className="w-3 h-3" /> New
+                    <Plus className="w-3 h-3" /> {t.tpl_new}
                   </button>
                   <button onClick={() => setOpen(false)}>
                     <X className="w-3.5 h-3.5 text-muted-foreground hover:text-foreground ml-2" />
@@ -99,7 +101,7 @@ export function TemplatePicker({ onSelect }: TemplatePickerProps) {
               <div className="max-h-48 overflow-y-auto p-1">
                 {templates.length === 0 ? (
                   <p className="text-xs text-muted-foreground text-center py-4">
-                    No templates yet. Create one!
+                    {t.tpl_empty}
                   </p>
                 ) : (
                   templates.map(t => (
@@ -127,7 +129,7 @@ export function TemplatePicker({ onSelect }: TemplatePickerProps) {
           ) : (
             <div className="p-3 space-y-2">
               <div className="flex items-center justify-between mb-1">
-                <p className="text-xs font-semibold">New template</p>
+                <p className="text-xs font-semibold">{t.tpl_form_title}</p>
                 <button onClick={() => setCreating(false)}>
                   <X className="w-3.5 h-3.5 text-muted-foreground" />
                 </button>
@@ -136,22 +138,22 @@ export function TemplatePicker({ onSelect }: TemplatePickerProps) {
                 autoFocus
                 value={newName}
                 onChange={e => setNewName(e.target.value)}
-                placeholder="Template name"
+                placeholder={t.tpl_name_placeholder}
                 className="w-full text-xs border border-border rounded-lg px-2.5 py-1.5 bg-background focus:outline-none focus:ring-1 focus:ring-primary"
               />
               <textarea
                 value={newContent}
                 onChange={e => setNewContent(e.target.value)}
-                placeholder="Reply content…"
+                placeholder={t.tpl_content_placeholder}
                 rows={4}
                 className="w-full text-xs border border-border rounded-lg px-2.5 py-1.5 bg-background focus:outline-none focus:ring-1 focus:ring-primary resize-none"
               />
               <div className="flex gap-2">
                 <Button size="sm" className="h-7 text-xs flex-1" onClick={handleSave} disabled={saving}>
-                  Save template
+                  {t.tpl_save}
                 </Button>
                 <Button size="sm" variant="ghost" className="h-7 text-xs" onClick={() => setCreating(false)}>
-                  Cancel
+                  {t.tpl_cancel}
                 </Button>
               </div>
             </div>

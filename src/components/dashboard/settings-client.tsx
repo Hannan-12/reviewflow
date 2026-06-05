@@ -44,21 +44,21 @@ export function SettingsClient({ email, fullName, planName, subscriptionStatus, 
       .from('users')
       .update({ full_name: name.trim() || null })
       .eq('id', (await supabase.auth.getUser()).data.user?.id ?? '')
-    if (error) toast.error('Failed to update name')
-    else toast.success('Name updated')
+    if (error) toast.error(t.set_name_failed)
+    else toast.success(t.set_name_updated)
     setSavingName(false)
   }
 
   const handleChangePassword = async () => {
-    if (!newPassword) { toast.error('New password is required'); return }
-    if (newPassword.length < 8) { toast.error('Password must be at least 8 characters'); return }
-    if (newPassword !== confirmPassword) { toast.error('Passwords do not match'); return }
+    if (!newPassword) { toast.error(t.set_pw_required); return }
+    if (newPassword.length < 8) { toast.error(t.set_pw_too_short); return }
+    if (newPassword !== confirmPassword) { toast.error(t.set_pw_mismatch); return }
 
     setSavingPassword(true)
     const { error } = await supabase.auth.updateUser({ password: newPassword })
     if (error) toast.error(error.message)
     else {
-      toast.success('Password updated successfully')
+      toast.success(t.set_pw_updated)
       setCurrentPassword('')
       setNewPassword('')
       setConfirmPassword('')
@@ -67,16 +67,16 @@ export function SettingsClient({ email, fullName, planName, subscriptionStatus, 
   }
 
   const handleDeleteAccount = async () => {
-    if (deleteConfirm !== 'DELETE') { toast.error('Type DELETE to confirm'); return }
+    if (deleteConfirm !== 'DELETE') { toast.error(t.set_delete_confirm_hint); return }
     setDeleting(true)
     await supabase.auth.signOut()
-    toast.success('Signed out. Email support@gohighreview.de to complete account deletion.')
+    toast.success(t.set_delete_signout_msg)
     router.push('/login')
   }
 
   const planLabel = planName
     ? planName.charAt(0).toUpperCase() + planName.slice(1)
-    : 'Free'
+    : t.set_free_plan
   const isActive = subscriptionStatus === 'active' || subscriptionStatus === 'trialing'
 
   return (
@@ -156,7 +156,7 @@ export function SettingsClient({ email, fullName, planName, subscriptionStatus, 
         <div className="p-5 flex items-center justify-between gap-4">
           <div>
             <p className="text-sm font-medium">
-              {planLabel} Plan
+              {planLabel} {t.set_plan_suffix}
               {isActive && (
                 <span className="ml-2 text-[10px] font-semibold text-green-600 bg-green-50 dark:bg-green-950/30 px-2 py-0.5 rounded-full">
                   {subscriptionStatus === 'trialing' ? t.set_trial_badge : t.set_active_badge}

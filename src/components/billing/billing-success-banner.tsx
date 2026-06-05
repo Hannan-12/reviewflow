@@ -3,8 +3,10 @@
 import { useEffect, useState } from 'react'
 import { useRouter } from 'next/navigation'
 import { CheckCircle2 } from 'lucide-react'
+import { useDashboardLang } from '@/components/dashboard/lang-context'
 
 export function BillingSuccessBanner() {
+  const { t } = useDashboardLang()
   const router = useRouter()
   const [visible, setVisible] = useState(true)
 
@@ -21,7 +23,7 @@ export function BillingSuccessBanner() {
   return (
     <div className="flex items-center gap-3 bg-emerald-500/10 border border-emerald-500/20 rounded-xl px-4 py-3.5 text-emerald-600 dark:text-emerald-400">
       <CheckCircle2 className="w-4 h-4 shrink-0" />
-      <p className="text-sm font-medium">Subscription activated! Your plan is now live.</p>
+      <p className="text-sm font-medium">{t.bill_success}</p>
     </div>
   )
 }

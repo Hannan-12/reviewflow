@@ -91,10 +91,10 @@ export function NotificationPreferences({ profileId, onSaved }: NotificationPref
         body: JSON.stringify({ profileId, ...settings }),
       })
       if (!res.ok) throw new Error()
-      toast.success('Notification preferences saved')
+      toast.success(t.notif_pref_saved)
       onSaved?.()
     } catch {
-      toast.error('Failed to save preferences')
+      toast.error(t.notif_pref_failed)
     } finally {
       setLoading(false)
     }
@@ -102,7 +102,7 @@ export function NotificationPreferences({ profileId, onSaved }: NotificationPref
 
   const handleSlackWebhookSave = async () => {
     if (!settings.slackWebhookUrl.trim()) {
-      toast.error('Enter a valid Slack webhook URL')
+      toast.error(t.notif_slack_invalid)
       return
     }
     setWebhookSaving(true)
@@ -113,10 +113,10 @@ export function NotificationPreferences({ profileId, onSaved }: NotificationPref
         body: JSON.stringify({ profileId, webhookUrl: settings.slackWebhookUrl }),
       })
       if (!res.ok) throw new Error()
-      toast.success('Slack webhook configured')
+      toast.success(t.notif_slack_ok)
       onSaved?.()
     } catch {
-      toast.error('Failed to configure Slack webhook')
+      toast.error(t.notif_slack_failed)
     } finally {
       setWebhookSaving(false)
     }
@@ -213,7 +213,7 @@ export function NotificationPreferences({ profileId, onSaved }: NotificationPref
                   className="flex-1 h-9 text-sm rounded-lg border border-border bg-background px-3 focus:outline-none focus:ring-1 focus:ring-primary"
                 />
                 <Button size="sm" onClick={handleSlackWebhookSave} disabled={webhookSaving} className="font-semibold shrink-0">
-                  {webhookSaving ? 'Saving…' : t.notif_save_webhook}
+                  {webhookSaving ? t.notif_saving : t.notif_save_webhook}
                 </Button>
               </div>
               <p className="text-[10px] text-muted-foreground mt-1">{t.notif_slack_hint}</p>
@@ -252,7 +252,7 @@ export function NotificationPreferences({ profileId, onSaved }: NotificationPref
 
       <Button onClick={handleSave} disabled={loading} className="w-full font-semibold">
         <Bell className="w-3.5 h-3.5 mr-2" />
-        {loading ? 'Saving…' : t.notif_save_all}
+        {loading ? t.notif_saving : t.notif_save_all}
       </Button>
     </div>
   )

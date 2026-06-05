@@ -170,7 +170,7 @@ export function RepliesPageClient({
                     <p className="text-sm line-clamp-2">{reply.reply}</p>
                     {reply.replied_at && (
                       <p className="text-[10px] text-muted-foreground mt-0.5">
-                        {new Date(reply.replied_at).toLocaleDateString('en-US', {
+                        {new Date(reply.replied_at).toLocaleDateString(undefined, {
                           month: 'short', day: 'numeric', year: 'numeric',
                         })}
                       </p>

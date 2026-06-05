@@ -2,6 +2,7 @@
 
 import { useState, useEffect, useRef } from 'react'
 import { Tag, X, Plus, Check } from 'lucide-react'
+import { useDashboardLang } from './lang-context'
 
 interface ReviewTag {
   id: string
@@ -14,6 +15,7 @@ interface TagPickerProps {
 }
 
 export function TagPicker({ reviewId }: TagPickerProps) {
+  const { t } = useDashboardLang()
   const [allTags, setAllTags] = useState<ReviewTag[]>([])
   const [assigned, setAssigned] = useState<ReviewTag[]>([])
   const [open, setOpen] = useState(false)
@@ -76,7 +78,7 @@ export function TagPicker({ reviewId }: TagPickerProps) {
           className="flex items-center gap-1 px-2 py-0.5 rounded-full text-[11px] font-medium border border-dashed border-border text-muted-foreground hover:text-foreground hover:border-foreground transition-colors"
         >
           <Tag className="w-3 h-3" />
-          {assigned.length === 0 ? 'Add tag' : <Plus className="w-3 h-3" />}
+          {assigned.length === 0 ? t.tag_add : <Plus className="w-3 h-3" />}
         </button>
       </div>
 
@@ -84,7 +86,7 @@ export function TagPicker({ reviewId }: TagPickerProps) {
       {open && (
         <div className="absolute left-0 top-full mt-1.5 z-50 bg-card border border-border rounded-xl shadow-lg p-2 min-w-40">
           {allTags.length === 0 ? (
-            <p className="text-xs text-muted-foreground px-2 py-1">Loading tags…</p>
+            <p className="text-xs text-muted-foreground px-2 py-1">{t.tag_loading}</p>
           ) : (
             <div className="space-y-0.5">
               {allTags.map(tag => (

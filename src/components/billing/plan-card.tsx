@@ -80,11 +80,11 @@ export function PlanCard({ name, price, annual, description, features, priceId, 
       if (data.url) {
         router.push(data.url)
       } else {
-        toast.error(data.error ?? 'Something went wrong')
+        toast.error(data.error ?? t.bill_err_generic)
         setLoading(false)
       }
     } catch {
-      toast.error('Failed to start checkout')
+      toast.error(t.bill_err_checkout)
       setLoading(false)
     }
   }

@@ -58,7 +58,7 @@ export function ProfilesManager({ profiles: initial, isGoogleConnected, profileL
     fetch('/api/google/locations')
       .then(r => r.json())
       .then(d => setLocations(d.locations ?? []))
-      .catch(() => showToast('Failed to load locations from Google', 'error'))
+      .catch(() => showToast(t.prof_load_failed, 'error'))
       .finally(() => setLoadingLocs(false))
   }, [showPicker, isGoogleConnected])
 
@@ -88,13 +88,13 @@ export function ProfilesManager({ profiles: initial, isGoogleConnected, profileL
     setAdding(null)
 
     if (!res.ok) {
-      showToast(data.error ?? 'Failed to add profile', 'error')
+      showToast(data.error ?? t.prof_add_failed, 'error')
       return
     }
 
     setProfiles(p => [...p, data.profile])
     setShowPicker(false)
-    showToast(`${loc.title} added!`, 'success')
+    showToast(`${loc.title} ${t.prof_added}`, 'success')
 
     syncProfile(data.profile.id)
   }
@@ -119,7 +119,7 @@ export function ProfilesManager({ profiles: initial, isGoogleConnected, profileL
         ? { ...pr, last_synced_at: new Date().toISOString() }
         : pr
     ))
-    showToast(`Synced ${data.synced} review${data.synced !== 1 ? 's' : ''}`, 'success')
+    showToast(`${data.synced} ${data.synced !== 1 ? t.prof_synced_plural : t.prof_synced}`, 'success')
   }
 
   const deleteProfile = async (id: string) => {
@@ -304,7 +304,7 @@ export function ProfilesManager({ profiles: initial, isGoogleConnected, profileL
                 )}
                 <p className="text-[10px] text-muted-foreground mt-1">
                   {profile.last_synced_at
-                    ? `${t.prof_last_synced} ${new Date(profile.last_synced_at).toLocaleDateString('en-US', { month: 'short', day: 'numeric', hour: '2-digit', minute: '2-digit' })}`
+                    ? `${t.prof_last_synced} ${new Date(profile.last_synced_at).toLocaleDateString(undefined, { month: 'short', day: 'numeric', hour: '2-digit', minute: '2-digit' })}`
                     : t.prof_never_synced}
                 </p>
               </div>

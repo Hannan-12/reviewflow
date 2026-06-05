@@ -4,6 +4,7 @@ import { useState } from 'react'
 import { useRouter } from 'next/navigation'
 import { toast } from 'sonner'
 import { Loader2 } from 'lucide-react'
+import { useDashboardLang } from '@/components/dashboard/lang-context'
 
 interface QuickCheckoutPlan {
   key: string
@@ -41,6 +42,7 @@ function GooglePayLogo() {
 }
 
 export function QuickCheckoutSection({ plans, annual }: QuickCheckoutSectionProps) {
+  const { t } = useDashboardLang()
   const router = useRouter()
   const [loading, setLoading] = useState<string | null>(null)
   const [selectedPlan, setSelectedPlan] = useState<string>('pro')
@@ -52,7 +54,7 @@ export function QuickCheckoutSection({ plans, annual }: QuickCheckoutSectionProp
     if (!plan) return
     const priceId = annual ? plan.priceIdAnnual : plan.priceId
     if (!priceId) {
-      toast.error('Plan not configured yet. Please use the plan cards below.')
+      toast.error(t.bill_err_plan)
       return
     }
 
@@ -67,11 +69,11 @@ export function QuickCheckoutSection({ plans, annual }: QuickCheckoutSectionProp
       if (data.url) {
         router.push(data.url)
       } else {
-        toast.error(data.error ?? 'Something went wrong')
+        toast.error(data.error ?? t.bill_err_generic)
         setLoading(null)
       }
     } catch {
-      toast.error('Failed to start checkout')
+      toast.error(t.bill_err_checkout)
       setLoading(null)
     }
   }
@@ -85,7 +87,7 @@ export function QuickCheckoutSection({ plans, annual }: QuickCheckoutSectionProp
     <div className="bg-card border border-border rounded-2xl overflow-hidden mb-5">
       <div className="px-5 pt-5 pb-4">
         <p className="text-[11px] font-bold text-muted-foreground uppercase tracking-widest text-center mb-4">
-          Quick checkout
+          {t.bill_quick_checkout}
         </p>
 
         {/* Payment method buttons */}
@@ -102,7 +104,7 @@ export function QuickCheckoutSection({ plans, annual }: QuickCheckoutSectionProp
             ) : (
               <>
                 <AppleIcon />
-                <span>Pay</span>
+                <span>{t.bill_pay}</span>
               </>
             )}
           </button>
@@ -144,7 +146,7 @@ export function QuickCheckoutSection({ plans, annual }: QuickCheckoutSectionProp
           })}
         </div>
         <p className="text-[10px] text-muted-foreground sm:ml-auto shrink-0">
-          Apple Pay &amp; Google Pay shown at checkout when supported
+          {t.bill_apple_google_note}
         </p>
       </div>
     </div>

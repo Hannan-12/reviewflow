@@ -48,7 +48,7 @@ export function ReviewDetailModal({
         <DialogHeader>
           <DialogTitle>{t.modal_title}</DialogTitle>
           <DialogDescription>
-            {review.reviewer_name || t.modal_anonymous}&apos;s {review.rating}★ review
+            {review.reviewer_name || t.modal_anonymous}{t.modal_reviewer_desc} {review.rating}★
           </DialogDescription>
         </DialogHeader>
 
@@ -65,7 +65,7 @@ export function ReviewDetailModal({
                     ))}
                   </div>
                   <span className="text-xs text-muted-foreground">
-                    {new Date(review.review_date).toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' })}
+                    {new Date(review.review_date).toLocaleDateString(undefined, { month: 'short', day: 'numeric', year: 'numeric' })}
                   </span>
                 </div>
               </div>
@@ -107,7 +107,7 @@ export function ReviewDetailModal({
                   {review.replied_at && (
                     <span className="flex items-center gap-1 text-[10px] text-muted-foreground">
                       <Clock className="w-3 h-3" />
-                      {new Date(review.replied_at).toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' })}
+                      {new Date(review.replied_at).toLocaleDateString(undefined, { month: 'short', day: 'numeric', year: 'numeric' })}
                     </span>
                   )}
                   <Button
@@ -117,7 +117,7 @@ export function ReviewDetailModal({
                     onClick={() => setEditingReply(true)}
                   >
                     <Pencil className="w-3 h-3 mr-1" />
-                    Edit
+                    {t.modal_edit}
                   </Button>
                 </div>
               </div>
@@ -130,7 +130,7 @@ export function ReviewDetailModal({
             <ReplyPanel
               reviewId={review.id}
               profileId={review.profile_id}
-              reviewerName={review.reviewer_name || 'Customer'}
+              reviewerName={review.reviewer_name || t.modal_customer}
               rating={review.rating}
               comment={review.comment || ''}
               existingReply={editingReply ? review.reply ?? undefined : undefined}

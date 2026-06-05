@@ -3,6 +3,7 @@
 import { useState, useEffect, useRef } from 'react'
 import { Bell, Star, ExternalLink, Loader, CheckCheck } from 'lucide-react'
 import Link from 'next/link'
+import { useDashboardLang } from './lang-context'
 
 interface RawNotification {
   id: string
@@ -15,14 +16,14 @@ interface RawNotification {
   profiles: { business_name: string } | null
 }
 
-function timeAgo(dateStr: string): string {
+function timeAgo(dateStr: string, t: { notif_bell_just_now: string; notif_bell_min_ago: string; notif_bell_hr_ago: string; notif_bell_day_ago: string }): string {
   const diff = Date.now() - new Date(dateStr).getTime()
   const mins = Math.floor(diff / 60000)
-  if (mins < 1) return 'just now'
-  if (mins < 60) return `${mins}m ago`
+  if (mins < 1) return t.notif_bell_just_now
+  if (mins < 60) return `${mins}${t.notif_bell_min_ago}`
   const hrs = Math.floor(mins / 60)
-  if (hrs < 24) return `${hrs}h ago`
-  return `${Math.floor(hrs / 24)}d ago`
+  if (hrs < 24) return `${hrs}${t.notif_bell_hr_ago}`
+  return `${Math.floor(hrs / 24)}${t.notif_bell_day_ago}`
 }
 
 function StarRow({ rating }: { rating: number }) {
@@ -40,6 +41,7 @@ function StarRow({ rating }: { rating: number }) {
 }
 
 export function NotificationBell() {
+  const { t } = useDashboardLang()
   const [open, setOpen] = useState(false)
   const [notifications, setNotifications] = useState<RawNotification[]>([])
   const [loading, setLoading] = useState(false)
@@ -84,14 +86,14 @@ export function NotificationBell() {
         <div className="absolute right-0 top-full mt-2 w-80 rounded-xl border border-border bg-popover shadow-xl z-50 overflow-hidden">
           {/* Header */}
           <div className="flex items-center justify-between px-4 py-3 border-b border-border">
-            <span className="text-sm font-semibold">Notifications</span>
+            <span className="text-sm font-semibold">{t.notif_bell_title}</span>
             {notifications.length > 0 && (
               <button
                 onClick={() => setSeen(true)}
                 className="flex items-center gap-1 text-xs text-muted-foreground hover:text-foreground transition-colors"
               >
                 <CheckCheck className="w-3.5 h-3.5" />
-                Mark all read
+                {t.notif_bell_mark_read}
               </button>
             )}
           </div>
@@ -105,8 +107,8 @@ export function NotificationBell() {
             ) : notifications.length === 0 ? (
               <div className="flex flex-col items-center justify-center py-10 text-center px-4">
                 <Bell className="w-6 h-6 text-muted-foreground/40 mb-2" />
-                <p className="text-sm text-muted-foreground">No notifications yet</p>
-                <p className="text-xs text-muted-foreground/60 mt-0.5">New reviews will appear here</p>
+                <p className="text-sm text-muted-foreground">{t.notif_bell_empty}</p>
+                <p className="text-xs text-muted-foreground/60 mt-0.5">{t.notif_bell_empty_sub}</p>
               </div>
             ) : (
               notifications.map((n) => {
@@ -131,10 +133,10 @@ export function NotificationBell() {
                     <div className="flex-1 min-w-0">
                       <div className="flex items-center gap-1.5 mb-0.5">
                         <StarRow rating={review?.rating ?? 0} />
-                        <span className="text-[10px] text-muted-foreground ml-auto shrink-0">{timeAgo(n.sent_at)}</span>
+                        <span className="text-[10px] text-muted-foreground ml-auto shrink-0">{timeAgo(n.sent_at, t)}</span>
                       </div>
                       <p className="text-xs font-medium text-foreground truncate">
-                        {review?.reviewer_name ?? 'Anonymous'}
+                        {review?.reviewer_name ?? t.notif_bell_anonymous}
                         {profile?.business_name && (
                           <span className="text-muted-foreground font-normal"> · {profile.business_name}</span>
                         )}
@@ -161,7 +163,7 @@ export function NotificationBell() {
                 onClick={() => setOpen(false)}
                 className="text-xs text-primary hover:underline"
               >
-                Notification settings →
+                {t.notif_bell_settings}
               </Link>
             </div>
           )}

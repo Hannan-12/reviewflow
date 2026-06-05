@@ -132,7 +132,7 @@ export function ReportsClient({ profiles }: { profiles: Profile[] }) {
                   <XAxis
                     dataKey="date"
                     tick={{ fontSize: 10, fill: 'hsl(var(--muted-foreground))' }}
-                    tickFormatter={(d) => new Date(d).toLocaleDateString('en-US', { month: 'short', day: 'numeric' })}
+                    tickFormatter={(d) => new Date(d).toLocaleDateString(undefined, { month: 'short', day: 'numeric' })}
                     interval="preserveStartEnd"
                   />
                   <YAxis
@@ -143,7 +143,7 @@ export function ReportsClient({ profiles }: { profiles: Profile[] }) {
                   <Tooltip
                     contentStyle={{ fontSize: 12, borderRadius: 8, border: '1px solid hsl(var(--border))' }}
                     formatter={(v) => [`${v} ★`, t.rep_avg_rating]}
-                    labelFormatter={(d) => new Date(d).toLocaleDateString('en-US', { month: 'long', day: 'numeric' })}
+                    labelFormatter={(d) => new Date(d).toLocaleDateString(undefined, { month: 'long', day: 'numeric' })}
                   />
                   <Line
                     type="monotone"
@@ -171,14 +171,14 @@ export function ReportsClient({ profiles }: { profiles: Profile[] }) {
                     <XAxis
                       dataKey="date"
                       tick={{ fontSize: 10, fill: 'hsl(var(--muted-foreground))' }}
-                      tickFormatter={(d) => new Date(d).toLocaleDateString('en-US', { month: 'short', day: 'numeric' })}
+                      tickFormatter={(d) => new Date(d).toLocaleDateString(undefined, { month: 'short', day: 'numeric' })}
                       interval="preserveStartEnd"
                     />
                     <YAxis tick={{ fontSize: 10, fill: 'hsl(var(--muted-foreground))' }} allowDecimals={false} />
                     <Tooltip
                       contentStyle={{ fontSize: 12, borderRadius: 8, border: '1px solid hsl(var(--border))' }}
                       formatter={(v) => [v, t.rep_reviews]}
-                      labelFormatter={(d) => new Date(d).toLocaleDateString('en-US', { month: 'long', day: 'numeric' })}
+                      labelFormatter={(d) => new Date(d).toLocaleDateString(undefined, { month: 'long', day: 'numeric' })}
                     />
                     <Bar dataKey="count" fill="hsl(var(--primary))" radius={[4, 4, 0, 0]} />
                   </BarChart>
@@ -272,7 +272,7 @@ export function ReportsClient({ profiles }: { profiles: Profile[] }) {
               </div>
               {(data?.sentimentCounts.unanalyzed ?? 0) > 0 && (
                 <p className="text-[10px] text-muted-foreground mt-3">
-                  {data!.sentimentCounts.unanalyzed} reviews pending analysis — runs nightly automatically.
+                  {data!.sentimentCounts.unanalyzed} {t.rep_sentiment_pending}
                 </p>
               )}
             </div>

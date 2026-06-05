@@ -47,7 +47,7 @@ export function ReplyPanel({
       setAiSuggestion(data.suggestion);
       setShowSuggestion(true);
     } catch (err) {
-      setError(err instanceof Error ? err.message : 'Failed to generate suggestion');
+      setError(err instanceof Error ? err.message : t.reply_gen_failed);
     } finally {
       setLoading(false);
     }
@@ -62,7 +62,7 @@ export function ReplyPanel({
 
   const handleSubmitReply = async () => {
     if (!replyText.trim()) {
-      setError('Reply cannot be empty');
+      setError(t.reply_empty_error);
       return;
     }
     setSubmitting(true);
@@ -83,7 +83,7 @@ export function ReplyPanel({
       setTimeout(() => setSuccess(false), 3000);
       onReplySubmitted?.();
     } catch (err) {
-      setError(err instanceof Error ? err.message : 'Failed to submit reply');
+      setError(err instanceof Error ? err.message : t.reply_submit_failed);
     } finally {
       setSubmitting(false);
     }
@@ -185,7 +185,7 @@ export function ReplyPanel({
         </Button>
         {onCancel ? (
           <Button onClick={onCancel} variant="outline" size="sm" className="flex-1">
-            Cancel
+            {t.reply_cancel}
           </Button>
         ) : (
           <Button onClick={() => setReplyText('')} variant="outline" size="sm" className="flex-1">
