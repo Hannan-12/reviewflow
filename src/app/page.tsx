@@ -8,12 +8,18 @@ import {
   ArrowRight, CheckCircle2, ChevronDown, Play, Globe, Menu, X,
 } from 'lucide-react'
 import { ThemeToggle } from '@/components/theme-toggle'
+import { useTheme } from 'next-themes'
 
 // ─── Brand colors ──────────────────────────────────────────
 const Y = '#F5C518'
-const BG = '#1A1A1A'
-const CARD = '#242424'
-const BORDER = '#333333'
+// Dark palette
+const DARK_BG = '#1A1A1A'
+const DARK_CARD = '#242424'
+const DARK_BORDER = '#333333'
+// Light palette
+const LIGHT_BG = '#ffffff'
+const LIGHT_CARD = '#f5f5f5'
+const LIGHT_BORDER = '#e5e7eb'
 
 // ─── Translations ──────────────────────────────────────────
 const T = {
@@ -435,20 +441,20 @@ const testimonials = [
 ]
 
 // ─── Sub-components ─────────────────────────────────────────
-function FAQItem({ q, a }: { q: string; a: string }) {
+function FAQItem({ q, a, border, text, muted }: { q: string; a: string; border: string; text: string; muted: string }) {
   const [open, setOpen] = useState(false)
   return (
-    <div style={{ borderBottom: `1px solid ${BORDER}` }}>
+    <div style={{ borderBottom: `1px solid ${border}` }}>
       <button onClick={() => setOpen(!open)} className="w-full flex items-center justify-between py-5 text-left gap-4">
-        <span className="font-semibold text-white text-sm md:text-base">{q}</span>
+        <span className="font-semibold text-sm md:text-base" style={{ color: text }}>{q}</span>
         <ChevronDown className="w-4 h-4 shrink-0 transition-transform duration-200" style={{ color: Y, transform: open ? 'rotate(180deg)' : 'rotate(0deg)' }} />
       </button>
-      {open && <p className="text-sm text-gray-400 leading-relaxed pb-5">{a}</p>}
+      {open && <p className="text-sm leading-relaxed pb-5" style={{ color: muted }}>{a}</p>}
     </div>
   )
 }
 
-function AgencyCalculator({ label }: { label: string }) {
+function AgencyCalculator({ label, bg, text, muted }: { label: string; bg: string; text: string; muted: string }) {
   const [raw, setRaw] = useState('20')
   const parsed = parseInt(raw) || 0
   const hasError = raw !== '' && parsed < 16
@@ -456,8 +462,8 @@ function AgencyCalculator({ label }: { label: string }) {
   const price = profiles * 5
   return (
     <div className="mt-4">
-      <label className="text-xs font-semibold text-gray-400 uppercase tracking-wide block mb-1">{label}</label>
-      <p className="text-[11px] text-gray-500 mb-2">Minimum 16 profiles for an Agency account</p>
+      <label className="text-xs font-semibold uppercase tracking-wide block mb-1" style={{ color: muted }}>{label}</label>
+      <p className="text-[11px] mb-2" style={{ color: muted }}>Minimum 16 profiles for an Agency account</p>
       <div className="flex items-center gap-3">
         <input
           type="text"
@@ -465,20 +471,24 @@ function AgencyCalculator({ label }: { label: string }) {
           value={raw}
           onChange={(e) => setRaw(e.target.value.replace(/[^0-9]/g, ''))}
           onBlur={() => setRaw(String(Math.max(16, parseInt(raw) || 16)))}
-          className="w-24 px-3 py-2 rounded-lg text-sm font-bold text-center text-white border outline-none transition-colors"
-          style={{ background: BG, borderColor: hasError ? '#ef4444' : Y }}
+          className="w-24 px-3 py-2 rounded-lg text-sm font-bold text-center border outline-none transition-colors"
+          style={{ background: bg, color: text, borderColor: hasError ? '#ef4444' : Y }}
         />
-        <span className="text-white font-bold text-lg">= EUR {price}/mo</span>
+        <span className="font-bold text-lg" style={{ color: text }}>= EUR {price}/mo</span>
       </div>
       {hasError
         ? <p className="text-xs text-red-400 mt-1.5">Minimum 16 profiles required</p>
-        : <p className="text-xs text-gray-500 mt-2">20 profiles = EUR 100/month · 50 profiles = EUR 250/month</p>
+        : <p className="text-xs mt-2" style={{ color: muted }}>20 profiles = EUR 100/month · 50 profiles = EUR 250/month</p>
       }
     </div>
   )
 }
 
 function CookieBanner({ text, privacy, decline, accept: acceptLabel }: { text: string; privacy: string; decline: string; accept: string }) {
+  const { resolvedTheme } = useTheme()
+  const isDark = resolvedTheme === 'dark'
+  const bg = isDark ? '#111111' : '#ffffff'
+  const textColor = isDark ? '#d1d5db' : '#374151'
   const [visible, setVisible] = useState(false)
 
   useEffect(() => {
@@ -497,16 +507,16 @@ function CookieBanner({ text, privacy, decline, accept: acceptLabel }: { text: s
 
   if (!visible) return null
   return (
-    <div className="fixed bottom-0 left-0 right-0 z-50 flex flex-col md:flex-row items-center justify-between gap-4 px-6 py-4 shadow-2xl" style={{ background: '#111', borderTop: `2px solid ${Y}` }}>
-      <p className="text-sm text-gray-300 max-w-2xl">
+    <div className="fixed bottom-0 left-0 right-0 z-50 flex flex-col md:flex-row items-center justify-between gap-4 px-6 py-4 shadow-2xl" style={{ background: bg, borderTop: `2px solid ${Y}` }}>
+      <p className="text-sm max-w-2xl" style={{ color: textColor }}>
         {text}{' '}
         <Link href="/privacy" style={{ color: Y }} className="underline hover:no-underline">{privacy}</Link>.
       </p>
       <div className="flex gap-3 shrink-0">
-        <button onClick={handleDecline} className="px-4 py-2 rounded-lg text-sm font-semibold text-gray-400 border border-gray-600 hover:border-gray-400 transition-colors">
+        <button onClick={handleDecline} className="px-4 py-2 rounded-lg text-sm font-semibold border transition-colors" style={{ color: textColor, borderColor: isDark ? '#4b5563' : '#d1d5db' }}>
           {decline}
         </button>
-        <button onClick={handleAccept} className="px-4 py-2 rounded-lg text-sm font-bold transition-colors hover:opacity-90" style={{ background: Y, color: BG }}>
+        <button onClick={handleAccept} className="px-4 py-2 rounded-lg text-sm font-bold transition-colors hover:opacity-90" style={{ background: Y, color: DARK_BG }}>
           {acceptLabel}
         </button>
       </div>
@@ -515,23 +525,28 @@ function CookieBanner({ text, privacy, decline, accept: acceptLabel }: { text: s
 }
 
 function LanguageSwitcher({ lang, onSelect }: { lang: LangCode; onSelect: (code: LangCode) => void }) {
+  const { resolvedTheme } = useTheme()
+  const isDark = resolvedTheme === 'dark'
+  const card = isDark ? DARK_CARD : LIGHT_CARD
+  const border = isDark ? DARK_BORDER : LIGHT_BORDER
+  const textColor = isDark ? '#d1d5db' : '#374151'
   const [open, setOpen] = useState(false)
   const current = languages.find((l) => l.code === lang) ?? languages[0]
   return (
     <div className="relative">
-      <button onClick={() => setOpen(!open)} className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-sm font-medium text-gray-300 hover:text-white border border-gray-700 hover:border-gray-500 transition-colors">
+      <button onClick={() => setOpen(!open)} className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-sm font-medium border transition-colors" style={{ color: textColor, borderColor: border }}>
         <Globe className="w-3.5 h-3.5" />
         {current.label}
         <ChevronDown className="w-3 h-3" />
       </button>
       {open && (
-        <div className="absolute right-0 top-full mt-2 rounded-xl shadow-2xl overflow-hidden z-50 min-w-36" style={{ background: CARD, border: `1px solid ${BORDER}` }}>
+        <div className="absolute right-0 top-full mt-2 rounded-xl shadow-2xl overflow-hidden z-50 min-w-36" style={{ background: card, border: `1px solid ${border}` }}>
           {languages.map((l) => (
             <button
               key={l.code}
               onClick={() => { onSelect(l.code); setOpen(false) }}
-              className="w-full px-4 py-2.5 text-sm text-left hover:text-white transition-colors"
-              style={{ color: lang === l.code ? Y : '#9ca3af', direction: l.rtl ? 'rtl' : 'ltr' }}
+              className="w-full px-4 py-2.5 text-sm text-left transition-colors"
+              style={{ color: lang === l.code ? Y : textColor, direction: l.rtl ? 'rtl' : 'ltr' }}
             >
               {l.label}
             </button>
@@ -544,6 +559,16 @@ function LanguageSwitcher({ lang, onSelect }: { lang: LangCode; onSelect: (code:
 
 // ─── Main page ──────────────────────────────────────────────
 export default function HomePage() {
+  const { resolvedTheme } = useTheme()
+  const isDark = resolvedTheme === 'dark'
+  const BG = isDark ? DARK_BG : LIGHT_BG
+  const CARD = isDark ? DARK_CARD : LIGHT_CARD
+  const BORDER = isDark ? DARK_BORDER : LIGHT_BORDER
+  const TEXT = isDark ? '#ffffff' : '#111111'
+  const TEXT_MUTED = isDark ? '#9ca3af' : '#6b7280'
+  const TEXT_DIM = isDark ? '#6b7280' : '#9ca3af'
+  const NAV_BG = isDark ? 'rgba(26,26,26,0.95)' : 'rgba(255,255,255,0.95)'
+
   const [annual, setAnnual] = useState(false)
   const [menuOpen, setMenuOpen] = useState(false)
   const [lang, setLang] = useState<LangCode>(() => {
@@ -572,22 +597,22 @@ export default function HomePage() {
   ]
 
   return (
-    <div style={{ background: BG, color: '#fff', minHeight: '100vh', overflowX: 'hidden' }} dir={isRtl ? 'rtl' : 'ltr'}>
+    <div style={{ background: BG, color: TEXT, minHeight: '100vh', overflowX: 'hidden' }} dir={isRtl ? 'rtl' : 'ltr'}>
 
       {/* Nav */}
-      <nav className="sticky top-0 z-50" style={{ background: 'rgba(26,26,26,0.95)', borderBottom: `1px solid ${BORDER}`, backdropFilter: 'blur(12px)' }}>
+      <nav className="sticky top-0 z-50" style={{ background: NAV_BG, borderBottom: `1px solid ${BORDER}`, backdropFilter: 'blur(12px)' }}>
         <div className="lp-nav max-w-6xl mx-auto px-6 h-14 flex items-center justify-between">
           <Link href="/" className="flex items-center gap-2">
             <div className="w-7 h-7 rounded-lg flex items-center justify-center" style={{ background: Y }}>
-              <Star className="w-3.5 h-3.5" style={{ color: BG, fill: BG }} />
+              <Star className="w-3.5 h-3.5" style={{ color: DARK_BG, fill: DARK_BG }} />
             </div>
-            <span className="font-bold text-sm tracking-tight text-white">GoHighReview</span>
+            <span className="font-bold text-sm tracking-tight" style={{ color: TEXT }}> GoHighReview</span>
           </Link>
-          <div className="lp-nav-links hidden md:flex items-center gap-6 text-sm font-medium text-gray-400">
-            <a href="#features" className="hover:text-white transition-colors">{t.nav_features}</a>
-            <a href="#testimonials" className="hover:text-white transition-colors">{t.nav_reviews}</a>
-            <a href="#pricing" className="hover:text-white transition-colors">{t.nav_pricing}</a>
-            <a href="#faq" className="hover:text-white transition-colors">{t.nav_faq}</a>
+          <div className="lp-nav-links hidden md:flex items-center gap-6 text-sm font-medium" style={{ color: TEXT_MUTED }}>
+            <a href="#features" className="transition-colors hover:opacity-80">{t.nav_features}</a>
+            <a href="#testimonials" className="transition-colors hover:opacity-80">{t.nav_reviews}</a>
+            <a href="#pricing" className="transition-colors hover:opacity-80">{t.nav_pricing}</a>
+            <a href="#faq" className="transition-colors hover:opacity-80">{t.nav_faq}</a>
             <Link href="/demo" className="font-semibold transition-colors hover:opacity-80" style={{ color: Y }}>{t.nav_demo}</Link>
           </div>
           <div className="flex items-center gap-2">
@@ -595,10 +620,10 @@ export default function HomePage() {
             <LanguageSwitcher lang={lang} onSelect={handleSetLang} />
             {/* Desktop: sign in + sign up */}
             <Link href="/login" className="hidden md:block">
-              <button className="px-3 py-1.5 text-sm font-medium text-gray-300 hover:text-white transition-colors">{t.nav_signin}</button>
+              <button className="px-3 py-1.5 text-sm font-medium transition-colors" style={{ color: TEXT_MUTED }}>{t.nav_signin}</button>
             </Link>
             <Link href="/signup" className="hidden md:block">
-              <button className="px-4 py-2 rounded-lg text-sm font-bold transition-colors hover:opacity-90" style={{ background: Y, color: BG }}>
+              <button className="px-4 py-2 rounded-lg text-sm font-bold transition-colors hover:opacity-90" style={{ background: Y, color: DARK_BG }}>
                 {t.nav_trial}
               </button>
             </Link>
@@ -606,7 +631,7 @@ export default function HomePage() {
             <button
               onClick={() => setMenuOpen(true)}
               className="md:hidden flex items-center justify-center w-9 h-9 rounded-lg transition-colors"
-              style={{ color: '#d1d5db' }}
+              style={{ color: TEXT_MUTED }}
               aria-label="Open menu"
             >
               <Menu className="w-5 h-5" />
@@ -627,15 +652,15 @@ export default function HomePage() {
           {/* Drawer */}
           <div
             className="fixed top-0 right-0 h-full w-72 z-50 flex flex-col md:hidden"
-            style={{ background: '#1e1e1e', borderLeft: `1px solid ${BORDER}` }}
+            style={{ background: CARD, borderLeft: `1px solid ${BORDER}` }}
           >
             {/* Drawer header */}
             <div className="flex items-center justify-between px-5 h-14" style={{ borderBottom: `1px solid ${BORDER}` }}>
-              <span className="font-bold text-sm text-white">Menu</span>
+              <span className="font-bold text-sm" style={{ color: TEXT }}>Menu</span>
               <button
                 onClick={() => setMenuOpen(false)}
                 className="flex items-center justify-center w-8 h-8 rounded-lg"
-                style={{ color: '#9ca3af' }}
+                style={{ color: TEXT_MUTED }}
                 aria-label="Close menu"
               >
                 <X className="w-4 h-4" />
@@ -653,13 +678,14 @@ export default function HomePage() {
                   key={href}
                   href={href}
                   onClick={() => setMenuOpen(false)}
-                  className="px-3 py-3 rounded-xl text-sm font-medium text-gray-300 hover:text-white hover:bg-white/5 transition-colors"
+                  className="px-3 py-3 rounded-xl text-sm font-medium transition-colors"
+                  style={{ color: TEXT_MUTED }}
                 >
                   {label}
                 </a>
               ))}
               <Link href="/demo" onClick={() => setMenuOpen(false)}>
-                <span className="block px-3 py-3 rounded-xl text-sm font-semibold hover:bg-white/5 transition-colors" style={{ color: Y }}>
+                <span className="block px-3 py-3 rounded-xl text-sm font-semibold transition-colors" style={{ color: Y }}>
                   {t.nav_demo}
                 </span>
               </Link>
@@ -667,12 +693,12 @@ export default function HomePage() {
             {/* Auth buttons */}
             <div className="px-4 pb-6 flex flex-col gap-3">
               <Link href="/login" onClick={() => setMenuOpen(false)}>
-                <button className="w-full py-2.5 rounded-xl text-sm font-medium text-gray-300 border border-gray-700 hover:border-gray-500 transition-colors">
+                <button className="w-full py-2.5 rounded-xl text-sm font-medium border transition-colors" style={{ color: TEXT_MUTED, borderColor: BORDER }}>
                   {t.nav_signin}
                 </button>
               </Link>
               <Link href="/signup" onClick={() => setMenuOpen(false)}>
-                <button className="w-full py-3 rounded-xl text-sm font-bold transition-colors hover:opacity-90" style={{ background: Y, color: BG }}>
+                <button className="w-full py-3 rounded-xl text-sm font-bold transition-colors hover:opacity-90" style={{ background: Y, color: DARK_BG }}>
                   {t.nav_trial}
                 </button>
               </Link>
@@ -696,28 +722,28 @@ export default function HomePage() {
           </div>
 
           {/* Headline */}
-          <h1 className="lp-hero-h1 text-3xl sm:text-5xl md:text-6xl lg:text-7xl font-bold tracking-tight leading-[1.15] mb-6 text-white wrap-break-word [hyphens:auto]" lang="de">
+          <h1 className="lp-hero-h1 text-3xl sm:text-5xl md:text-6xl lg:text-7xl font-bold tracking-tight leading-[1.15] mb-6 wrap-break-word [hyphens:auto]" style={{ color: TEXT }} lang="de">
             {t.hero_h1a}<br />
             <span style={{ color: Y }}>{t.hero_h1b}</span>
           </h1>
 
           {/* Subtext */}
-          <p className="lp-hero-sub text-lg md:text-xl text-gray-400 leading-relaxed mb-10 max-w-2xl mx-auto">{t.hero_sub}</p>
+          <p className="lp-hero-sub text-lg md:text-xl leading-relaxed mb-10 max-w-2xl mx-auto" style={{ color: TEXT_MUTED }}>{t.hero_sub}</p>
 
           {/* CTAs */}
           <div className="lp-hero-ctas flex flex-col sm:flex-row items-center justify-center gap-3 mb-5">
             <Link href="/signup">
-              <button className="h-12 px-8 text-base font-bold rounded-xl flex items-center gap-2 transition-all hover:opacity-90" style={{ background: Y, color: BG, boxShadow: `0 8px 32px ${Y}40` }}>
+              <button className="h-12 px-8 text-base font-bold rounded-xl flex items-center gap-2 transition-all hover:opacity-90" style={{ background: Y, color: DARK_BG, boxShadow: `0 8px 32px ${Y}40` }}>
                 {t.hero_cta} <ArrowRight className="w-4 h-4" />
               </button>
             </Link>
-            <Link href="/demo" className="flex items-center gap-2 h-12 px-6 rounded-xl text-sm font-medium text-gray-400 hover:text-white transition-all border border-gray-700 hover:border-gray-500">
+            <Link href="/demo" className="flex items-center gap-2 h-12 px-6 rounded-xl text-sm font-medium transition-all" style={{ color: TEXT_MUTED, border: `1px solid ${BORDER}` }}>
               <Play className="w-3.5 h-3.5" /> {t.hero_demo}
             </Link>
           </div>
 
           {/* Footnote */}
-          <p className="text-sm text-gray-500 flex items-center justify-center gap-1.5 mb-12">
+          <p className="text-sm flex items-center justify-center gap-1.5 mb-12" style={{ color: TEXT_DIM }}>
             <CheckCircle2 className="w-3.5 h-3.5" style={{ color: Y }} />
             {t.hero_footnote}
           </p>
@@ -729,12 +755,12 @@ export default function HomePage() {
 
             <div className="relative rounded-xl overflow-hidden" style={{ border: `1px solid ${BORDER}`, boxShadow: `0 32px 80px -12px rgba(0,0,0,0.8), 0 0 0 1px ${BORDER}` }}>
               {/* Minimal chrome bar */}
-              <div className="flex items-center gap-1.5 px-4 py-2.5" style={{ background: '#0e0e0e', borderBottom: `1px solid ${BORDER}` }}>
+              <div className="flex items-center gap-1.5 px-4 py-2.5" style={{ background: CARD, borderBottom: `1px solid ${BORDER}` }}>
                 <div className="w-2.5 h-2.5 rounded-full bg-red-500/70" />
                 <div className="w-2.5 h-2.5 rounded-full bg-yellow-400/70" />
                 <div className="w-2.5 h-2.5 rounded-full bg-green-500/70" />
                 <div className="flex-1 flex justify-center">
-                  <div className="flex items-center gap-1.5 h-5 px-3 rounded text-[11px] text-gray-600" style={{ background: '#1a1a1a', border: `1px solid ${BORDER}` }}>
+                  <div className="flex items-center gap-1.5 h-5 px-3 rounded text-[11px]" style={{ background: BG, border: `1px solid ${BORDER}`, color: TEXT_DIM }}>
                     <div className="w-1.5 h-1.5 rounded-full" style={{ background: Y }} />
                     gohighreview.de/dashboard
                   </div>
@@ -756,19 +782,19 @@ export default function HomePage() {
       {/* Features */}
       <section id="features" className="lp-section relative overflow-hidden max-w-6xl mx-auto px-6 py-24">
         <div className="text-center mb-14">
-          <h2 className="lp-h2 text-3xl md:text-4xl font-bold tracking-tight mb-4 text-white">{t.feat_h2}</h2>
-          <p className="text-lg text-gray-400 max-w-xl mx-auto">{t.feat_sub}</p>
+          <h2 className="lp-h2 text-3xl md:text-4xl font-bold tracking-tight mb-4" style={{ color: TEXT }}>{t.feat_h2}</h2>
+          <p className="text-lg max-w-xl mx-auto" style={{ color: TEXT_MUTED }}>{t.feat_sub}</p>
         </div>
         <div className="lp-feat-grid grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
           {t.feat.map((f, i) => {
             const Icon = featIcons[i]
             return (
-              <div key={i} className="rounded-2xl p-6 transition-all duration-200 hover:-translate-y-0.5 hover:border-yellow-500/30" style={{ background: CARD, border: `1px solid ${BORDER}` }}>
+              <div key={i} className="rounded-2xl p-6 transition-all duration-200 hover:-translate-y-0.5" style={{ background: CARD, border: `1px solid ${BORDER}` }}>
                 <div className="w-10 h-10 rounded-xl flex items-center justify-center mb-4" style={{ background: `${Y}18` }}>
                   <Icon className="w-5 h-5" style={{ color: Y }} />
                 </div>
-                <h3 className="font-semibold mb-2 text-white">{f.title}</h3>
-                <p className="text-sm text-gray-400 leading-relaxed">{f.desc}</p>
+                <h3 className="font-semibold mb-2" style={{ color: TEXT }}>{f.title}</h3>
+                <p className="text-sm leading-relaxed" style={{ color: TEXT_MUTED }}>{f.desc}</p>
               </div>
             )
           })}
@@ -779,7 +805,7 @@ export default function HomePage() {
       <section id="testimonials" className="lp-section relative overflow-hidden py-24" style={{ borderTop: `1px solid ${BORDER}`, borderBottom: `1px solid ${BORDER}` }}>
         <div className="max-w-6xl mx-auto px-6">
           <div className="text-center mb-14">
-            <h2 className="lp-h2 text-3xl md:text-4xl font-bold tracking-tight mb-4 text-white">{t.test_h2}</h2>
+            <h2 className="lp-h2 text-3xl md:text-4xl font-bold tracking-tight mb-4" style={{ color: TEXT }}>{t.test_h2}</h2>
             <div className="flex items-center justify-center gap-1">
               {Array.from({ length: 5 }).map((_, i) => <Star key={i} className="w-4 h-4" style={{ fill: Y, color: Y }} />)}
             </div>
@@ -790,10 +816,10 @@ export default function HomePage() {
                 <div className="flex gap-0.5 mb-4">
                   {Array.from({ length: t.stars }).map((_, i) => <Star key={i} className="w-3.5 h-3.5" style={{ fill: Y, color: Y }} />)}
                 </div>
-                <p className="text-sm leading-relaxed mb-5 text-gray-300">&ldquo;{t.quote}&rdquo;</p>
+                <p className="text-sm leading-relaxed mb-5" style={{ color: TEXT_MUTED }}>&ldquo;{t.quote}&rdquo;</p>
                 <div>
-                  <p className="text-sm font-semibold text-white">{t.author}</p>
-                  <p className="text-xs text-gray-500">{t.role}</p>
+                  <p className="text-sm font-semibold" style={{ color: TEXT }}>{t.author}</p>
+                  <p className="text-xs" style={{ color: TEXT_DIM }}>{t.role}</p>
                 </div>
               </div>
             ))}
@@ -804,16 +830,16 @@ export default function HomePage() {
       {/* Pricing */}
       <section id="pricing" className="lp-section relative overflow-hidden max-w-6xl mx-auto px-6 py-24">
         <div className="text-center mb-10">
-          <h2 className="lp-h2 text-3xl md:text-4xl font-bold tracking-tight mb-4 text-white">{t.pricing_h2}</h2>
-          <p className="text-lg text-gray-400 mb-8">{t.pricing_sub}</p>
+          <h2 className="lp-h2 text-3xl md:text-4xl font-bold tracking-tight mb-4" style={{ color: TEXT }}>{t.pricing_h2}</h2>
+          <p className="text-lg mb-8" style={{ color: TEXT_MUTED }}>{t.pricing_sub}</p>
           <div className="lp-billing-toggle flex flex-col items-center gap-2">
             <div className="inline-flex items-center gap-1 rounded-2xl p-1.5" style={{ background: CARD, border: `2px solid ${BORDER}` }}>
-              <button onClick={() => setAnnual(false)} className="lp-billing-btn px-6 py-3 rounded-xl text-base font-bold transition-all" style={!annual ? { background: Y, color: BG, boxShadow: `0 4px 12px ${Y}40` } : { color: '#9ca3af' }}>
+              <button onClick={() => setAnnual(false)} className="lp-billing-btn px-6 py-3 rounded-xl text-base font-bold transition-all" style={!annual ? { background: Y, color: DARK_BG, boxShadow: `0 4px 12px ${Y}40` } : { color: TEXT_MUTED }}>
                 {t.pricing_monthly}
               </button>
-              <button onClick={() => setAnnual(true)} className="lp-billing-btn px-6 py-3 rounded-xl text-base font-bold transition-all flex items-center gap-2.5" style={annual ? { background: Y, color: BG, boxShadow: `0 4px 12px ${Y}40` } : { color: '#9ca3af' }}>
+              <button onClick={() => setAnnual(true)} className="lp-billing-btn px-6 py-3 rounded-xl text-base font-bold transition-all flex items-center gap-2.5" style={annual ? { background: Y, color: DARK_BG, boxShadow: `0 4px 12px ${Y}40` } : { color: TEXT_MUTED }}>
                 {t.pricing_annual}
-                <span className="text-xs font-extrabold px-2 py-0.5 rounded-full" style={annual ? { background: `${BG}30`, color: BG } : { background: `${Y}25`, color: Y }}>–20%</span>
+                <span className="text-xs font-extrabold px-2 py-0.5 rounded-full" style={annual ? { background: `${DARK_BG}30`, color: DARK_BG } : { background: `${Y}25`, color: Y }}>–20%</span>
               </button>
             </div>
             {annual && (
@@ -831,45 +857,45 @@ export default function HomePage() {
                   {t.pricing_popular}
                 </div>
               )}
-              <p className="font-bold mb-1" style={{ color: p.highlight ? BG : '#fff' }}>{p.name}</p>
+              <p className="font-bold mb-1" style={{ color: p.highlight ? DARK_BG : TEXT }}>{p.name}</p>
               {p.agency ? (
                 <div className="mb-1">
-                  <span className="font-bold" style={{ fontSize: '1.875rem', color: '#fff' }}>{(t as typeof t & { pricing_agency_label: string }).pricing_agency_label}</span>
+                  <span className="font-bold" style={{ fontSize: '1.875rem', color: TEXT }}>{(t as typeof t & { pricing_agency_label: string }).pricing_agency_label}</span>
                 </div>
               ) : (
                 <div className="mb-1">
                   <div className="flex items-end gap-1">
-                    <span className="font-bold" style={{ fontSize: '2.25rem', color: p.highlight ? BG : '#fff' }}>
+                    <span className="font-bold" style={{ fontSize: '2.25rem', color: p.highlight ? DARK_BG : TEXT }}>
                       EUR {fmtPrice(p.price)}
                     </span>
-                    <span className="text-sm mb-1.5" style={{ color: p.highlight ? `${BG}99` : '#6b7280' }}>/mo</span>
+                    <span className="text-sm mb-1.5" style={{ color: p.highlight ? `${DARK_BG}99` : TEXT_MUTED }}>/mo</span>
                   </div>
                   {annual && (
-                    <p className="text-xs font-medium" style={{ color: p.highlight ? `${BG}80` : '#6b7280' }}>
+                    <p className="text-xs font-medium" style={{ color: p.highlight ? `${DARK_BG}80` : TEXT_MUTED }}>
                       EUR {fmtPrice(p.price * 12)}/year
                     </p>
                   )}
                 </div>
               )}
-              <p className="text-xs mb-1 font-medium" style={{ color: p.highlight ? `${BG}cc` : '#9ca3af' }}>{p.profiles}</p>
-              <p className="text-sm mb-4" style={{ color: p.highlight ? `${BG}99` : '#6b7280' }}>{p.desc}</p>
+              <p className="text-xs mb-1 font-medium" style={{ color: p.highlight ? `${DARK_BG}cc` : TEXT_MUTED }}>{p.profiles}</p>
+              <p className="text-sm mb-4" style={{ color: p.highlight ? `${DARK_BG}99` : TEXT_MUTED }}>{p.desc}</p>
               <ul className="space-y-2.5 flex-1 mb-7 mt-4">
                 {p.features.map((f, i) => (
-                  <li key={i} className="flex items-center gap-2 text-sm" style={{ color: p.highlight ? BG : '#d1d5db' }}>
-                    <CheckCircle2 className="w-4 h-4 shrink-0" style={{ color: p.highlight ? BG : Y }} />
+                  <li key={i} className="flex items-center gap-2 text-sm" style={{ color: p.highlight ? DARK_BG : TEXT_MUTED }}>
+                    <CheckCircle2 className="w-4 h-4 shrink-0" style={{ color: p.highlight ? DARK_BG : Y }} />
                     {f}
                   </li>
                 ))}
               </ul>
               {p.agency ? (
                 <a href="/agency" className="block">
-                  <button className="w-full py-3 rounded-xl font-bold text-sm transition-all hover:opacity-90" style={{ background: Y, color: BG }}>
+                  <button className="w-full py-3 rounded-xl font-bold text-sm transition-all hover:opacity-90" style={{ background: Y, color: DARK_BG }}>
                     {(t as typeof t & { pricing_contact: string }).pricing_contact}
                   </button>
                 </a>
               ) : (
                 <Link href="/signup">
-                  <button className="w-full py-3 rounded-xl font-bold text-sm transition-all hover:opacity-90" style={p.highlight ? { background: BG, color: Y } : { background: Y, color: BG }}>
+                  <button className="w-full py-3 rounded-xl font-bold text-sm transition-all hover:opacity-90" style={p.highlight ? { background: DARK_BG, color: Y } : { background: Y, color: DARK_BG }}>
                     {t.pricing_start}
                   </button>
                 </Link>
@@ -883,9 +909,9 @@ export default function HomePage() {
       <section id="faq" className="lp-section relative overflow-hidden py-24" style={{ borderTop: `1px solid ${BORDER}` }}>
         <div className="max-w-3xl mx-auto px-6">
           <div className="text-center mb-12">
-            <h2 className="lp-h2 text-3xl md:text-4xl font-bold tracking-tight mb-4 text-white">{t.faq_h2}</h2>
+            <h2 className="lp-h2 text-3xl md:text-4xl font-bold tracking-tight mb-4" style={{ color: TEXT }}>{t.faq_h2}</h2>
           </div>
-          {t.faq.map((item, i) => <FAQItem key={i} q={item.q} a={item.a} />)}
+          {t.faq.map((item, i) => <FAQItem key={i} q={item.q} a={item.a} border={BORDER} text={TEXT} muted={TEXT_MUTED} />)}
         </div>
       </section>
 
@@ -895,14 +921,14 @@ export default function HomePage() {
           <div className="absolute top-0 right-0 w-72 h-72 rounded-full bg-black/5 -translate-y-1/2 translate-x-1/2" />
           <div className="absolute bottom-0 left-0 w-48 h-48 rounded-full bg-black/5 translate-y-1/2 -translate-x-1/2" />
           <div className="relative">
-            <h2 className="text-3xl md:text-4xl font-bold mb-4" style={{ color: BG }}>{t.cta_h2}</h2>
-            <p className="text-lg mb-8 max-w-xl mx-auto" style={{ color: `${BG}99` }}>{t.cta_sub}</p>
+            <h2 className="text-3xl md:text-4xl font-bold mb-4" style={{ color: DARK_BG }}>{t.cta_h2}</h2>
+            <p className="text-lg mb-8 max-w-xl mx-auto" style={{ color: `${DARK_BG}99` }}>{t.cta_sub}</p>
             <Link href="/signup">
-              <button className="lp-cta-btn px-8 h-12 text-base font-bold rounded-xl flex items-center gap-2 mx-auto transition-all hover:opacity-90" style={{ background: BG, color: Y }}>
+              <button className="lp-cta-btn px-8 h-12 text-base font-bold rounded-xl flex items-center gap-2 mx-auto transition-all hover:opacity-90" style={{ background: DARK_BG, color: Y }}>
                 {t.cta_btn} <ArrowRight className="w-4 h-4" />
               </button>
             </Link>
-            <p className="text-sm mt-4" style={{ color: `${BG}70` }}>{t.cta_footnote}</p>
+            <p className="text-sm mt-4" style={{ color: `${DARK_BG}70` }}>{t.cta_footnote}</p>
           </div>
         </div>
       </section>
@@ -914,42 +940,42 @@ export default function HomePage() {
             <div>
               <div className="flex items-center gap-2 mb-3">
                 <div className="w-6 h-6 rounded-md flex items-center justify-center" style={{ background: Y }}>
-                  <Star className="w-3 h-3" style={{ color: BG, fill: BG }} />
+                  <Star className="w-3 h-3" style={{ color: DARK_BG, fill: DARK_BG }} />
                 </div>
-                <span className="font-bold text-sm text-white">GoHighReview</span>
+                <span className="font-bold text-sm" style={{ color: TEXT }}>GoHighReview</span>
               </div>
-              <p className="text-sm text-gray-500 leading-relaxed">{t.footer_desc}</p>
+              <p className="text-sm leading-relaxed" style={{ color: TEXT_DIM }}>{t.footer_desc}</p>
               <div className="flex gap-3 mt-4">
-                <span className="text-xs text-gray-700">{t.footer_social}</span>
+                <span className="text-xs" style={{ color: TEXT_DIM }}>{t.footer_social}</span>
               </div>
             </div>
             <div>
-              <p className="text-xs font-semibold text-gray-500 uppercase tracking-widest mb-4">{t.footer_product}</p>
+              <p className="text-xs font-semibold uppercase tracking-widest mb-4" style={{ color: TEXT_DIM }}>{t.footer_product}</p>
               <div className="space-y-2.5">
-                <a href="#features" className="block text-sm text-gray-400 hover:text-white transition-colors">{t.nav_features}</a>
-                <a href="#pricing" className="block text-sm text-gray-400 hover:text-white transition-colors">{t.nav_pricing}</a>
-                <a href="#faq" className="block text-sm text-gray-400 hover:text-white transition-colors">{t.nav_faq}</a>
-                <Link href="/demo" className="block text-sm text-gray-400 hover:text-white transition-colors">{t.footer_demo}</Link>
+                <a href="#features" className="block text-sm transition-colors" style={{ color: TEXT_MUTED }}>{t.nav_features}</a>
+                <a href="#pricing" className="block text-sm transition-colors" style={{ color: TEXT_MUTED }}>{t.nav_pricing}</a>
+                <a href="#faq" className="block text-sm transition-colors" style={{ color: TEXT_MUTED }}>{t.nav_faq}</a>
+                <Link href="/demo" className="block text-sm transition-colors" style={{ color: TEXT_MUTED }}>{t.footer_demo}</Link>
               </div>
             </div>
             <div>
-              <p className="text-xs font-semibold text-gray-500 uppercase tracking-widest mb-4">{t.footer_legal}</p>
+              <p className="text-xs font-semibold uppercase tracking-widest mb-4" style={{ color: TEXT_DIM }}>{t.footer_legal}</p>
               <div className="space-y-2.5">
-                <Link href="/privacy" className="block text-sm text-gray-400 hover:text-white transition-colors">{t.footer_privacy}</Link>
-                <Link href="/terms" className="block text-sm text-gray-400 hover:text-white transition-colors">{t.footer_terms}</Link>
-                <Link href="/imprint" className="block text-sm text-gray-400 hover:text-white transition-colors">{t.footer_imprint}</Link>
+                <Link href="/privacy" className="block text-sm transition-colors" style={{ color: TEXT_MUTED }}>{t.footer_privacy}</Link>
+                <Link href="/terms" className="block text-sm transition-colors" style={{ color: TEXT_MUTED }}>{t.footer_terms}</Link>
+                <Link href="/imprint" className="block text-sm transition-colors" style={{ color: TEXT_MUTED }}>{t.footer_imprint}</Link>
               </div>
             </div>
             <div>
-              <p className="text-xs font-semibold text-gray-500 uppercase tracking-widest mb-4">{t.footer_contact}</p>
+              <p className="text-xs font-semibold uppercase tracking-widest mb-4" style={{ color: TEXT_DIM }}>{t.footer_contact}</p>
               <div className="space-y-2.5">
-                <a href="mailto:hello@gohighreview.de" className="block text-sm text-gray-400 hover:text-white transition-colors">hello@gohighreview.de</a>
+                <a href="mailto:hello@gohighreview.de" className="block text-sm transition-colors" style={{ color: TEXT_MUTED }}>hello@gohighreview.de</a>
               </div>
             </div>
           </div>
           <div className="flex flex-col md:flex-row items-center justify-between gap-4 pt-8" style={{ borderTop: `1px solid ${BORDER}` }}>
-            <p className="text-sm text-gray-600">{t.footer_copy}</p>
-            <p className="text-sm text-gray-600">{t.footer_gdpr}</p>
+            <p className="text-sm" style={{ color: TEXT_DIM }}>{t.footer_copy}</p>
+            <p className="text-sm" style={{ color: TEXT_DIM }}>{t.footer_gdpr}</p>
           </div>
         </div>
       </footer>
