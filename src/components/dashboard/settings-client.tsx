@@ -69,9 +69,20 @@ export function SettingsClient({ email, fullName, planName, subscriptionStatus, 
   const handleDeleteAccount = async () => {
     if (deleteConfirm !== 'DELETE') { toast.error(t.set_delete_confirm_hint); return }
     setDeleting(true)
-    await supabase.auth.signOut()
-    toast.success(t.set_delete_signout_msg)
-    router.push('/login')
+    try {
+      const res = await fetch('/api/account/delete', { method: 'DELETE' })
+      if (!res.ok) {
+        const data = await res.json()
+        toast.error(data.error ?? t.set_name_failed)
+        setDeleting(false)
+        return
+      }
+      await supabase.auth.signOut()
+      router.push('/login')
+    } catch {
+      toast.error(t.set_name_failed)
+      setDeleting(false)
+    }
   }
 
   const planLabel = planName
