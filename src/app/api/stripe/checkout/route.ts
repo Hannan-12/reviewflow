@@ -24,6 +24,13 @@ export async function POST(request: NextRequest) {
       return NextResponse.json({ error: 'Invalid price' }, { status: 400 })
     }
 
+    // Validate quantity — Agency min 16, all other plans must be exactly 1
+    const isAgencyPrice =
+      priceId === PLANS.agency.priceId || priceId === PLANS.agency.priceIdAnnual
+    const safeQuantity = isAgencyPrice
+      ? Math.max(16, Math.floor(quantity))
+      : 1
+
     // Get or create Stripe customer
     const { data: userData } = await supabase
       .from('users')
@@ -90,7 +97,7 @@ export async function POST(request: NextRequest) {
     const session = await getStripe().checkout.sessions.create({
       customer: customerId,
       mode: 'subscription',
-      line_items: [{ price: priceId, quantity: Math.max(1, quantity) }],
+      line_items: [{ price: priceId, quantity: safeQuantity }],
       subscription_data: {
         ...(useTrialEnd ? { trial_end: useTrialEnd } : {}),
         metadata: { supabase_user_id: user.id },

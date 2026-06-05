@@ -186,7 +186,9 @@ export default async function BillingPage({
                         <div className="h-full rounded-full bg-primary transition-all duration-500" style={{ width: `${trialProgress}%` }} />
                       </div>
                       <p className="text-xs text-muted-foreground mt-1.5">
-                        {t.bill_trial_ends} {new Date(userData?.trial_ends_at ?? '').toLocaleDateString(undefined, { month: 'long', day: 'numeric' })}. {t.bill_upgrade_keep}
+                        {userData?.trial_ends_at
+                          ? `${t.bill_trial_ends} ${new Date(userData.trial_ends_at).toLocaleDateString(undefined, { month: 'long', day: 'numeric' })}. ${t.bill_upgrade_keep}`
+                          : t.bill_upgrade_keep}
                       </p>
                     </div>
                   )}

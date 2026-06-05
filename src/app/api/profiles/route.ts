@@ -43,11 +43,17 @@ export async function POST(request: NextRequest) {
   // Check plan profile limit
   const { data: userData } = await supabase
     .from('users')
-    .select('profile_limit')
+    .select('profile_limit, subscription_status, trial_ends_at')
     .eq('id', user.id)
     .single()
 
-  const limit = userData?.profile_limit ?? 0
+  const isTrialing = userData?.subscription_status === 'trialing' &&
+    userData?.trial_ends_at && new Date(userData.trial_ends_at) > new Date()
+
+  // Trialing users get 3 profiles even if profile_limit was never set
+  const rawLimit = userData?.profile_limit ?? 0
+  const limit = rawLimit === 0 && isTrialing ? 3 : rawLimit
+
   if (limit === 0) {
     return NextResponse.json({ error: 'Please subscribe to a plan to add profiles.' }, { status: 403 })
   }

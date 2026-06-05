@@ -42,6 +42,7 @@ export async function GET(request: NextRequest) {
             avatar_url: avatarUrl,
             subscription_status: 'trialing',
             trial_ends_at: trialEndsAt,
+            profile_limit: 3,
           })
           // Send new Google OAuth users to plan selection before dashboard
           const isOAuth = user.app_metadata?.provider === 'google'

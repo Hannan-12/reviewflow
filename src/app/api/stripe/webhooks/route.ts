@@ -109,7 +109,7 @@ export async function POST(request: NextRequest) {
         console.log(`[webhook] userId from metadata: ${userId}, customerId: ${customerId}`)
 
         if (userId) {
-          // Link stripe customer to supabase user
+          // Link stripe customer to supabase user — must succeed before sync
           const { error } = await supabaseAdmin
             .from('users')
             .update({ stripe_customer_id: customerId })
@@ -117,11 +117,13 @@ export async function POST(request: NextRequest) {
 
           if (error) {
             console.error('[webhook] Failed to set stripe_customer_id:', error)
-          } else {
-            console.log(`[webhook] Linked stripe_customer_id=${customerId} to user=${userId}`)
+            // Cannot proceed — syncSubscriptionToSupabase queries by stripe_customer_id
+            break
           }
+          console.log(`[webhook] Linked stripe_customer_id=${customerId} to user=${userId}`)
         } else {
           console.warn('[webhook] No supabase_user_id found in metadata — cannot link user')
+          break
         }
 
         await syncSubscriptionToSupabase(subscription, customerId)
@@ -148,8 +150,19 @@ export async function POST(request: NextRequest) {
             plan_name: 'free',
             profile_limit: 0,
             current_period_end: null,
+            trial_ends_at: null,
           })
           .eq('stripe_customer_id', subscription.customer as string)
+        break
+      }
+
+      case 'invoice.payment_succeeded': {
+        // Recover from past_due → active when a previously failed payment succeeds
+        const invoice = event.data.object as Stripe.Invoice & { subscription?: string | null }
+        if (!invoice.customer || !invoice.subscription) break
+        const sub = await getStripe().subscriptions.retrieve(invoice.subscription)
+        console.log(`[webhook] invoice.payment_succeeded — customer=${invoice.customer}, status=${sub.status}`)
+        await syncSubscriptionToSupabase(sub, invoice.customer as string)
         break
       }
 

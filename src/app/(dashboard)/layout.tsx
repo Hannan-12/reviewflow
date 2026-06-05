@@ -18,9 +18,19 @@ export default async function DashboardLayout({ children }: { children: React.Re
 
   const { data: userData } = await supabase
     .from('users')
-    .select('plan_name, subscription_status')
+    .select('plan_name, subscription_status, trial_ends_at')
     .eq('id', user.id)
     .single()
+
+  // Billing gate — block access when trial expired or subscription canceled/past_due
+  const status = userData?.subscription_status
+  const trialEndsAt = userData?.trial_ends_at
+  const trialExpired = status === 'trialing' && trialEndsAt && new Date(trialEndsAt) <= new Date()
+  const noAccess = !status || status === 'canceled' || status === 'past_due' || trialExpired
+
+  if (noAccess) {
+    redirect('/billing?expired=true')
+  }
 
   return (
     <DashboardLangProvider initialLang={initialLang}>
