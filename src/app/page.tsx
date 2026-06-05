@@ -7,6 +7,7 @@ import {
   Star, Bell, BarChart3, MessageSquare, Zap, Shield,
   ArrowRight, CheckCircle2, ChevronDown, Play, Globe, Menu, X,
 } from 'lucide-react'
+import { ThemeToggle } from '@/components/theme-toggle'
 
 // ─── Brand colors ──────────────────────────────────────────
 const Y = '#F5C518'
@@ -590,6 +591,7 @@ export default function HomePage() {
             <Link href="/demo" className="font-semibold transition-colors hover:opacity-80" style={{ color: Y }}>{t.nav_demo}</Link>
           </div>
           <div className="flex items-center gap-2">
+            <ThemeToggle />
             <LanguageSwitcher lang={lang} onSelect={handleSetLang} />
             {/* Desktop: sign in + sign up */}
             <Link href="/login" className="hidden md:block">
