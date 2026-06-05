@@ -2,9 +2,11 @@
 
 import { useState } from 'react'
 import { cn } from '@/lib/utils'
+import { useDashboardLang } from '@/components/dashboard/lang-context'
 
 export function BillingToggle({ onChange }: { onChange?: (annual: boolean) => void }) {
   const [annual, setAnnual] = useState(false)
+  const { t } = useDashboardLang()
 
   const toggle = (val: boolean) => {
     setAnnual(val)
@@ -14,7 +16,7 @@ export function BillingToggle({ onChange }: { onChange?: (annual: boolean) => vo
   return (
     <div className="flex items-center gap-3">
       <span className={cn('text-sm font-medium transition-colors', !annual ? 'text-foreground' : 'text-muted-foreground')}>
-        Monthly
+        {t.bill_monthly}
       </span>
       <button
         onClick={() => toggle(!annual)}
@@ -29,9 +31,9 @@ export function BillingToggle({ onChange }: { onChange?: (annual: boolean) => vo
         )} />
       </button>
       <span className={cn('text-sm font-medium transition-colors', annual ? 'text-foreground' : 'text-muted-foreground')}>
-        Annual
+        {t.bill_annual}
         <span className="ml-1.5 text-[10px] font-bold bg-emerald-500/10 text-emerald-600 dark:text-emerald-400 rounded-full px-2 py-0.5">
-          Save 20%
+          -20%
         </span>
       </span>
     </div>

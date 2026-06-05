@@ -6,9 +6,11 @@ import { Check, Sparkles } from 'lucide-react'
 import { toast } from 'sonner'
 import { Button } from '@/components/ui/button'
 import { cn } from '@/lib/utils'
+import { useDashboardLang } from '@/components/dashboard/lang-context'
 
 function AgencyCalculator({ isPopular, onQuantityChange }: { isPopular?: boolean; onQuantityChange: (n: number) => void }) {
   const [raw, setRaw] = useState('20')
+  const { t } = useDashboardLang()
   const parsed = parseInt(raw) || 0
   const hasError = raw !== '' && parsed < 16
   const profiles = Math.max(16, parsed)
@@ -16,10 +18,10 @@ function AgencyCalculator({ isPopular, onQuantityChange }: { isPopular?: boolean
   return (
     <div className="mt-1 mb-4 p-3 rounded-xl border border-border bg-muted/40">
       <p className={cn('text-[10px] font-bold uppercase tracking-widest mb-0.5', isPopular ? 'text-white/60' : 'text-muted-foreground')}>
-        Number of profiles
+        {t.bill_num_profiles}
       </p>
       <p className={cn('text-[10px] mb-2', isPopular ? 'text-white/40' : 'text-muted-foreground/60')}>
-        Minimum 16 profiles for an Agency account
+        {t.bill_min_profiles}
       </p>
       <div className="flex items-center gap-2">
         <input
@@ -39,9 +41,9 @@ function AgencyCalculator({ isPopular, onQuantityChange }: { isPopular?: boolean
         </span>
       </div>
       {hasError
-        ? <p className="text-[10px] text-red-500 mt-1.5">Minimum 16 profiles required</p>
+        ? <p className="text-[10px] text-red-500 mt-1.5">{t.bill_min_required}</p>
         : <p className={cn('text-[10px] mt-1.5', isPopular ? 'text-white/40' : 'text-muted-foreground/60')}>
-            20 profiles = €100/mo · 50 profiles = €250/mo
+            20 = €100/mo · 50 = €250/mo
           </p>
       }
     </div>
@@ -62,6 +64,7 @@ interface PlanCardProps {
 
 export function PlanCard({ name, price, annual, description, features, priceId, isCurrentPlan, isPopular, isAgency }: PlanCardProps) {
   const router = useRouter()
+  const { t } = useDashboardLang()
   const [loading, setLoading] = useState(false)
   const [agencyQuantity, setAgencyQuantity] = useState(20)
 
@@ -100,7 +103,7 @@ export function PlanCard({ name, price, annual, description, features, priceId, 
       {isPopular && (
         <div className="absolute -top-3 left-1/2 -translate-x-1/2 flex items-center gap-1 bg-white text-primary text-[10px] font-bold uppercase tracking-widest rounded-full px-3 py-1 shadow-sm">
           <Sparkles className="w-2.5 h-2.5" />
-          Most popular
+          {t.bill_most_popular}
         </div>
       )}
 
@@ -110,7 +113,7 @@ export function PlanCard({ name, price, annual, description, features, priceId, 
           'absolute top-4 right-4 text-[10px] font-bold uppercase tracking-wider rounded-full px-2.5 py-1',
           isPopular ? 'bg-white/20 text-white' : 'bg-primary/10 text-primary'
         )}>
-          Current plan
+          {t.bill_current_plan}
         </div>
       )}
 
@@ -119,7 +122,7 @@ export function PlanCard({ name, price, annual, description, features, priceId, 
         <p className={cn('font-bold text-base mb-3', isPopular ? 'text-white' : '')}>{name}</p>
         {isAgency ? (
           <div className="mb-1.5">
-            <span className={cn('text-3xl font-bold tracking-tight', isPopular ? 'text-white' : '')}>Custom quote</span>
+            <span className={cn('text-3xl font-bold tracking-tight', isPopular ? 'text-white' : '')}>{t.bill_custom_quote}</span>
           </div>
         ) : (
           <div className="flex items-end gap-1 mb-1.5">
@@ -156,7 +159,7 @@ export function PlanCard({ name, price, annual, description, features, priceId, 
       {isAgency ? (
         <a href="/agency" className="block">
           <Button className="w-full font-semibold h-10" variant="default">
-            Contact us for a quote
+            {t.bill_contact_quote}
           </Button>
         </a>
       ) : (
@@ -169,7 +172,7 @@ export function PlanCard({ name, price, annual, description, features, priceId, 
           disabled={isCurrentPlan || loading}
           onClick={handleSelect}
         >
-          {isCurrentPlan ? 'Current plan' : loading ? 'Redirecting…' : `Get ${name}`}
+          {isCurrentPlan ? t.bill_current_plan : loading ? t.bill_redirecting : `${t.bill_get_plan} ${name}`}
         </Button>
       )}
     </div>

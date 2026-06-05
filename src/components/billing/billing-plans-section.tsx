@@ -5,6 +5,7 @@ import { useRouter } from 'next/navigation'
 import { PlanCard } from './plan-card'
 import { BillingToggle } from './billing-toggle'
 import { QuickCheckoutSection } from './quick-checkout-section'
+import { useDashboardLang } from '@/components/dashboard/lang-context'
 
 export interface PlanData {
   key: string
@@ -27,6 +28,7 @@ interface BillingPlansSectionProps {
 export function BillingPlansSection({ plans, currentPlanKey, isSubscribed, autoCheckout }: BillingPlansSectionProps) {
   const [annual, setAnnual] = useState(false)
   const router = useRouter()
+  const { t } = useDashboardLang()
 
   useEffect(() => {
     if (!autoCheckout) return
@@ -47,15 +49,15 @@ export function BillingPlansSection({ plans, currentPlanKey, isSubscribed, autoC
     <div>
       <div className="flex items-center justify-between mb-5 flex-wrap gap-3">
         <div>
-          <h2 className="font-bold text-base">{isSubscribed ? 'Change your plan' : 'Choose a plan'}</h2>
-          <p className="text-sm text-muted-foreground mt-0.5">Cancel anytime. Upgrade or downgrade whenever you need.</p>
+          <h2 className="font-bold text-base">{t.bill_choose_plan}</h2>
+          <p className="text-sm text-muted-foreground mt-0.5">{t.bill_cancel_anytime}</p>
         </div>
         <BillingToggle onChange={setAnnual} />
       </div>
 
       {annual && (
         <p className="text-xs text-emerald-600 dark:text-emerald-400 mb-4 font-medium">
-          Billed annually — you save 20% vs monthly pricing.
+          {t.bill_annual} — 20%
         </p>
       )}
 

@@ -11,6 +11,7 @@ import { BillingPlansSection } from '@/components/billing/billing-plans-section'
 import { SidebarProvider } from '@/components/dashboard/sidebar-context'
 import { DashboardLangProvider } from '@/components/dashboard/lang-context'
 import { dashboardT, type DashboardLang } from '@/lib/i18n/dashboard'
+import { getServerT } from '@/lib/i18n/server'
 import { cookies } from 'next/headers'
 import {
   AlertCircle, CreditCard, Calendar,
@@ -18,32 +19,6 @@ import {
 } from 'lucide-react'
 
 export const metadata = { title: 'Billing — GoHighReview' }
-
-const faqItems = [
-  { q: 'When does billing start?', a: 'After your 14-day free trial ends. No charge during the trial — cancel before it ends and you will never be billed.' },
-  { q: 'Can I change plans?', a: 'Yes — upgrade or downgrade any time. Changes are prorated automatically by Stripe.' },
-  { q: 'Can I cancel?', a: 'Yes — cancel any time from the billing portal. You keep full access until the end of your current billing period.' },
-  { q: 'What payment methods are accepted?', a: 'All major credit and debit cards (Visa, Mastercard, Amex). Powered by Stripe.' },
-]
-
-const comparisonFeatures = [
-  { label: 'Google Business Profiles', lite: '1–3', pro: '4–10', agency: 'Unlimited' },
-  { label: 'Review dashboard', lite: true, pro: true, agency: true },
-  { label: 'Email alerts', lite: true, pro: true, agency: true },
-  { label: 'AI reply suggestions', lite: true, pro: true, agency: true },
-  { label: 'AI auto-reply agents', lite: false, pro: true, agency: true },
-  { label: 'Basic reports', lite: true, pro: true, agency: true },
-  { label: 'CSV export', lite: true, pro: true, agency: true },
-  { label: 'Slack notifications', lite: false, pro: true, agency: true },
-  { label: 'Advanced reports', lite: false, pro: true, agency: true },
-  { label: 'Review auto-tagging', lite: false, pro: true, agency: true },
-  { label: 'Review widget', lite: false, pro: true, agency: true },
-  { label: 'Magic review links', lite: false, pro: false, agency: true },
-  { label: 'Sentiment analysis', lite: false, pro: false, agency: true },
-  { label: 'Custom AI prompts', lite: false, pro: false, agency: true },
-  { label: 'Priority support', lite: false, pro: false, agency: true },
-  { label: 'Dedicated account manager', lite: false, pro: false, agency: true },
-]
 
 function FeatureValue({ val }: { val: boolean | string }) {
   if (val === true)  return <Check className="w-4 h-4 text-emerald-500 mx-auto" />
@@ -59,6 +34,34 @@ export default async function BillingPage({
   const supabase = await createClient()
   const { data: { user } } = await supabase.auth.getUser()
   if (!user) redirect('/login')
+
+  const t = await getServerT()
+
+  const faqItems = [
+    { q: t.bill_faq_q1, a: t.bill_faq_a1 },
+    { q: t.bill_faq_q2, a: t.bill_faq_a2 },
+    { q: t.bill_faq_q3, a: t.bill_faq_a3 },
+    { q: t.bill_faq_q4, a: t.bill_faq_a4 },
+  ]
+
+  const comparisonFeatures = [
+    { label: t.bill_feat_profiles, lite: '1–3', pro: '4–10', agency: t.bill_feat_profiles.includes('Unlimited') ? 'Unlimited' : '∞' },
+    { label: t.bill_feat_dashboard, lite: true, pro: true, agency: true },
+    { label: t.bill_feat_email, lite: true, pro: true, agency: true },
+    { label: t.bill_feat_ai_suggest, lite: true, pro: true, agency: true },
+    { label: t.bill_feat_ai_auto, lite: false, pro: true, agency: true },
+    { label: t.bill_feat_reports, lite: true, pro: true, agency: true },
+    { label: t.bill_feat_csv, lite: true, pro: true, agency: true },
+    { label: t.bill_feat_slack, lite: false, pro: true, agency: true },
+    { label: t.bill_feat_adv_reports, lite: false, pro: true, agency: true },
+    { label: t.bill_feat_tagging, lite: false, pro: true, agency: true },
+    { label: t.bill_feat_widget, lite: false, pro: true, agency: true },
+    { label: t.bill_feat_magic, lite: false, pro: false, agency: true },
+    { label: t.bill_feat_sentiment, lite: false, pro: false, agency: true },
+    { label: t.bill_feat_ai_prompts, lite: false, pro: false, agency: true },
+    { label: t.bill_feat_priority, lite: false, pro: false, agency: true },
+    { label: t.bill_feat_manager, lite: false, pro: false, agency: true },
+  ]
 
   const cookieStore = await cookies()
   const cookieLang = cookieStore.get('app_lang')?.value as DashboardLang | undefined
@@ -110,7 +113,7 @@ export default async function BillingPage({
       <div className="flex h-screen overflow-hidden bg-muted/20">
         <Sidebar planName={currentPlanKey} />
         <main className="flex-1 overflow-y-auto">
-          <Header title="Billing" />
+          <Header title={t.bill_title} />
 
           <div className="max-w-5xl mx-auto p-5 space-y-6 page-animate">
 
@@ -119,8 +122,8 @@ export default async function BillingPage({
               <div className="flex items-start gap-3 bg-destructive/10 border border-destructive/20 rounded-xl px-4 py-4 text-destructive">
                 <AlertCircle className="w-4 h-4 shrink-0 mt-0.5" />
                 <div>
-                  <p className="text-sm font-semibold">Your free trial has ended</p>
-                  <p className="text-sm opacity-80 mt-0.5">Choose a plan below to restore access to your dashboard.</p>
+                  <p className="text-sm font-semibold">{t.bill_trial_ended_title}</p>
+                  <p className="text-sm opacity-80 mt-0.5">{t.bill_trial_ended_desc}</p>
                 </div>
               </div>
             )}
@@ -128,7 +131,7 @@ export default async function BillingPage({
             {canceled === 'true' && (
               <div className="flex items-center gap-3 bg-amber-500/10 border border-amber-500/20 rounded-xl px-4 py-3.5 text-amber-600 dark:text-amber-400">
                 <AlertCircle className="w-4 h-4 shrink-0" />
-                <p className="text-sm font-medium">Checkout was canceled. No charge was made.</p>
+                <p className="text-sm font-medium">{t.bill_canceled}</p>
               </div>
             )}
 
@@ -150,15 +153,15 @@ export default async function BillingPage({
                               ? 'bg-amber-500/10 text-amber-600 dark:text-amber-400 border border-amber-500/20'
                               : 'bg-emerald-500/10 text-emerald-600 dark:text-emerald-400 border border-emerald-500/20'
                           }`}>
-                            {isTrialing ? 'Trial' : 'Active'}
+                            {isTrialing ? t.bill_trial_badge : t.bill_active_badge}
                           </span>
                         </div>
                         <p className="text-sm text-muted-foreground">
                           {isTrialing
-                            ? `Free trial — ${trialDaysLeft} day${trialDaysLeft !== 1 ? 's' : ''} remaining`
+                            ? `${trialDaysLeft} ${trialDaysLeft !== 1 ? t.bill_trial_days_plural : t.bill_trial_days} ${t.bill_trial_remaining}`
                             : userData?.current_period_end
-                            ? `Renews ${new Date(userData.current_period_end).toLocaleDateString('en-US', { month: 'long', day: 'numeric', year: 'numeric' })}`
-                            : 'Active subscription'}
+                            ? `${t.bill_renews} ${new Date(userData.current_period_end).toLocaleDateString(undefined, { month: 'long', day: 'numeric', year: 'numeric' })}`
+                            : t.bill_active_sub}
                         </p>
                       </div>
                     </div>
@@ -176,14 +179,14 @@ export default async function BillingPage({
                   {isTrialing && (
                     <div className="mt-5 pt-5 border-t border-border">
                       <div className="flex items-center justify-between mb-2">
-                        <span className="text-xs font-medium text-muted-foreground">Trial progress</span>
-                        <span className="text-xs font-semibold">{trialDaysLeft} day{trialDaysLeft !== 1 ? 's' : ''} left of {trialTotal}</span>
+                        <span className="text-xs font-medium text-muted-foreground">{t.bill_trial_progress}</span>
+                        <span className="text-xs font-semibold">{trialDaysLeft} {t.bill_trial_left_of} {trialTotal}</span>
                       </div>
                       <div className="h-1.5 w-full rounded-full bg-muted overflow-hidden">
                         <div className="h-full rounded-full bg-primary transition-all duration-500" style={{ width: `${trialProgress}%` }} />
                       </div>
                       <p className="text-xs text-muted-foreground mt-1.5">
-                        Trial ends {new Date(userData?.trial_ends_at ?? '').toLocaleDateString('en-US', { month: 'long', day: 'numeric' })}. Upgrade to keep access.
+                        {t.bill_trial_ends} {new Date(userData?.trial_ends_at ?? '').toLocaleDateString(undefined, { month: 'long', day: 'numeric' })}. {t.bill_upgrade_keep}
                       </p>
                     </div>
                   )}
@@ -193,7 +196,7 @@ export default async function BillingPage({
                     <div className="flex items-center gap-2.5">
                       <CreditCard className="w-4 h-4 text-muted-foreground shrink-0" />
                       <div>
-                        <p className="text-[10px] text-muted-foreground uppercase tracking-wide font-semibold">Plan</p>
+                        <p className="text-[10px] text-muted-foreground uppercase tracking-wide font-semibold">{t.bill_plan_label}</p>
                         <p className="text-sm font-semibold capitalize">{currentPlanKey}</p>
                       </div>
                     </div>
@@ -202,7 +205,7 @@ export default async function BillingPage({
                       <div className="flex items-center gap-2">
                         <Zap className="w-4 h-4 text-muted-foreground shrink-0" />
                         <div>
-                          <p className="text-[10px] text-muted-foreground uppercase tracking-wide font-semibold">Profiles connected</p>
+                          <p className="text-[10px] text-muted-foreground uppercase tracking-wide font-semibold">{t.bill_profiles_label}</p>
                           <p className="text-sm font-semibold">
                             {profilesUsed}{profileLimit !== null ? ` / ${profileLimit}` : currentPlanKey === 'agency' ? ` (€${profilesUsed * 5}/mo)` : ' / ∞'}
                           </p>
@@ -220,8 +223,8 @@ export default async function BillingPage({
                     <div className="flex items-center gap-2.5">
                       <Calendar className="w-4 h-4 text-muted-foreground shrink-0" />
                       <div>
-                        <p className="text-[10px] text-muted-foreground uppercase tracking-wide font-semibold">Billing</p>
-                        <p className="text-sm font-semibold">{isAnnual ? 'Annual' : 'Monthly'}</p>
+                        <p className="text-[10px] text-muted-foreground uppercase tracking-wide font-semibold">{t.bill_billing_label}</p>
+                        <p className="text-sm font-semibold">{isAnnual ? t.bill_annual : t.bill_monthly}</p>
                       </div>
                     </div>
                   </div>
@@ -248,15 +251,15 @@ export default async function BillingPage({
 
             {/* Feature comparison table */}
             <div>
-              <h3 className="font-bold text-base mb-4">Compare plans</h3>
+              <h3 className="font-bold text-base mb-4">{t.bill_compare}</h3>
               <div className="bg-card border border-border rounded-2xl overflow-hidden">
                 {/* Header */}
                 <div className="grid grid-cols-4 border-b border-border">
-                  <div className="p-2.5 sm:p-4 text-xs sm:text-sm font-semibold text-muted-foreground">Feature</div>
+                  <div className="p-2.5 sm:p-4 text-xs sm:text-sm font-semibold text-muted-foreground">{t.bill_feat_dashboard}</div>
                   {['Lite', 'Pro', 'Agency'].map((p) => (
                     <div key={p} className={`p-2.5 sm:p-4 text-center text-xs sm:text-sm font-bold ${p === 'Pro' ? 'bg-primary/5 text-primary' : ''}`}>
                       {p}
-                      {p === 'Pro' && <span className="hidden sm:inline ml-1 text-[9px] bg-primary text-primary-foreground rounded-full px-1.5 py-0.5 font-bold">Popular</span>}
+                      {p === 'Pro' && <span className="hidden sm:inline ml-1 text-[9px] bg-primary text-primary-foreground rounded-full px-1.5 py-0.5 font-bold">{t.bill_popular}</span>}
                     </div>
                   ))}
                 </div>
@@ -278,7 +281,7 @@ export default async function BillingPage({
             <div>
               <div className="flex items-center gap-2 mb-4">
                 <HelpCircle className="w-4 h-4 text-muted-foreground" />
-                <h3 className="font-bold text-base">Billing FAQ</h3>
+                <h3 className="font-bold text-base">{t.bill_faq_title}</h3>
               </div>
               <div className="grid gap-2">
                 {faqItems.map((item) => (
@@ -290,7 +293,7 @@ export default async function BillingPage({
               </div>
               <p className="flex items-center gap-1.5 text-xs text-muted-foreground mt-4">
                 <ExternalLink className="w-3 h-3" />
-                Payments are securely processed by Stripe. We never store your card details.
+                {t.bill_stripe_note}
               </p>
             </div>
 
