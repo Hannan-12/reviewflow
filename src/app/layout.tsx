@@ -32,7 +32,7 @@ export default async function RootLayout({
   const dir = RTL_LANGS.has(lang) ? 'rtl' : 'ltr'
 
   return (
-    <html lang={lang} dir={dir} suppressHydrationWarning>
+    <html lang={lang} dir={dir} className="light" suppressHydrationWarning>
       <body className={`${geistSans.variable} antialiased font-sans`} suppressHydrationWarning>
         <ThemeProvider>
           <NextTopLoader color="#F5C518" showSpinner={false} height={3} />
