@@ -39,7 +39,7 @@ function getStrength(password: string): { score: number; label: string; color: s
 }
 
 const PROFILE_OPTIONS = [
-  { label: '1–3 profiles', sub: 'Lite — EUR 19,90/mo', value: 'lite' },
+  { label: '1–3 profiles', sub: 'Lite — EUR 29,90/mo', value: 'lite' },
   { label: '4–10 profiles', sub: 'Pro — EUR 59/mo', value: 'pro' },
   { label: '11+ profiles', sub: 'Agency — contact us', value: 'agency' },
 ]

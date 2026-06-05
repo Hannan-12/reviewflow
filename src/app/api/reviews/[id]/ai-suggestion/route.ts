@@ -1,10 +1,11 @@
 export const dynamic = 'force-dynamic'
 import { NextRequest, NextResponse } from 'next/server';
-import { createClient } from '@supabase/supabase-js';
+import { createClient as createAdmin } from '@supabase/supabase-js';
+import { createClient } from '@/lib/supabase/server';
 import { generateReplyFromAI } from '@/lib/openai/client';
 
 function getAdmin() {
-  return createClient(
+  return createAdmin(
     process.env.NEXT_PUBLIC_SUPABASE_URL!,
     process.env.SUPABASE_SERVICE_ROLE_KEY!
   );
@@ -16,6 +17,12 @@ export async function GET(
   { params }: { params: Promise<{ id: string }> }
 ) {
   try {
+    const supabase = await createClient()
+    const { data: { user } } = await supabase.auth.getUser()
+    if (!user) {
+      return NextResponse.json({ error: 'Unauthorized' }, { status: 401 })
+    }
+
     const { id: reviewId } = await params;
     const { searchParams } = new URL(request.url);
     const profileId = searchParams.get('profileId');
@@ -27,13 +34,14 @@ export async function GET(
       );
     }
 
-    const supabase = getAdmin()
+    const admin = getAdmin()
 
-    // Get review details
-    const { data: review, error: reviewError } = await supabase
+    // Get review details — verify it belongs to this user
+    const { data: review, error: reviewError } = await admin
       .from('reviews')
       .select('*, profile:profiles(business_name)')
       .eq('id', reviewId)
+      .eq('user_id', user.id)
       .single();
 
     if (reviewError || !review) {
@@ -57,10 +65,11 @@ export async function GET(
     });
 
     // Store the suggestion
-    await supabase
+    await admin
       .from('reviews')
       .update({ ai_suggested_reply: suggestion })
-      .eq('id', reviewId);
+      .eq('id', reviewId)
+      .eq('user_id', user.id);
 
     return NextResponse.json({ suggestion });
   } catch (error) {

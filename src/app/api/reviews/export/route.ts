@@ -47,8 +47,15 @@ export async function GET(request: NextRequest) {
     ]
   })
 
+  const sanitizeCell = (cell: unknown): string => {
+    const s = String(cell ?? '')
+    // Prevent CSV formula injection (Excel/Sheets execute cells starting with =, +, -, @)
+    const safe = /^[=+\-@\t\r]/.test(s) ? `'${s}` : s
+    return `"${safe.replace(/"/g, '""')}"`
+  }
+
   const csv = [header, ...rows]
-    .map(row => row.map(cell => `"${String(cell).replace(/"/g, '""')}"`).join(','))
+    .map(row => row.map(sanitizeCell).join(','))
     .join('\n')
 
   const filename = `reviews-${new Date().toISOString().split('T')[0]}.csv`

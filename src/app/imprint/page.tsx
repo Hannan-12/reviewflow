@@ -23,36 +23,14 @@ export default function ImprintPage() {
         <div className="space-y-6 text-gray-400 text-sm leading-relaxed">
           <div>
             <h2 className="text-white font-semibold text-base mb-2">Information according to § 5 TMG</h2>
-            {/* Replace with real company details */}
-            <p>Company Name GmbH<br />
-            Street Address 1<br />
-            12345 City, Germany</p>
+            <p>GoHighReview<br />
+            Mohsin Hafeez<br />
+            Germany</p>
           </div>
 
           <div>
             <h2 className="text-white font-semibold text-base mb-2">Contact</h2>
-            <p>Email: <a href="mailto:hello@gohighreview.com" style={{ color: '#F5C518' }}>hello@gohighreview.com</a></p>
-          </div>
-
-          <div>
-            <h2 className="text-white font-semibold text-base mb-2">Register entry</h2>
-            <p>Registration court: Amtsgericht [City]<br />
-            Registration number: HRB XXXXX</p>
-          </div>
-
-          <div>
-            <h2 className="text-white font-semibold text-base mb-2">VAT ID</h2>
-            <p>VAT identification number according to § 27a UStG: DE XXXXXXXXX</p>
-          </div>
-
-          <div>
-            <h2 className="text-white font-semibold text-base mb-2">Responsible for content according to § 55 Abs. 2 RStV</h2>
-            <p>Name Surname<br />
-            Address as above</p>
-          </div>
-
-          <div className="pt-4" style={{ borderTop: '1px solid #333' }}>
-            <p className="text-gray-600 text-xs">Please fill in the actual company details before publishing.</p>
+            <p>Email: <a href="mailto:hello@gohighreview.de" style={{ color: '#F5C518' }}>hello@gohighreview.de</a></p>
           </div>
         </div>
       </div>

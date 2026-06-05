@@ -25,7 +25,7 @@ export default function DemoPage() {
       if (!res.ok) throw new Error('Failed')
       setSubmitted(true)
     } catch {
-      toast.error('Something went wrong. Please email us directly at hello@gohighreview.com')
+      toast.error('Something went wrong. Please email us directly at hello@gohighreview.de')
     } finally {
       setLoading(false)
     }

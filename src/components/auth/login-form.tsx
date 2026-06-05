@@ -23,7 +23,8 @@ type FormData = z.infer<typeof schema>
 
 export function LoginForm() {
   const searchParams = useSearchParams()
-  const redirectTo = searchParams.get('redirectTo') ?? '/dashboard'
+  const rawRedirect = searchParams.get('redirectTo') ?? ''
+  const redirectTo = rawRedirect.startsWith('/') && !rawRedirect.startsWith('//') ? rawRedirect : '/dashboard'
   const [loading, setLoading] = useState(false)
 
   const {

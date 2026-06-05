@@ -23,7 +23,7 @@ export default function TermsPage() {
 
       <div className="max-w-3xl mx-auto px-6 py-16">
         <h1 className="text-4xl font-bold tracking-tight mb-2">Terms of Service</h1>
-        <p className="text-muted-foreground mb-10">Last updated: March 2026</p>
+        <p className="text-muted-foreground mb-10">Last updated: June 2026</p>
 
         <div className="space-y-8 text-foreground">
 
@@ -44,7 +44,7 @@ export default function TermsPage() {
 
           <section>
             <h2 className="text-xl font-bold mb-3">4. Subscription & Billing</h2>
-            <p className="text-muted-foreground leading-relaxed">GoHighReview offers paid subscription plans (Lite, Pro, Premium) billed monthly. All plans include a 14-day free trial. You will not be charged until the trial ends. Subscriptions automatically renew unless cancelled. Refunds are handled at our discretion within 7 days of a charge.</p>
+            <p className="text-muted-foreground leading-relaxed">GoHighReview offers paid subscription plans (Lite, Pro, Agency) billed monthly or annually. All plans include a 14-day free trial. You will not be charged until the trial ends. Subscriptions automatically renew unless cancelled. Refunds are handled at our discretion within 7 days of a charge.</p>
           </section>
 
           <section>
@@ -90,7 +90,7 @@ export default function TermsPage() {
 
           <section>
             <h2 className="text-xl font-bold mb-3">12. Contact</h2>
-            <p className="text-muted-foreground leading-relaxed">For questions about these Terms, contact us at <a href="mailto:legal@reviewflow.app" className="text-primary hover:underline">legal@reviewflow.app</a>.</p>
+            <p className="text-muted-foreground leading-relaxed">For questions about these Terms, contact us at <a href="mailto:legal@gohighreview.de" className="text-primary hover:underline">legal@gohighreview.de</a>.</p>
           </section>
         </div>
       </div>

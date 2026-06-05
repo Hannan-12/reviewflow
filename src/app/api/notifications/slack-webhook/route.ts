@@ -24,6 +24,10 @@ export async function POST(request: NextRequest) {
       );
     }
 
+    if (!webhookUrl.startsWith('https://hooks.slack.com/')) {
+      return NextResponse.json({ error: 'Invalid Slack webhook URL' }, { status: 400 });
+    }
+
     // Verify user owns this profile
     const { data: profile, error: profileError } = await supabase
       .from('profiles')

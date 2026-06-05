@@ -24,7 +24,7 @@ const features = [
     title: 'AI Reply Suggestions',
     desc: 'Reply to reviews in seconds with AI-generated suggestions tailored to your brand, tone, and business type.',
     points: [
-      'Powered by Anthropic Claude',
+      'Powered by Google Gemini AI',
       'Context-aware replies based on rating and review content',
       'Edit before posting',
       'Reply templates library',

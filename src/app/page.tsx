@@ -477,15 +477,20 @@ function AgencyCalculator({ label }: { label: string }) {
   )
 }
 
-function CookieBanner({ text, privacy, decline, accept }: { text: string; privacy: string; decline: string; accept: string }) {
+function CookieBanner({ text, privacy, decline, accept: acceptLabel }: { text: string; privacy: string; decline: string; accept: string }) {
   const [visible, setVisible] = useState(false)
 
   useEffect(() => {
     if (!localStorage.getItem('cookie_consent')) setVisible(true)
   }, [])
 
-  const dismiss = () => {
+  const handleAccept = () => {
     localStorage.setItem('cookie_consent', 'true')
+    setVisible(false)
+  }
+
+  const handleDecline = () => {
+    localStorage.setItem('cookie_consent', 'declined')
     setVisible(false)
   }
 
@@ -497,11 +502,11 @@ function CookieBanner({ text, privacy, decline, accept }: { text: string; privac
         <Link href="/privacy" style={{ color: Y }} className="underline hover:no-underline">{privacy}</Link>.
       </p>
       <div className="flex gap-3 shrink-0">
-        <button onClick={dismiss} className="px-4 py-2 rounded-lg text-sm font-semibold text-gray-400 border border-gray-600 hover:border-gray-400 transition-colors">
+        <button onClick={handleDecline} className="px-4 py-2 rounded-lg text-sm font-semibold text-gray-400 border border-gray-600 hover:border-gray-400 transition-colors">
           {decline}
         </button>
-        <button onClick={dismiss} className="px-4 py-2 rounded-lg text-sm font-bold transition-colors hover:opacity-90" style={{ background: Y, color: BG }}>
-          {accept}
+        <button onClick={handleAccept} className="px-4 py-2 rounded-lg text-sm font-bold transition-colors hover:opacity-90" style={{ background: Y, color: BG }}>
+          {acceptLabel}
         </button>
       </div>
     </div>
@@ -704,9 +709,9 @@ export default function HomePage() {
                 {t.hero_cta} <ArrowRight className="w-4 h-4" />
               </button>
             </Link>
-            <button className="flex items-center gap-2 h-12 px-6 rounded-xl text-sm font-medium text-gray-400 hover:text-white transition-all border border-gray-700 hover:border-gray-500">
+            <Link href="/demo" className="flex items-center gap-2 h-12 px-6 rounded-xl text-sm font-medium text-gray-400 hover:text-white transition-all border border-gray-700 hover:border-gray-500">
               <Play className="w-3.5 h-3.5" /> {t.hero_demo}
-            </button>
+            </Link>
           </div>
 
           {/* Footnote */}
@@ -936,7 +941,7 @@ export default function HomePage() {
             <div>
               <p className="text-xs font-semibold text-gray-500 uppercase tracking-widest mb-4">{t.footer_contact}</p>
               <div className="space-y-2.5">
-                <a href="mailto:hello@gohighreview.com" className="block text-sm text-gray-400 hover:text-white transition-colors">hello@gohighreview.com</a>
+                <a href="mailto:hello@gohighreview.de" className="block text-sm text-gray-400 hover:text-white transition-colors">hello@gohighreview.de</a>
               </div>
             </div>
           </div>

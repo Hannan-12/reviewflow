@@ -18,6 +18,11 @@ interface NotificationPrefs {
 export async function GET(request: NextRequest) {
   try {
     const supabase = await createClient();
+    const { data: { user } } = await supabase.auth.getUser();
+    if (!user) {
+      return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
+    }
+
     const { searchParams } = new URL(request.url);
     const profileId = searchParams.get('profileId');
 
@@ -29,6 +34,7 @@ export async function GET(request: NextRequest) {
       .from('notification_preferences')
       .select('*')
       .eq('profile_id', profileId)
+      .eq('user_id', user.id)
       .single();
 
     if (error && error.code !== 'PGRST116') {
@@ -74,7 +80,12 @@ export async function POST(request: NextRequest) {
     if (raw.emailOnAllReviews   !== undefined) dbUpdates.email_on_all_reviews  = raw.emailOnAllReviews
     if (raw.emailMinRating      !== undefined) dbUpdates.email_min_rating      = raw.emailMinRating
     if (raw.slackEnabled        !== undefined) dbUpdates.slack_enabled         = raw.slackEnabled
-    if (raw.slackWebhookUrl     !== undefined) dbUpdates.slack_webhook_url     = raw.slackWebhookUrl
+    if (raw.slackWebhookUrl     !== undefined) {
+      if (raw.slackWebhookUrl && !raw.slackWebhookUrl.startsWith('https://hooks.slack.com/')) {
+        return NextResponse.json({ error: 'Invalid Slack webhook URL' }, { status: 400 });
+      }
+      dbUpdates.slack_webhook_url = raw.slackWebhookUrl
+    }
     if (raw.slackOnAllReviews   !== undefined) dbUpdates.slack_on_all_reviews  = raw.slackOnAllReviews
     if (raw.slackMinRating      !== undefined) dbUpdates.slack_min_rating      = raw.slackMinRating
     if (raw.emailDigestFrequency !== undefined) dbUpdates.email_digest_frequency = raw.emailDigestFrequency

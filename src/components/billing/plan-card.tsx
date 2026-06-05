@@ -92,7 +92,7 @@ export function PlanCard({ name, price, annual, description, features, priceId, 
         'relative flex flex-col rounded-2xl border p-6 transition-all',
         isPopular
           ? 'border-primary bg-primary text-white shadow-xl shadow-primary/25 sm:scale-[1.02]'
-          : 'border-border bg-card hover:border-primary/30 hover:shadow-md hover:shadow-primary/5',
+          : 'border-border bg-white dark:bg-card hover:border-primary/30 hover:shadow-md hover:shadow-primary/5',
         isCurrentPlan && !isPopular && 'border-primary/50 ring-1 ring-primary/20'
       )}
     >

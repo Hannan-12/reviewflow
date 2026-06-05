@@ -24,7 +24,7 @@ export function SidebarProvider({ children }: { children: React.ReactNode }) {
 
   useEffect(() => {
     try {
-      const saved = localStorage.getItem('rf-sidebar-collapsed')
+      const saved = localStorage.getItem('ghr-sidebar-collapsed')
       if (saved !== null) setCollapsed(JSON.parse(saved))
     } catch {}
   }, [])
@@ -38,7 +38,7 @@ export function SidebarProvider({ children }: { children: React.ReactNode }) {
   const toggle = () => {
     setCollapsed((prev) => {
       const next = !prev
-      try { localStorage.setItem('rf-sidebar-collapsed', JSON.stringify(next)) } catch {}
+      try { localStorage.setItem('ghr-sidebar-collapsed', JSON.stringify(next)) } catch {}
       return next
     })
   }

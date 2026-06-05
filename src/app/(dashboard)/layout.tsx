@@ -18,31 +18,9 @@ export default async function DashboardLayout({ children }: { children: React.Re
 
   const { data: userData } = await supabase
     .from('users')
-    .select('plan_name, subscription_status, trial_ends_at, stripe_customer_id')
+    .select('plan_name, subscription_status')
     .eq('id', user.id)
     .single()
-
-  const status = userData?.subscription_status
-  const hasStripeCustomer = !!userData?.stripe_customer_id
-
-  const trialExpired =
-    status === 'trialing' &&
-    userData?.trial_ends_at &&
-    new Date(userData.trial_ends_at) < new Date()
-
-  // Allow access if:
-  // - Active subscription
-  // - Still in trial
-  // - Trial expired but has a Stripe customer (webhook lag — they likely paid;
-  //   the webhook will correct the status asynchronously)
-  const hasAccess =
-    status === 'active' ||
-    (status === 'trialing' && !trialExpired) ||
-    (trialExpired && hasStripeCustomer)
-
-  if (!hasAccess) {
-    redirect('/billing?expired=true')
-  }
 
   return (
     <DashboardLangProvider initialLang={initialLang}>

@@ -242,13 +242,13 @@ export async function POST(request: NextRequest) {
   const { profileId } = body as { profileId?: string }
 
   // Fetch the relevant profiles
-  const profileQuery = supabase
+  let profileQuery = supabase
     .from('profiles')
     .select('id, location_name, account_id, business_name')
     .eq('user_id', user.id)
     .eq('is_active', true)
 
-  if (profileId) profileQuery.eq('id', profileId)
+  if (profileId) profileQuery = profileQuery.eq('id', profileId)
 
   const { data: profiles } = await profileQuery
 

@@ -6,7 +6,7 @@ import { cn } from '@/lib/utils'
 import Link from 'next/link'
 import { useDashboardLang } from '@/components/dashboard/lang-context'
 
-const STORAGE_KEY = 'rf-onboarding-done'
+const STORAGE_KEY = 'ghr-onboarding-done'
 
 interface Props {
   /** Steps auto-detected as complete by the server */

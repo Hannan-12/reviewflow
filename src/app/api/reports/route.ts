@@ -11,7 +11,7 @@ export async function GET(request: NextRequest) {
 
   const { searchParams } = new URL(request.url)
   const profileId = searchParams.get('profileId')
-  const range = parseInt(searchParams.get('range') ?? '30')
+  const range = Math.min(Math.max(parseInt(searchParams.get('range') ?? '30', 10) || 30, 1), 365)
 
   const since = new Date(Date.now() - range * 24 * 60 * 60 * 1000).toISOString()
 

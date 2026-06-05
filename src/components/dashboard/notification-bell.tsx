@@ -112,8 +112,8 @@ export function NotificationBell() {
               notifications.map((n) => {
                 const review = n.reviews
                 const profile = n.profiles
-                const href = n.review_id && n.profile_id
-                  ? `/dashboard/reviews?profileId=${n.profile_id}&reviewId=${n.review_id}`
+                const href = n.profile_id
+                  ? `/dashboard/reviews?profile=${n.profile_id}`
                   : '/dashboard/reviews'
 
                 return (

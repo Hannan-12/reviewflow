@@ -19,10 +19,21 @@ export async function GET(req: Request) {
   const profileId = new URL(req.url).searchParams.get('profileId')
   if (!profileId) return NextResponse.json({ error: 'profileId required' }, { status: 400 })
 
+  // Verify user owns the profile before returning its config
+  const { data: profile } = await supabase
+    .from('profiles')
+    .select('id')
+    .eq('id', profileId)
+    .eq('user_id', user.id)
+    .maybeSingle()
+
+  if (!profile) return NextResponse.json({ error: 'Not found' }, { status: 404 })
+
   const { data } = await supabase
     .from('widget_configs')
     .select('*')
     .eq('profile_id', profileId)
+    .eq('user_id', user.id)
     .maybeSingle()
 
   return NextResponse.json(data ?? {
@@ -37,6 +48,16 @@ export async function POST(req: Request) {
 
   const body = await req.json()
   const { profileId, theme, maxReviews, minRating, showDates, accentColor } = body
+
+  // Verify user owns the profile before writing
+  const { data: ownedProfile } = await supabase
+    .from('profiles')
+    .select('id')
+    .eq('id', profileId)
+    .eq('user_id', user.id)
+    .maybeSingle()
+
+  if (!ownedProfile) return NextResponse.json({ error: 'Not found' }, { status: 404 })
 
   const { error } = await getAdmin()
     .from('widget_configs')

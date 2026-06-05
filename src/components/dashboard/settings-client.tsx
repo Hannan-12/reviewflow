@@ -69,9 +69,8 @@ export function SettingsClient({ email, fullName, planName, subscriptionStatus, 
   const handleDeleteAccount = async () => {
     if (deleteConfirm !== 'DELETE') { toast.error('Type DELETE to confirm'); return }
     setDeleting(true)
-    // Sign out — full account deletion requires a server-side admin call
     await supabase.auth.signOut()
-    toast.success('Account signed out. Contact support to fully delete your account.')
+    toast.success('Signed out. Email support@gohighreview.de to complete account deletion.')
     router.push('/login')
   }
 

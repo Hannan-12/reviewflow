@@ -181,7 +181,7 @@ export function ReplyPanel({
               <Loader className="w-3.5 h-3.5 mr-2 animate-spin" />
               {t.reply_posting}
             </>
-          ) : existingReply ? 'Update Reply' : t.reply_post}
+          ) : existingReply ? t.reply_post : t.reply_post}
         </Button>
         {onCancel ? (
           <Button onClick={onCancel} variant="outline" size="sm" className="flex-1">

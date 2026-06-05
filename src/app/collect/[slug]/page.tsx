@@ -49,7 +49,7 @@ export default async function CollectPage({ params }: CollectPageProps) {
   const message = link.message ?? `Your feedback helps us improve and helps others find us. It only takes 30 seconds!`
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-slate-50 to-indigo-50 flex flex-col items-center justify-center p-4">
+    <div className="min-h-screen bg-linear-to-br from-slate-50 to-indigo-50 flex flex-col items-center justify-center p-4">
       <div className="w-full max-w-md">
 
         {/* Card */}

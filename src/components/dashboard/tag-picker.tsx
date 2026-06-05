@@ -82,7 +82,7 @@ export function TagPicker({ reviewId }: TagPickerProps) {
 
       {/* Dropdown */}
       {open && (
-        <div className="absolute left-0 top-full mt-1.5 z-50 bg-card border border-border rounded-xl shadow-lg p-2 min-w-[160px]">
+        <div className="absolute left-0 top-full mt-1.5 z-50 bg-card border border-border rounded-xl shadow-lg p-2 min-w-40">
           {allTags.length === 0 ? (
             <p className="text-xs text-muted-foreground px-2 py-1">Loading tags…</p>
           ) : (

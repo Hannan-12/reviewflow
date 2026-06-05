@@ -23,7 +23,7 @@ export default function PrivacyPage() {
 
       <div className="max-w-3xl mx-auto px-6 py-16">
         <h1 className="text-4xl font-bold tracking-tight mb-2">Privacy Policy</h1>
-        <p className="text-muted-foreground mb-10">Last updated: March 2026</p>
+        <p className="text-muted-foreground mb-10">Last updated: June 2026</p>
 
         <div className="prose prose-sm max-w-none space-y-8 text-foreground">
 
@@ -77,7 +77,7 @@ export default function PrivacyPage() {
 
           <section>
             <h2 className="text-xl font-bold mb-3">9. Contact</h2>
-            <p className="text-muted-foreground leading-relaxed">If you have questions about this Privacy Policy, contact us at <a href="mailto:privacy@reviewflow.app" className="text-primary hover:underline">privacy@reviewflow.app</a>.</p>
+            <p className="text-muted-foreground leading-relaxed">If you have questions about this Privacy Policy, contact us at <a href="mailto:privacy@gohighreview.de" className="text-primary hover:underline">privacy@gohighreview.de</a>.</p>
           </section>
         </div>
       </div>

@@ -9,6 +9,9 @@ import { Header } from '@/components/dashboard/header'
 import { Sidebar } from '@/components/dashboard/sidebar'
 import { BillingPlansSection } from '@/components/billing/billing-plans-section'
 import { SidebarProvider } from '@/components/dashboard/sidebar-context'
+import { DashboardLangProvider } from '@/components/dashboard/lang-context'
+import { dashboardT, type DashboardLang } from '@/lib/i18n/dashboard'
+import { cookies } from 'next/headers'
 import {
   AlertCircle, CreditCard, Calendar,
   Zap, HelpCircle, ExternalLink, Check, X,
@@ -57,6 +60,10 @@ export default async function BillingPage({
   const { data: { user } } = await supabase.auth.getUser()
   if (!user) redirect('/login')
 
+  const cookieStore = await cookies()
+  const cookieLang = cookieStore.get('app_lang')?.value as DashboardLang | undefined
+  const initialLang: DashboardLang = (cookieLang && cookieLang in dashboardT) ? cookieLang : 'de'
+
   const { data: userData } = await supabase
     .from('users')
     .select('plan_name, subscription_status, trial_ends_at, current_period_end, stripe_customer_id, stripe_price_id, stripe_subscription_id')
@@ -98,6 +105,7 @@ export default async function BillingPage({
   const profileLimit = currentPlan?.profileLimit === -1 ? null : (currentPlan?.profileLimit ?? 3)
 
   return (
+    <DashboardLangProvider initialLang={initialLang}>
     <SidebarProvider>
       <div className="flex h-screen overflow-hidden bg-muted/20">
         <Sidebar planName={currentPlanKey} />
@@ -290,5 +298,6 @@ export default async function BillingPage({
         </main>
       </div>
     </SidebarProvider>
+    </DashboardLangProvider>
   )
 }
